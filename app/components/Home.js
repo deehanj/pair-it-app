@@ -25,7 +25,7 @@ import 'brace/mode/javascript';
 import 'brace/theme/monokai';
 
 const io = require('socket.io-client');
-const socket = io();
+const socket = io('http://pair-server.herokuapp.com');
 // var socket = io('http://localhost');
 
 
