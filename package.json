@@ -176,6 +176,9 @@
     "webpack-merge": "^2.4.0"
   },
   "dependencies": {
+    "axios": "^0.15.3",
+    "bluebird": "^3.5.0",
+    "body-parser": "^1.17.1",
     "electron-debug": "^1.1.0",
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.0.0",
