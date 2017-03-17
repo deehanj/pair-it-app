@@ -24,6 +24,8 @@ This repository only has our front-end, client-facing desktop app. The backend r
 
 
 ## Electron App Development Notes:
+- the Electron app is based on this repo: [electron-react-boilerplate](https://github.com/chentsulin/electron-react-boilerplate)
+- also check out [Git-together](https://github.com/Git-Together/GitTogether)
 - The app folder is where all of our react and redux components will be added.
 - There are a bunch of test scripts already setup, we would just need to fill them out
 - ~~'Backend' is where we have our temporary sockets server setup, set to port 1337~~
