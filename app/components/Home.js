@@ -17,17 +17,19 @@
 
 import React from 'react';
 import {connect} from 'react-redux';
-import brace from 'brace';
+// import brace from 'brace';
 import AceEditor from 'react-ace';
 // import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 
+// console.log('Brace: ', brace);
 import 'brace/mode/javascript';
 import 'brace/theme/monokai';
+import 'brace/ext/language_tools';
 
-const io = require('socket.io-client');
+import io from 'socket.io-client';
+
 const socket = io('http://pair-server.herokuapp.com');
 // var socket = io('http://localhost');
-
 
 const mapStateToProps = (state) => {
 	return {
