@@ -176,6 +176,7 @@
     "webpack-merge": "^2.4.0"
   },
   "dependencies": {
+    "bufferutil": "^3.0.0",
     "electron-debug": "^1.1.0",
     "express": "^4.15.2",
     "extract-text-webpack-plugin": "^2.0.0",
@@ -191,6 +192,7 @@
     "redux-thunk": "^2.2.0",
     "socket.io": "^1.7.3",
     "source-map-support": "^0.4.10",
+    "utf-8-validate": "^3.0.1",
     "volleyball": "^1.4.1"
   },
   "devEngines": {
