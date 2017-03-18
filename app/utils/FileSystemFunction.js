@@ -2,6 +2,8 @@ const fs = require('fs')
 const Promise = require('bluebird');
 const fsp = Promise.promisifyAll(require('fs'));
 
+// these functions access the file system
+// they all return promises
 
 const getAllFiles = (dir) => {
   return fsp.readdirAsync(dir)
@@ -20,14 +22,10 @@ const getAllFiles = (dir) => {
   })
 }
 
-
-//   getAllFiles(req.body.dir)
-//   .then(arr => {
-//     res.json(arr)
-//   })
-//   .catch(next)
-
-// })
+const readFile = dir => {
+  return fsp.readFileAsync(dir)
+  .then(text => text)
+}
 
 // files.post('/files/read', (req, res, next) => {
 //   console.log('file path is: ', req.body.filePath)
@@ -40,5 +38,6 @@ const getAllFiles = (dir) => {
 // })
 
 module.exports = {
-  getAllFiles
+  getAllFiles,
+  readFile
 }

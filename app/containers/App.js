@@ -12,10 +12,8 @@ export default class App extends Component {
   };
 
   componentDidMount(){
-    console.log('app loaded')
     getAllFiles('../puppy-book/')
     .then(result => {
-      console.log('RESULT', result)
       store.dispatch(setFileDir('../puppy-book/'))
       store.dispatch(loadFiles(result))
     })
