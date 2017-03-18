@@ -104,6 +104,7 @@ class TextEditorContainer extends React.Component {
 						maxLines: Infinity
 					}}
 					/>
+					<button value="SAVE" height="50px" width="70px" type="button">SAVE</button>
 					</TabPanel>)
 				)}
 		</Tabs>
