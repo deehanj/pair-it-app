@@ -1,17 +1,15 @@
 import React from 'react'
 import axios from 'axios'
-import {getAllFiles} from '../utils/FileSystemFunction'
+import { getAllFiles, readFile } from '../utils/FileSystemFunction'
+import { activeFile } from '../reducers/FilesReducer'
 
-export class ReadFile extends React.Component {
-  constructor(props) {
-    super(props)
-  }
-  render() {
-    return (
-    <div>{this.props.text}</div>
-    )
-  }
-}
+/*
+- This component displays the directory file system.
+- It recursively creates unordered lists of files that only become visible when clicked on.
+- The outermost directory list is updated by the global state redux store.
+- The local state is used to pass props to each level's subdirectory in order to make that
+particular Files component.
+*/
 
 class Files extends React.Component {
   constructor(props) {
@@ -24,68 +22,49 @@ class Files extends React.Component {
     }
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
-    this.readFile = this.readFile.bind(this)
   }
 
   fetchFiles(dir) {
-    console.log('fetch files called', dir)
     getAllFiles(dir)
     .then(filesArr => {
-      console.log('getAllFiles', filesArr)
       this.setState({ subFiles: filesArr })
     })
     .catch(err => console.error(err))
   }
-  setVisible(id) {
-    console.log('set visible')
-    this.setState({ visible: Object.assign({}, this.state.visible, { [id]: true })})
 
+  setVisible(id) {
+    this.setState({ visible: Object.assign({}, this.state.visible, { [id]: true })})
   }
+
   setInvisible(id) {
-    console.log('set invisible')
     this.setState({ visible: Object.assign({}, this.state.visible, { [id]: false })})
   }
-  readFile(filePath) {
-    axios.post('/files/read', {filePath: filePath.slice(0, filePath.length - 1)} )
-    .then(response => response.data)
-    .then(text => {
-      return this.setState({ text })
-    })
-    .catch(error => console.error(error.message))
-  }
+
   componentDidMount() {
-    console.log('did mount')
     this.fetchFiles(this.state.dir)
   }
 
-  componentWillReceiveProps(nextProps){
-    console.log('currentProps', this.props, 'nextProps', nextProps)
-  }
-
-  componentWillUpdate(nextProps, nextState){
-    console.log('nextProps', nextProps)
-  }
   render() {
-    console.log('props', this.props)
     const files = this.props.files || this.state.subFiles
-    // console.log('files in file component', files)
-    // console.log('STATE', this.state)
     return (
-      <div>
-        <ul>
-          {
-            files && files.map(file => {
-              return file.fileBool ?
-                <li key={file.filePath} onClick={() => this.readFile(file.filePath)}>{file.filePath}</li> :
-                <li key={`${file.filePath}-inner`} onClick={() => this.setVisible(file.filePath)}>
-                  {file.filePath}
-                  {this.state.visible[file.filePath] && <Files subDir={file.filePath} visible={false} />}
-                </li>
-            })
-          }
-        </ul>
-        <ReadFile text={this.state.text} />
-      </div>
+      <ul>{this.props.dir}
+        {
+          files && files.map(file => {
+            const fileNameArr = file.filePath.split('/')
+            const fileName = fileNameArr[fileNameArr.length - 2]
+            // checks if its a file or a directory
+            return file.fileBool ?
+              // makes a file list item if fileBool is true
+              <li key={file.filePath} onClick={() => this.props.fetchActiveFile(file.filePath.slice(0, file.filePath.length - 1))}>{fileName}</li>
+              :
+              // makes a new Files component if fileBool is false
+              <li key={`${file.filePath}-inner`} onClick={() => this.setVisible(file.filePath)}>
+                {fileName}
+                {this.state.visible[file.filePath] && <Files subDir={file.filePath} visible={false} fetchActiveFile={this.props.fetchActiveFile} />}
+              </li>
+          })
+        }
+      </ul>
     )
   }
 }
@@ -100,7 +79,20 @@ const mapStateToProps = state => {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchActiveFile : dir => {
+      readFile(dir)
+      .then(text => {
+        text = text.toString()
+        dispatch(activeFile({ filePath: dir, text }))
+      })
+      .catch(error => console.error(error.message))
+    }
+  }
+}
+
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Files)

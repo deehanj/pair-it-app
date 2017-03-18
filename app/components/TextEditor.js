@@ -33,7 +33,7 @@ const socket = io('http://pair-server.herokuapp.com');
 
 const mapStateToProps = (state) => {
 	return {
-		openFiles: state.openFiles
+		activeFile: state.fileSystem.activeFile
 	};
 };
 
@@ -42,7 +42,6 @@ const mapDispatchToProps = (dispatch) => {
 
 		}
 	};
-
 
 class TextEditorContainer extends React.Component {
 	constructor(props){
@@ -53,25 +52,27 @@ class TextEditorContainer extends React.Component {
 		}
 		socket.on('receive code', (payload) => this.updateCodeInState(payload));
 		this.codeIsHappening = this.codeIsHappening.bind(this)
-
 	}
 
-componentDidMount() {
-      socket.emit('room', {message: 'joining room' + this.state.room});
-    }
-
+  componentDidMount() {
+    socket.emit('room', {message: 'joining room' + this.state.room});
+  }
 
   componentWillUnmount() {
     socket.emit('leave room', {message: 'leaving text-editor'})
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ code: nextProps.activeFile.text })
+    this.codeIsHappening(nextProps.activeFile.text)
+  }
 
-codeIsHappening(newCode) {
+  codeIsHappening(newCode) {
     this.updateCodeForCurrentUser(newCode)
     socket.emit('coding event', {code: newCode, room: this.state.room})
   }
 
- updateCodeForCurrentUser(newCode) {
+  updateCodeForCurrentUser(newCode) {
     this.setState({
       code: newCode
     })
@@ -83,30 +84,30 @@ codeIsHappening(newCode) {
     });
   }
 
-
 	render (){
-			return (
-				<div className="text-editor-container">
-				  <AceEditor
-				    mode="javascript"
-				    theme="monokai"
-				    onChange={this.codeIsHappening}
-				    name="text-editor"
-				    value={this.state.code}
-				    width="100%"
-				    editorProps={{$blockScrolling: true}}
-					setOptions={{
-						enableBasicAutocompletion: true,
-						enableLiveAutocompletion: true,
-						tabSize: 2,
-						fontSize: 16,
-						showGutter: true,
-						showPrintMargin: false,
-						maxLines: Infinity
-					}}
-				  />
-				</div>
-				);
+    console.log(this.state)
+    return (
+      <div className="text-editor-container">
+        <AceEditor
+          mode="javascript"
+          theme="monokai"
+          onChange={this.codeIsHappening}
+          name="text-editor"
+          value={this.state.code}
+          width="100%"
+          editorProps={{$blockScrolling: true}}
+        setOptions={{
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true,
+          tabSize: 2,
+          fontSize: 16,
+          showGutter: true,
+          showPrintMargin: false,
+          maxLines: Infinity
+        }}
+        />
+      </div>
+    );
 	}
 }
 
