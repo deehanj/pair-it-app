@@ -8,9 +8,7 @@ const fsp = Promise.promisifyAll(require('fs'));
 const getAllFiles = (dir) => {
   return fsp.readdirAsync(dir)
   .then(allFileNames => {
-    console.log('allFileNames', allFileNames)
     const statPromises = allFileNames.map(fileName => {
-      console.log('filename:', fileName)
       return fsp.statAsync(dir + fileName)
       .then(stats => {
         stats.filePath = dir + fileName + '/'
