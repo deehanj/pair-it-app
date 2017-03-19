@@ -1,7 +1,7 @@
 import React from 'react'
 import axios from 'axios'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
-import { activeFile } from '../reducers/FilesReducer'
+import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
 
 /*
 - This component displays the directory file system.
@@ -85,7 +85,9 @@ const mapDispatchToProps = dispatch => {
       readFile(dir)
       .then(text => {
         text = text.toString()
-        dispatch(activeFile({ filePath: dir, text }))
+        const file = {filePath: dir, text}
+        dispatch(activeFile(file))
+        dispatch(addToOpenFiles(file))
       })
       .catch(error => console.error(error.message))
     }
