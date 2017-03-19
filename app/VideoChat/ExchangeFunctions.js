@@ -26,7 +26,8 @@ function initiatePC(onSuccess, MediaStreamURL){
   peerConnection.onaddstream = function (event) {
     console.log("onaddstream");
     console.log(event);
-    video.src = URL.createObjectURL(event.stream);
+    // video.src = URL.createObjectURL(event.stream);
+    video.src = event.stream;
     video.play();
   };
  

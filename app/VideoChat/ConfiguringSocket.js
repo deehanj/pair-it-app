@@ -1,6 +1,7 @@
-import webrtcPak from './ExchangeFunctions'
+import webrtcPak from './ExchangeFunctions';
+import events from './events';
 
-export default ConfigureSocket(socket, playerInfo, MediaStreamURL){
+const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  var theOtherUser;
 
 		  socket.on('refresh_user_list', function(users){
@@ -67,3 +68,5 @@ export default ConfigureSocket(socket, playerInfo, MediaStreamURL){
 		    webrtcPak.receiveIceCandidate(iceCandidate);
   		});
 }
+
+export default ConfigureSocket;

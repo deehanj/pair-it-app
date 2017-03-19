@@ -4,7 +4,8 @@ import init from './InitiateConnection';
 import events from './events';
 import webrtcPak from './ExchangeFunctions';
 import _  from 'lodash';
-import ConfigureSocket from './ConfigureSocket';
+import ConfigureSocket from './ConfiguringSocket';
+import Dashboard from './Dashboard';
 
 
 const socket = io('http://pair-server.herokuapp.com');
@@ -15,6 +16,9 @@ export default class extends React.Component{
 		this.state = {
 			URL: this.props.URL
 		};
+		this.streamSuccessHandler = this.streamSuccessHandler.bind(this);
+		this.setStreamState = this.setStreamState.bind(this);
+		this.initiateConnection = this.initiateConnection.bind(this);
 	}
 
 	setStreamState(){
@@ -25,7 +29,7 @@ export default class extends React.Component{
 				audio:true,
 			},
 			//successHandler
-			streamSuccessHandler,
+			this.streamSuccessHandler,
 			//error handler
 			console.error)
 	}
@@ -50,11 +54,13 @@ export default class extends React.Component{
 	}
 
 	render(){
-		<div>
-			<video src={''}></video>
-			<button onClick={this.setStreamState}>GETUSERMEDIA</button>
-			<button onClick={this.initiateConnection}>InititateCall</button>
-
-		</div>
+		return(
+			<div>
+				<video src={''}></video>
+				<button onClick={this.setStreamState}>GETUSERMEDIA</button>
+				<button onClick={this.initiateConnection}>InititateCall</button>
+				<Dashboard/>
+			</div>
+		)
 	}
 }

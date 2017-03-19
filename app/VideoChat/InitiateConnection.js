@@ -5,7 +5,7 @@ var events = require('./events');
 var _  = require('lodash');
 var webrtcPak = require('./ExchangeFunctions');
 
-export default const init(){
+const init = () =>{
   console.log('inited')
   //need to get name and id from state
   var playerInfo = { 
@@ -85,4 +85,4 @@ export default const init(){
 
 }
 
-
+export default init;
