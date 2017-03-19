@@ -12,3 +12,8 @@
 .container a {
   font-size: 1.4rem;
 }
+
+#webchatWindow{
+	width:100px;
+	height:100px;
+}
