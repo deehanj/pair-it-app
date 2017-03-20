@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
 import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
 
@@ -74,7 +75,6 @@ class Files extends React.Component {
   }
 }
 
-import {connect} from 'react-redux'
 
 const mapStateToProps = state => {
   return {
@@ -104,7 +104,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Files)
+export default connect(mapStateToProps,mapDispatchToProps)(Files)

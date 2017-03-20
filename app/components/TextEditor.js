@@ -1,38 +1,36 @@
 // // @flow
 
-import React from 'react';
-import {connect} from 'react-redux';
-import brace from 'brace';
-import AceEditor from 'react-ace';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import React from 'react'
+import {connect} from 'react-redux'
+import io from 'socket.io-client'
+import brace from 'brace'
+import AceEditor from 'react-ace'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { activeFile } from '../reducers/FilesReducer'
 
-import 'brace/mode/javascript';
-import 'brace/theme/monokai';
-import 'brace/ext/language_tools';
+import 'brace/mode/javascript'
+import 'brace/theme/monokai'
+import 'brace/ext/language_tools'
 
-import io from 'socket.io-client';
 
-const socket = io('http://pair-server.herokuapp.com');
+const socket = io('http://pair-server.herokuapp.com')
 
 const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
 		openFiles: state.fileSystem.openFiles
-	};
-};
+	}
+}
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => {
-			dispatch(activeFile(file))
+		dispatchActiveFile: (file) => dispatch(activeFile(file))
 		}
-		}
-	};
+	}
 
 class TextEditorContainer extends React.Component {
 	constructor(props){
-		super(props);
+		super(props)
 		this.state = {
 			code: '',
 			openFiles:[],
@@ -44,7 +42,7 @@ class TextEditorContainer extends React.Component {
 	}
 
   componentDidMount() {
-    socket.emit('room', {message: 'joining room' + this.state.room});
+    socket.emit('room', {message: 'joining room' + this.state.room})
   }
 
   componentWillUnmount() {
@@ -66,11 +64,11 @@ class TextEditorContainer extends React.Component {
   updateCodeInState(payload) {
     this.setState({
       code: payload.code,
-    });
+    })
   }
 
    handleSelect(index, last) {
-    console.log('Selected tab: ' + index + ', Last tab: ' + last);
+    console.log('Selected tab: ' + index + ', Last tab: ' + last)
     this.props.dispatchActiveFile(this.props.openFiles[index])
     socket.emit('tab changed', index)
 	setTimeout(() => this.setState({tabIndex: index}), 0) 
@@ -138,12 +136,10 @@ class TextEditorContainer extends React.Component {
 					)}
 			</Tabs>
 		)}
-	}
-
-		
+	}	
 		
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)
 
 
