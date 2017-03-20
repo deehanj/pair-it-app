@@ -75,40 +75,66 @@ class TextEditorContainer extends React.Component {
   }
 
 	render (){
+	if (this.state.openFiles.length === 0) {
 		return (
-		<Tabs 
-		onSelect={this.handleSelect}
-		selectedIndex={this.state.tabIndex}>
-			<TabList>
-			{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
-				(<Tab key={file.filePath}>{file.filePath}</Tab>)
-				)}
-			</TabList>
-			{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
-				(<TabPanel key={file.filePath}>
-					<AceEditor
-					mode="javascript"
-					theme="monokai"
-					onChange={this.codeIsHappening}
-					name="text-editor"
-					value={this.state.code}
-					width="100%"
-					editorProps={{$blockScrolling: true}}
-					setOptions={{
-						enableBasicAutocompletion: true,
-						enableLiveAutocompletion: true,
-						tabSize: 2,
-						fontSize: 16,
-						showGutter: true,
-						showPrintMargin: false,
-						maxLines: Infinity
-					}}
-					/>
-					<button value="SAVE" height="50px" width="70px" type="button">SAVE</button>
-					</TabPanel>)
-				)}
-		</Tabs>
-	)}
+			<AceEditor
+				mode="javascript"
+				theme="monokai"
+				onChange={this.codeIsHappening}
+				name="text-editor"
+				value={this.state.code}
+				width="100%"
+				editorProps={{$blockScrolling: true}}
+				setOptions={{
+					enableBasicAutocompletion: true,
+					enableLiveAutocompletion: true,
+					tabSize: 2,
+					fontSize: 16,
+					showGutter: true,
+					showPrintMargin: false,
+					maxLines: Infinity
+				}}
+				/>
+		)
+	} else {
+		return (
+			<Tabs 
+			onSelect={this.handleSelect}
+			selectedIndex={this.state.tabIndex}>
+				<TabList>
+				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
+					(<Tab key={file.filePath}>{file.filePath}</Tab>)
+					)}
+				</TabList>
+				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
+					(<TabPanel key={file.filePath}>
+						<AceEditor
+						mode="javascript"
+						theme="monokai"
+						onChange={this.codeIsHappening}
+						name="text-editor"
+						value={this.state.code}
+						width="100%"
+						editorProps={{$blockScrolling: true}}
+						setOptions={{
+							enableBasicAutocompletion: true,
+							enableLiveAutocompletion: true,
+							tabSize: 2,
+							fontSize: 16,
+							showGutter: true,
+							showPrintMargin: false,
+							maxLines: Infinity
+						}}
+						/>
+						<button value="SAVE" height="50px" width="70px" type="button">SAVE</button>
+						</TabPanel>)
+					)}
+			</Tabs>
+		)}
+	}
+
+		
+		
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer);
