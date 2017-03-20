@@ -28,6 +28,8 @@ build/Release
 node_modules
 app/node_modules
 
+yarn.lock
+
 # OSX
 .DS_Store
 
