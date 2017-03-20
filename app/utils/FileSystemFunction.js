@@ -25,17 +25,14 @@ const readFile = dir => {
   .then(text => text)
 }
 
-// files.post('/files/read', (req, res, next) => {
-//   console.log('file path is: ', req.body.filePath)
-//   fsp.readFileAsync(req.body.filePath)
-//   .then(text => {
-//     res.send(text)
-//   })
-//   .catch(next)
+const writeFile = dir => {
+  return fsp.writeFileAsync(dir)
+  .then(text => text)
+}
 
-// })
 
 module.exports = {
   getAllFiles,
+  writeFile,
   readFile
 }
