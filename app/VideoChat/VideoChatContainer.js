@@ -2,15 +2,15 @@ import {connect} from 'react-redux';
 import VideoChatComponent from './VideoChatComponent';
 import {UpdateURL} from './VideoChatActionCreators';
 
-function mapStateToProps (state) {
+const mapStateToProps = (state) => {
 	return {
 		URL: state.VideoChat.URL,
 	};
 };
 
-function mapDispatchToProps (dispatch) {
+const mapDispatchToProps = (dispatch) => {
 	return {
-		UpdateStream: function(stream){
+		UpdateStream: (stream) => {
 			dispatch(UpdateURL(stream))
 		},
 	};
