@@ -10,41 +10,26 @@ export default class extends React.Component{
 		this.state = {
 			users:[]
 		}
-
-	    // Set initial application state using props
-	    this.intitialize = this.intitialize.bind(this);
-	    this.callBack = this.callBack.bind(this);
-
+	    this.setUserState = this.setUserState.bind(this);
 	}
-	 
 
-	  intitialize(){
-	  	events.suscribe('users',this.callBack);
-	  }
+	componentDidMount(){
+	 	events.suscribe('users',this.setUserState);
+	}
 
-	  callBack(users){
-	  	if(this.isMounted()){
-	        this.setState({users: users});
-	      }
-	  }
 
-	  render() {
+	setUserState(users){
+	    this.setState({users: users});
+	}
 
-	  		this.intitialize();
-	      var self = this;
-	      var rows = [];
+	render() {
 
-	      
-	      this.state.users.forEach(function(user) {
-	        rows.push(<UserRow user={user} />);
-	      });
-
-	      return (
-	          <div>
-	            <div className="title">Users connected</div>
-	            {rows}
-	          </div>
-	      );
-	  }
+	  return (
+	      <div>
+	        <div className="title">Users connected</div>
+	        { (this.state.users.length > 0) && this.state.users.map(user => <UserRow user={user}/>)}
+	      </div>
+	  );
+	}
 
 }
