@@ -17,6 +17,7 @@ export default class extends React.Component{
 		this.streamSuccessHandler = this.streamSuccessHandler.bind(this);
 		this.setStreamState = this.setStreamState.bind(this);
 		this.initiateConnection = this.initiateConnection.bind(this);
+		this.localVideoView = this.localVideoView.bind(this);
 	}
 
 	setStreamState() {
@@ -31,6 +32,17 @@ export default class extends React.Component{
 			//error handler
 			console.error
 		)
+		navigator.getUserMedia(
+			//configuration
+			{
+				video:true,
+				audio:false,
+			},
+			//successHandler
+			this.localVideoView,
+			//error handler
+			console.error
+		)
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -39,12 +51,15 @@ export default class extends React.Component{
 
 	streamSuccessHandler(stream) {
 		this.props.UpdateStream(stream);
+		this.initiateConnection();
+	}
+
+	localVideoView(stream) {
 		const localVideo = document.getElementById('localWebchat');
 		console.log(localVideo);
 		localVideo.src = URL.createObjectURL(stream);
 		// localVideo.onloadedmetadata(play());
 		localVideo.play();
-		this.initiateConnection();
 	}
 
 	initiateConnection() {
