@@ -3,6 +3,10 @@ import axios from 'axios'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
 import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
 
+import io from 'socket.io-client';
+
+const socket = io('http://pair-server.herokuapp.com');
+
 /*
 - This component displays the directory file system.
 - It recursively creates unordered lists of files that only become visible when clicked on.
@@ -22,6 +26,7 @@ class Files extends React.Component {
     }
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
+    socket.on('new file is opened', (file) => this.props.openFileFromNavigator(file));
   }
 
   fetchFiles(dir) {
@@ -86,10 +91,15 @@ const mapDispatchToProps = dispatch => {
       .then(text => {
         text = text.toString()
         const file = {filePath: dir, text}
+        socket.emit('opened file', file)
         dispatch(activeFile(file))
         dispatch(addToOpenFiles(file))
       })
       .catch(error => console.error(error.message))
+    },
+    openFileFromNavigator : file => {
+      dispatch(activeFile(file))
+      dispatch(addToOpenFiles(file))
     }
   }
 }
