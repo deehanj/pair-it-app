@@ -1,14 +1,12 @@
 import webrtcPak from './ExchangeFunctions';
 import events from './events';
-import _ from 'lodash';
-
+// import _ from 'lodash';
 
 const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  var theOtherUser;
 
 		  socket.on('refresh_user_list', function(users){
 		    users = _.compact(users.map(function(user){
-		      console.log('USERLISTREFRESHED',user._id, playerInfo._id)
 		      if(user._id != playerInfo._id){
 		        return user;
 		      }else{
@@ -26,9 +24,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  events.suscribe('startCall', function(userDestiny){
 		    console.log('Requested create call', userDestiny, playerInfo);
 		    theOtherUser = userDestiny;
-		    console.log('this is the createOffer', MediaStreamURL)
 		    webrtcPak.createOffer(function(offer){  
-		    	console.log(MediaStreamURL, 'please');
 		      socket.emit('start_call_with', {
 		        userDestiny: theOtherUser,
 		        userCalling: playerInfo,
@@ -45,19 +41,17 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		        userDestiny: theOtherUser,
 		        userCalling: playerInfo,
 		        answer: answer
-		      }, MediaStreamURL);
-		    });
+		      });
+		    }, MediaStreamURL);
 		  });
 
 		  //Receive answer -- only for isCaller
 		  socket.on('answer', function(answer){
-		    console.log('Receiving answer')
 		    webrtcPak.receiveAnswer(answer);
 		  })
 
 		  //Send ice candidates -- for all
 		  events.suscribe('iceCandidate', function(iceCandidate){
-		    console.log('Sending ice candidate')
 		    socket.emit('ice_candidate', {
 		        userDestiny: theOtherUser,
 		        userCalling: playerInfo,
@@ -67,7 +61,6 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 
 		  //Receive ice candidates
 		  socket.on('receiveIceCandidate', function(iceCandidate){
-		    console.log('Received candidate')
 		    webrtcPak.receiveIceCandidate(iceCandidate);
   		});
 

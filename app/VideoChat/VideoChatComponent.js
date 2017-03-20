@@ -1,6 +1,6 @@
 import React from 'react';
 import io from 'socket.io-client';
-import init from './InitiateConnection';
+
 import events from './events';
 import webrtcPak from './ExchangeFunctions';
 import _  from 'lodash';
@@ -9,7 +9,8 @@ import Dashboard from './Dashboard';
 
 
 // const socket = io('http://pair-server.herokuapp.com');
-const socket = io('http://192.168.5.93:1337');
+// const socket = io('http://192.168.5.93:1337');
+const socket = io('http://192.168.1.155:1337');
 
 
 export default class extends React.Component{
@@ -38,33 +39,33 @@ export default class extends React.Component{
 
 	componentWillReceiveProps(nextProps){
 		this.setState({URL: nextProps.URL})
-		console.log(this.state.URL);
 	}
 
 	streamSuccessHandler(stream){
 		this.props.UpdateStream(stream);
-		console.log('stream URL sent to store');
+		var localVideo = document.getElementById('localWebchat');
+		console.log(localVideo);
+		localVideo.src = URL.createObjectURL(stream);
+		// localVideo.onloadedmetadata(play());
+		localVideo.play();
 	}
 
 	initiateConnection (){
-		console.log('inited')
+
 		  //need to get name and id from state
 		  var playerInfo = { 
 		  	name : "james", 
 		  	_id: "thisIsMyUniqueID" 
 		  };
-		  // var isCaller = false;
 		  // var socket = io.connect('http://pair-server.herokuapp.com');
-		  const socket = io('http://192.168.5.93:1337');
-		  console.log(socket);
+		  // const socket = io('http://192.168.5.93:1337');
+		  const socket = io('http://192.168.1.155:1337');
 		  var MediaStreamURL = this.state.URL;
-		  console.log('this is the medai stream we want to pass', MediaStreamURL);
 		  ConfigureSocket(socket, playerInfo, MediaStreamURL);
 	}
 
 	render(){
-		console.log('this is th eporps of the videochetComponent', this.props)
-		console.log('state', this.state);
+
 		return(
 			<div>
 				<video src={''}></video>

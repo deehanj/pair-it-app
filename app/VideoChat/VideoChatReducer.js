@@ -1,7 +1,10 @@
+
 const initialState = {
   URL: {},
 };
+
 const SET_STREAM_URL = 'SET_STREAM_URL';
+
 const reducer = (state = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {

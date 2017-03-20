@@ -9,7 +9,8 @@ export default class HomePage extends Component {
   render() {
     return (
       <div>
-      	<video id="webchatWindow"></video>
+        <video id="webchatWindow"></video>
+      	<video id="localWebchat"></video>
       	<VideoChatContainer />
         <TextEditor />
         <FileListComponent />

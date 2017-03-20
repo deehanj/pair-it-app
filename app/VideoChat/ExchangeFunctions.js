@@ -21,20 +21,16 @@ function initiatePC(onSuccess, MediaStreamURL){
   iceCandidates = [];
   pendingAcceptCandidates = [];
   var video = document.getElementById('webchatWindow');
-  console.log(video);
  
   peerConnection.onaddstream = function (event) {
     console.log("onaddstream");
     console.log(event);
     video.src = URL.createObjectURL(event.stream);
-    video.src = event.stream;
     video.play();
   };
  
   peerConnection.onicecandidate = function (event) {
-    console.log("onicecandidate");
     if (event.candidate) {
-      //console.log("candidate saved..." + event.candidate.candidate);
       iceCandidates.push(event.candidate.candidate);
     } else if (peerConnection.iceGatheringState == "complete") {
       console.log("Sending ice candidates to callee");
@@ -45,37 +41,23 @@ function initiatePC(onSuccess, MediaStreamURL){
     }
   };
  
-  // navigator.getUserMedia({
-  //   video: true,
-  //   audio: true
-  // },
-  // onSuccess,
-  // error);
-  //try to invoke the onSuccess function with the URL object representing the media stream that is stored on the state
-  console.log('your media stream has arrived', (MediaStreamURL));
   onSuccess(MediaStreamURL)
 }
 
 
 //Create a call
 webrtcpak.createOffer = (cb, MediaStreamURL) => {
-  console.log('createOffer')
-  console.log(MediaStreamURL, 'did it arrive?')
-
     initiatePC(
       function (localMediaStream) {
         var type = typeof(localMediaStream); 
-        console.log('@@@@',localMediaStream,'@@@', type);
-        console.log('success function');
+
         peerConnection.addStream(localMediaStream);
 
         peerConnection.createOffer(function (offer) {
-          console.log('Success from createOffer')
 
           peerConnection.setLocalDescription(
             new RTCSessionDescription(offer),
             function () {
-              console.log('offer created, sending it');
               cb(btoa(offer.sdp));
             });
 
@@ -83,7 +65,6 @@ webrtcpak.createOffer = (cb, MediaStreamURL) => {
         console.log(error)
        });
     }, MediaStreamURL);
-
 }
 
 //Receive a call
@@ -93,20 +74,19 @@ webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL) =>{
   initiatePC(
  
     function (localMediaStream) {
-      peerConnection.addStream(localMediaStream);
-      peerConnection.setRemoteDescription(new RTCSessionDescription({
-        type: "offer",
-        sdp: offerSdp
-      }),
+          peerConnection.addStream(localMediaStream);
+          peerConnection.setRemoteDescription(new RTCSessionDescription({
+            type: "offer",
+            sdp: offerSdp
+          }),
  
-      function () {
+          function () {
 
-        peerConnection.createAnswer(function (answer) {
-          peerConnection.setLocalDescription(answer);
-          console.log("Created answer");
-          canAcceptIce = true;
-          cb(btoa(answer.sdp));
-        },
+            peerConnection.createAnswer(function (answer) {
+              peerConnection.setLocalDescription(answer);
+              canAcceptIce = true;
+              cb(btoa(answer.sdp));
+            },
         error, {
           mandatory: {
               OfferToReceiveAudio: true,
@@ -148,7 +128,6 @@ function mergeCandidates(){
 }
 
 function addCandidate(iceCandidate){
-  console.log('adding candidate');
   peerConnection.addIceCandidate(new RTCIceCandidate({
     candidate: atob(iceCandidate)
   }));
