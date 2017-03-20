@@ -38,7 +38,8 @@ class TextEditorContainer extends React.Component {
 			openFiles:[],
 			tabIndex: 0,
 		}
-		socket.on('receive code', (payload) => this.updateCodeInState(payload));
+		socket.on('receive code', (payload) => this.updateCodeInState(payload))
+		socket.on('changed to new tab', (index) => this.changeTabFromNavigator(index))
 		this.handleSelect = this.handleSelect.bind(this)
 	}
 
@@ -71,7 +72,13 @@ class TextEditorContainer extends React.Component {
    handleSelect(index, last) {
     console.log('Selected tab: ' + index + ', Last tab: ' + last);
     this.props.dispatchActiveFile(this.props.openFiles[index])
+    socket.emit('tab changed', index)
 	setTimeout(() => this.setState({tabIndex: index}), 0) 
+  }
+
+  changeTabFromNavigator(index) {
+  	this.props.dispatchActiveFile(this.props.openFiles[index])
+  	setTimeout(() => this.setState({tabIndex: index}), 0)
   }
 
 	render (){
