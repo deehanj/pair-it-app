@@ -15,7 +15,8 @@ const init = () =>{
   var theOtherUser;
   var isCaller = false;
 
-  socket = io.connect('http://pair-server.herokuapp.com');
+  // socket = io.connect('http://pair-server.herokuapp.com');
+  socket = io.connect('http://192.168.5.93:1337')
   console.log(socket);
 
   //Render user list

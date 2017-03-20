@@ -11,8 +11,9 @@ function mapStateToProps (state) {
 function mapDispatchToProps (dispatch) {
 	return {
 		UpdateStream: function(stream){
-			const URLObject = URL.createObjectURL(stream);
-			dispatch(UpdateURL(URLObject));
+			// const URLObject = URL.createObjectURL(stream);
+			// dispatch(UpdateURL(URLObject));
+			dispatch(UpdateURL(stream))
 		},
 	};
 }

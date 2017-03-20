@@ -1,12 +1,14 @@
 import webrtcPak from './ExchangeFunctions';
 import events from './events';
+import _ from 'lodash';
+
 
 const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  var theOtherUser;
 
 		  socket.on('refresh_user_list', function(users){
 		    users = _.compact(users.map(function(user){
-		      console.log(user._id, playerInfo._id)
+		      console.log('USERLISTREFRESHED',user._id, playerInfo._id)
 		      if(user._id != playerInfo._id){
 		        return user;
 		      }else{
@@ -24,14 +26,15 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  events.suscribe('startCall', function(userDestiny){
 		    console.log('Requested create call', userDestiny, playerInfo);
 		    theOtherUser = userDestiny;
+		    console.log('this is the createOffer', MediaStreamURL)
 		    webrtcPak.createOffer(function(offer){  
-
+		    	console.log(MediaStreamURL, 'please');
 		      socket.emit('start_call_with', {
 		        userDestiny: theOtherUser,
 		        userCalling: playerInfo,
 		        offer: offer
-		      }, MediaStreamURL);
-		    });
+		      });
+		    }, MediaStreamURL);
 		  });
 
 		  //Receive a call -- only for !isCaller
@@ -67,6 +70,9 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		    console.log('Received candidate')
 		    webrtcPak.receiveIceCandidate(iceCandidate);
   		});
+
+
 }
 
 export default ConfigureSocket;
+

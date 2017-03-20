@@ -8,13 +8,15 @@ import ConfigureSocket from './ConfiguringSocket';
 import Dashboard from './Dashboard';
 
 
-const socket = io('http://pair-server.herokuapp.com');
+// const socket = io('http://pair-server.herokuapp.com');
+const socket = io('http://192.168.5.93:1337');
+
 
 export default class extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			URL: this.props.URL
+			URL: ''
 		};
 		this.streamSuccessHandler = this.streamSuccessHandler.bind(this);
 		this.setStreamState = this.setStreamState.bind(this);
@@ -34,6 +36,11 @@ export default class extends React.Component{
 			console.error)
 	}
 
+	componentWillReceiveProps(nextProps){
+		this.setState({URL: nextProps.URL})
+		console.log(this.state.URL);
+	}
+
 	streamSuccessHandler(stream){
 		this.props.UpdateStream(stream);
 		console.log('stream URL sent to store');
@@ -47,19 +54,23 @@ export default class extends React.Component{
 		  	_id: "thisIsMyUniqueID" 
 		  };
 		  // var isCaller = false;
-		  var socket = io.connect('http://pair-server.herokuapp.com');
+		  // var socket = io.connect('http://pair-server.herokuapp.com');
+		  const socket = io('http://192.168.5.93:1337');
 		  console.log(socket);
 		  var MediaStreamURL = this.state.URL;
+		  console.log('this is the medai stream we want to pass', MediaStreamURL);
 		  ConfigureSocket(socket, playerInfo, MediaStreamURL);
 	}
 
 	render(){
+		console.log('this is th eporps of the videochetComponent', this.props)
+		console.log('state', this.state);
 		return(
 			<div>
 				<video src={''}></video>
 				<button onClick={this.setStreamState}>GETUSERMEDIA</button>
 				<button onClick={this.initiateConnection}>InititateCall</button>
-				<Dashboard/>
+				<Dashboard URL = {this.props.URL}/>
 			</div>
 		)
 	}

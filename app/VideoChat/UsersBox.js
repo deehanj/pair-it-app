@@ -23,9 +23,9 @@ export default class extends React.Component{
 	  }
 
 	  callBack(users){
-	  	if(this.isMounted()){
+	  	// if(this.isMounted()){
 	        this.setState({users: users});
-	      }
+	      // }
 	  }
 
 	  render() {
@@ -33,11 +33,13 @@ export default class extends React.Component{
 	  		this.intitialize();
 	      var self = this;
 	      var rows = [];
+	      var URL = this.props.URL
 
 	      
 	      this.state.users.forEach(function(user) {
-	        rows.push(<UserRow user={user} />);
+	        rows.push(<UserRow user={user} URL= {URL}/>);
 	      });
+
 
 	      return (
 	          <div>

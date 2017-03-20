@@ -26,7 +26,7 @@ function initiatePC(onSuccess, MediaStreamURL){
   peerConnection.onaddstream = function (event) {
     console.log("onaddstream");
     console.log(event);
-    // video.src = URL.createObjectURL(event.stream);
+    video.src = URL.createObjectURL(event.stream);
     video.src = event.stream;
     video.play();
   };
@@ -52,6 +52,7 @@ function initiatePC(onSuccess, MediaStreamURL){
   // onSuccess,
   // error);
   //try to invoke the onSuccess function with the URL object representing the media stream that is stored on the state
+  console.log('your media stream has arrived', (MediaStreamURL));
   onSuccess(MediaStreamURL)
 }
 
@@ -59,26 +60,29 @@ function initiatePC(onSuccess, MediaStreamURL){
 //Create a call
 webrtcpak.createOffer = (cb, MediaStreamURL) => {
   console.log('createOffer')
-  initiatePC(
-    function (localMediaStream) {
-      var type = typeof(localMediaStream); 
-      console.log('@@@@',localMediaStream,'@@@', type);
-      console.log('success function');
-      peerConnection.addStream(localMediaStream);
-      peerConnection.createOffer(function (offer) {
-        console.log('Success from createOffer')
-        peerConnection.setLocalDescription(
+  console.log(MediaStreamURL, 'did it arrive?')
 
-          new RTCSessionDescription(offer),
+    initiatePC(
+      function (localMediaStream) {
+        var type = typeof(localMediaStream); 
+        console.log('@@@@',localMediaStream,'@@@', type);
+        console.log('success function');
+        peerConnection.addStream(localMediaStream);
 
-          function () {
-            console.log('offer created, sending it');
-            cb(btoa(offer.sdp));
-          });
-     }, function(error){
-      console.log(error)
-     });
-  }, MediaStreamURL);
+        peerConnection.createOffer(function (offer) {
+          console.log('Success from createOffer')
+
+          peerConnection.setLocalDescription(
+            new RTCSessionDescription(offer),
+            function () {
+              console.log('offer created, sending it');
+              cb(btoa(offer.sdp));
+            });
+
+       }, function(error){
+        console.log(error)
+       });
+    }, MediaStreamURL);
 
 }
 
