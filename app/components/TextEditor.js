@@ -6,6 +6,8 @@ import io from 'socket.io-client'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
+import { setUser } from '../reducers/UserReducer'
+import { serverLocation } from '../utils/server.settings.js'
 import { activeFile, updateOpenFiles } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 
@@ -19,14 +21,16 @@ const socket = io(serverLocation)
 const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
-		openFiles: state.fileSystem.openFiles
+		openFiles: state.fileSystem.openFiles,
+		roomName: state.User.username
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatchActiveFile: (file) => dispatch(activeFile(file)),
-    dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file))
+		dispatchUsername: (username) => dispatch(setUser(username))
+		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file))
 		}
 	}
 
@@ -40,6 +44,7 @@ class TextEditorContainer extends React.Component {
 		}
 
 		socket.on('receive code', (payload) => this.updateCodeInState(payload))
+
 		socket.on('changed to new tab', (payload) => {
       this.changeTabFromNavigator(payload.index)
       this.props.dispatchUpdateOpenFiles(payload.file)
@@ -51,11 +56,12 @@ class TextEditorContainer extends React.Component {
 	}
 
   componentDidMount() {
-    socket.emit('room', {message: 'joining room' + this.state.room})
+  	this.props.dispatchUsername('Christine')
+  	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
   }
 
   componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor'})
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.roomName})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -68,7 +74,7 @@ class TextEditorContainer extends React.Component {
 
   codeIsHappening(newCode) {
     this.setState({ code: newCode })
-    socket.emit('coding event', { code: newCode })
+    socket.emit('coding event', {code: newCode, room: this.props.roomName})
   }
 
   updateCodeInState(payload) {
@@ -83,8 +89,8 @@ class TextEditorContainer extends React.Component {
     file.text = this.state.code
     this.props.dispatchUpdateOpenFiles(file)
     this.props.dispatchActiveFile(this.props.openFiles[index])
-    socket.emit('tab changed', {index, file})
-	  setTimeout(() => this.setState({tabIndex: index}), 0)
+    socket.emit('tab changed', {index: index, room: this.props.roomName})
+	setTimeout(() => this.setState({tabIndex: index}), 0) 
   }
 
   changeTabFromNavigator(index) {
@@ -107,7 +113,7 @@ class TextEditorContainer extends React.Component {
 			<AceEditor
 				mode="javascript"
 				theme="monokai"
-				onChange={this.codeIsHappening}
+				onChange={() => this.codeIsHappening}
 				name="text-editor"
 				value={this.state.code}
 				width="100%"
