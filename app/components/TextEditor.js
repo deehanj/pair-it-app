@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatchActiveFile: (file) => dispatch(activeFile(file)),
-		dispatchUsername: (username) => dispatch(setUser(username))
+		dispatchUsername: (username) => dispatch(setUser(username)),
 		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file))
 		}
 	}
@@ -90,7 +90,7 @@ class TextEditorContainer extends React.Component {
     this.props.dispatchUpdateOpenFiles(file)
     this.props.dispatchActiveFile(this.props.openFiles[index])
     socket.emit('tab changed', {index: index, room: this.props.roomName})
-	setTimeout(() => this.setState({tabIndex: index}), 0) 
+	setTimeout(() => this.setState({tabIndex: index}), 0)
   }
 
   changeTabFromNavigator(index) {
