@@ -7,6 +7,7 @@ import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { activeFile } from '../reducers/FilesReducer'
+import { writeFile } from '../utils/FileSystemFunction'
 
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
@@ -39,6 +40,8 @@ class TextEditorContainer extends React.Component {
 		socket.on('receive code', (payload) => this.updateCodeInState(payload))
 		socket.on('changed to new tab', (index) => this.changeTabFromNavigator(index))
 		this.handleSelect = this.handleSelect.bind(this)
+    this.codeIsHappening = this.codeIsHappening.bind(this)
+    this.onSave = this.onSave.bind(this)
 	}
 
   componentDidMount() {
@@ -50,15 +53,17 @@ class TextEditorContainer extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ 
-    	code: nextProps.activeFile.text, 
-    	openFiles: nextProps.openFiles, 
+    this.setState({
+    	code: nextProps.activeFile.text,
+    	openFiles: nextProps.openFiles,
     	tabIndex: nextProps.openFiles.length-1 })
     this.codeIsHappening(nextProps.activeFile.text)
   }
 
   codeIsHappening(newCode) {
+    this.setState({ code: newCode })
     socket.emit('coding event', {code: newCode})
+    setTimeout(()=> console.log(this.state.code), 10)
   }
 
   updateCodeInState(payload) {
@@ -71,12 +76,20 @@ class TextEditorContainer extends React.Component {
     console.log('Selected tab: ' + index + ', Last tab: ' + last)
     this.props.dispatchActiveFile(this.props.openFiles[index])
     socket.emit('tab changed', index)
-	setTimeout(() => this.setState({tabIndex: index}), 0) 
+	setTimeout(() => this.setState({tabIndex: index}), 0)
   }
 
   changeTabFromNavigator(index) {
   	this.props.dispatchActiveFile(this.props.openFiles[index])
   	setTimeout(() => this.setState({tabIndex: index}), 0)
+  }
+
+  onSave(newCode) {
+    socket.emit('save file', {code: newCode})
+    // need to dispatch a function to update the active file in the global state with the new text.
+    writeFile(this.props.activeFile.filePath, newCode)
+    .then(text => console.log('File written successfully'))
+    .catch(error => console.error('Error writing file: ', error.message))
   }
 
 	render (){
@@ -103,7 +116,7 @@ class TextEditorContainer extends React.Component {
 		)
 	} else {
 		return (
-			<Tabs 
+			<Tabs
 			onSelect={this.handleSelect}
 			selectedIndex={this.state.tabIndex}>
 				<TabList>
@@ -131,13 +144,13 @@ class TextEditorContainer extends React.Component {
 							maxLines: Infinity
 						}}
 						/>
-						<button value="SAVE" height="50px" width="70px" type="button">SAVE</button>
+						<button value="SAVE" height="50px" width="70px" type="button" onClick={() => this.onSave(this.state.code)}>SAVE</button>
 						</TabPanel>)
 					)}
 			</Tabs>
 		)}
-	}	
-		
+	}
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)

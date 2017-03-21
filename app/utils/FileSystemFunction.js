@@ -25,9 +25,9 @@ const readFile = dir => {
   .then(text => text)
 }
 
-const writeFile = dir => {
-  return fsp.writeFileAsync(dir)
-  .then(text => text)
+const writeFile = (dir, text) => {
+  return fsp.writeFileAsync(dir, text)
+  .return(text)
 }
 
 
