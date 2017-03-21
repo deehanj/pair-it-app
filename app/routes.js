@@ -10,8 +10,8 @@ import axios from 'axios'
 
 export default (
   <Route path="/" component={App} >
-    <Route path="/login" compnent={login} />
-    <Route path="/home" compnent={HomePage} />
     <IndexRoute component={login} />
+    <Route path="/login" component={login} />
+    <Route path="/home" component={HomePage} />
   </Route>
 );
