@@ -14,7 +14,7 @@ import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
 
 
-const socket = io('http://pair-server.herokuapp.com')
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
