@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { activeFile } from '../reducers/FilesReducer'
+import { activeFile, updateOpenFiles } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 
 import 'brace/mode/javascript'
@@ -25,7 +25,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => dispatch(activeFile(file))
+		dispatchActiveFile: (file) => dispatch(activeFile(file)),
+    dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file))
 		}
 	}
 
@@ -37,9 +38,14 @@ class TextEditorContainer extends React.Component {
 			openFiles:[],
 			tabIndex: 0,
 		}
-		socket.on('receive code', (payload) => this.updateCodeInState(payload))
+
+		socket.on('receive code', (file) => {
+      this.updateCodeInState(file)
+      this.props.dispatchUpdateOpenFiles(file)
+    })
 		socket.on('changed to new tab', (index) => this.changeTabFromNavigator(index))
-		this.handleSelect = this.handleSelect.bind(this)
+
+    this.handleSelect = this.handleSelect.bind(this)
     this.codeIsHappening = this.codeIsHappening.bind(this)
     this.onSave = this.onSave.bind(this)
 	}
@@ -62,13 +68,15 @@ class TextEditorContainer extends React.Component {
 
   codeIsHappening(newCode) {
     this.setState({ code: newCode })
-    socket.emit('coding event', {code: newCode})
-    setTimeout(()=> console.log(this.state.code), 10)
+    const file = this.props.activeFile
+    file.text = newCode
+    socket.emit('coding event', { file })
+    this.props.dispatchUpdateOpenFiles(file)
   }
 
-  updateCodeInState(payload) {
+  updateCodeInState(file) {
     this.setState({
-      code: payload.code,
+      code: file.text,
     })
   }
 
@@ -86,9 +94,10 @@ class TextEditorContainer extends React.Component {
 
   onSave(newCode) {
     socket.emit('save file', {code: newCode})
-    // need to dispatch a function to update the active file in the global state with the new text.
     writeFile(this.props.activeFile.filePath, newCode)
-    .then(text => console.log('File written successfully'))
+    .then(text => {
+
+    })
     .catch(error => console.error('Error writing file: ', error.message))
   }
 
