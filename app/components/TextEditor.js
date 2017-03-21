@@ -8,7 +8,7 @@ import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { activeFile } from '../reducers/FilesReducer'
 import { setUser } from '../reducers/UserReducer'
-import serverLocation from '../utils/server.settings.js'
+import { serverLocation } from '../utils/server.settings.js'
 
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
@@ -43,11 +43,12 @@ class TextEditorContainer extends React.Component {
 		socket.on('receive code', (payload) => this.updateCodeInState(payload))
 		socket.on('changed to new tab', (index) => this.changeTabFromNavigator(index))
 		this.handleSelect = this.handleSelect.bind(this)
+		this.codeIsHappening = this.codeIsHappening.bind(this)
 	}
 
   componentDidMount() {
   	this.props.dispatchUsername('Christine')
-    socket.emit('room', {room: this.props.roomName})
+  	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
   }
 
   componentWillUnmount() {
@@ -90,7 +91,7 @@ class TextEditorContainer extends React.Component {
 			<AceEditor
 				mode="javascript"
 				theme="monokai"
-				onChange={this.codeIsHappening}
+				onChange={() => this.codeIsHappening}
 				name="text-editor"
 				value={this.state.code}
 				width="100%"

@@ -3,10 +3,11 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
 import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
+import serverLocation from '../utils/server.settings.js'
 
 import io from 'socket.io-client';
 
-const socket = io('http://pair-server.herokuapp.com');
+const socket = io(serverLocation);
 
 /*
 - This component displays the directory file system.
