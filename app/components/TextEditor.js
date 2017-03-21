@@ -7,24 +7,28 @@ import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { activeFile } from '../reducers/FilesReducer'
+import { setUser } from '../reducers/UserReducer'
+import serverLocation from '../utils/server.settings.js'
 
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
 
 
-const socket = io('http://pair-server.herokuapp.com')
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
-		openFiles: state.fileSystem.openFiles
+		openFiles: state.fileSystem.openFiles,
+		roomName: state.User.username
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => dispatch(activeFile(file))
+		dispatchActiveFile: (file) => dispatch(activeFile(file)),
+		dispatchUsername: (username) => dispatch(setUser(username))
 		}
 	}
 
@@ -42,11 +46,12 @@ class TextEditorContainer extends React.Component {
 	}
 
   componentDidMount() {
-    socket.emit('room', {message: 'joining room' + this.state.room})
+  	this.props.dispatchUsername('Christine')
+    socket.emit('room', {room: this.props.roomName})
   }
 
   componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor'})
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.roomName})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,7 +63,7 @@ class TextEditorContainer extends React.Component {
   }
 
   codeIsHappening(newCode) {
-    socket.emit('coding event', {code: newCode})
+    socket.emit('coding event', {code: newCode, room: this.props.roomName})
   }
 
   updateCodeInState(payload) {
@@ -70,7 +75,7 @@ class TextEditorContainer extends React.Component {
    handleSelect(index, last) {
     console.log('Selected tab: ' + index + ', Last tab: ' + last)
     this.props.dispatchActiveFile(this.props.openFiles[index])
-    socket.emit('tab changed', index)
+    socket.emit('tab changed', {index: index, room: this.props.roomName})
 	setTimeout(() => this.setState({tabIndex: index}), 0) 
   }
 
