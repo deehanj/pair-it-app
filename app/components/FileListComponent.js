@@ -28,7 +28,9 @@ class Files extends React.Component {
     }
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
-    socket.on('new file is opened', (file) => this.props.openFileFromNavigator(file));
+    socket.on('new file is opened', (file) => {
+      this.props.openFileFromNavigator(file)
+    });
   }
 
   fetchFiles(dir) {
