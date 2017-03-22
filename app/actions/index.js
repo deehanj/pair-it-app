@@ -45,24 +45,30 @@ export function logout() {
 /*---------------METHOD FOR GETTING STUFF AUTHORIZED FROM GITHUB---------------*/
 // Notifications
 
-// export const NOTIFICATIONS = makeAsyncActionSet('NOTIFICATIONS');
-// export function fetchNotifications() {
-//   return (dispatch, getState) => {
-//
-//     const participating = getState().settings.participating;
-//     const url = `https://api.github.com/notifications?participating=${participating}`;
-//     const method = 'GET';
-//     const token = getState().auth.token;
-//
-//     dispatch({type: NOTIFICATIONS.REQUEST});
-//
-//     return apiRequestAuth(url, method, token)
-//       .then(function (response) {
-//         dispatch({type: NOTIFICATIONS.SUCCESS, payload: response.data});
-//       })
-//       .catch(function (error) {
-//         dispatch({type: NOTIFICATIONS.FAILURE, payload: error.response.data});
-//       });
-//
-//   };
-// };
+/*
+
+export const NOTIFICATIONS = makeAsyncActionSet('NOTIFICATIONS');
+export function fetchNotifications() {
+  return (dispatch, getState) => {
+
+    const participating = getState().settings.participating;
+    const url = `https://api.github.com/notifications?participating=${participating}`;
+    const method = 'GET';
+    const token = getState().auth.token;
+
+    dispatch({type: NOTIFICATIONS.REQUEST});
+
+    return apiRequestAuth(url, method, token)
+      .then(function (response) {
+        dispatch({type: NOTIFICATIONS.SUCCESS, payload: response.data});
+      })
+      .catch(function (error) {
+        dispatch({type: NOTIFICATIONS.FAILURE, payload: error.response.data});
+      });
+
+  };
+};
+
+*/
+
+//USER actions

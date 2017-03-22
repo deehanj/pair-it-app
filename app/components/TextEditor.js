@@ -6,25 +6,32 @@ import io from 'socket.io-client'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { activeFile } from '../reducers/FilesReducer'
+import { setUser } from '../reducers/UserReducer'
+import { serverLocation } from '../utils/server.settings.js'
+import { activeFile, updateOpenFiles, closeFile } from '../reducers/FilesReducer'
+import { writeFile } from '../utils/FileSystemFunction'
 
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
 
 
-const socket = io('http://pair-server.herokuapp.com')
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
-		openFiles: state.fileSystem.openFiles
+		openFiles: state.fileSystem.openFiles,
+		roomName: state.User.username
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => dispatch(activeFile(file))
+		dispatchActiveFile: (file) => dispatch(activeFile(file)),
+		dispatchUsername: (username) => dispatch(setUser(username)),
+		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
+		dispatchCloseFile: (file) => dispatch(closeFile(file))
 		}
 	}
 
@@ -36,29 +43,40 @@ class TextEditorContainer extends React.Component {
 			openFiles:[],
 			tabIndex: 0,
 		}
+
 		socket.on('receive code', (payload) => this.updateCodeInState(payload))
-		socket.on('changed to new tab', (index) => this.changeTabFromNavigator(index))
-		this.handleSelect = this.handleSelect.bind(this)
+
+		socket.on('changed to new tab', (payload) => {
+      this.changeTabFromNavigator(payload.index)
+      this.props.dispatchUpdateOpenFiles(payload.file)
+    })
+
+    this.handleSelect = this.handleSelect.bind(this)
+    this.codeIsHappening = this.codeIsHappening.bind(this)
+    this.onSave = this.onSave.bind(this)
+    this.onButtonClick = this.onButtonClick.bind(this)
 	}
 
   componentDidMount() {
-    socket.emit('room', {message: 'joining room' + this.state.room})
+  	this.props.dispatchUsername('Christine')
+  	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
   }
 
   componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor'})
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.roomName})
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ 
-    	code: nextProps.activeFile.text, 
-    	openFiles: nextProps.openFiles, 
+    this.setState({
+    	code: nextProps.activeFile.text,
+    	openFiles: nextProps.openFiles,
     	tabIndex: nextProps.openFiles.length-1 })
     this.codeIsHappening(nextProps.activeFile.text)
   }
 
   codeIsHappening(newCode) {
-    socket.emit('coding event', {code: newCode})
+    this.setState({ code: newCode })
+    socket.emit('coding event', {code: newCode, room: this.props.roomName})
   }
 
   updateCodeInState(payload) {
@@ -69,14 +87,31 @@ class TextEditorContainer extends React.Component {
 
    handleSelect(index, last) {
     console.log('Selected tab: ' + index + ', Last tab: ' + last)
+    const file = this.props.activeFile
+    file.text = this.state.code
+    this.props.dispatchUpdateOpenFiles(file)
     this.props.dispatchActiveFile(this.props.openFiles[index])
-    socket.emit('tab changed', index)
-	setTimeout(() => this.setState({tabIndex: index}), 0) 
+    socket.emit('tab changed', {index: index, room: this.props.roomName})
+	setTimeout(() => this.setState({tabIndex: index}), 0)
   }
 
   changeTabFromNavigator(index) {
   	this.props.dispatchActiveFile(this.props.openFiles[index])
   	setTimeout(() => this.setState({tabIndex: index}), 0)
+  }
+
+  onSave(newCode) {
+    socket.emit('save file', {code: newCode})
+    writeFile(this.props.activeFile.filePath, newCode)
+    .then(text => {
+
+    })
+    .catch(error => console.error('Error writing file: ', error.message))
+  }
+
+  onButtonClick(file){
+  	this.props.dispatchCloseFile(file)
+  	this.props.dispatchActiveFile({})
   }
 
 	render (){
@@ -85,7 +120,7 @@ class TextEditorContainer extends React.Component {
 			<AceEditor
 				mode="javascript"
 				theme="monokai"
-				onChange={this.codeIsHappening}
+				onChange={() => this.codeIsHappening}
 				name="text-editor"
 				value={this.state.code}
 				width="100%"
@@ -103,12 +138,12 @@ class TextEditorContainer extends React.Component {
 		)
 	} else {
 		return (
-			<Tabs 
+			<Tabs
 			onSelect={this.handleSelect}
 			selectedIndex={this.state.tabIndex}>
 				<TabList>
 				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
-					(<Tab key={file.filePath}>{file.filePath}</Tab>)
+					(<Tab key={file.filePath}>{file.filePath}<button onClick={() => this.onButtonClick(file)}>X</button></Tab>)
 					)}
 				</TabList>
 				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
@@ -131,13 +166,13 @@ class TextEditorContainer extends React.Component {
 							maxLines: Infinity
 						}}
 						/>
-						<button value="SAVE" height="50px" width="70px" type="button">SAVE</button>
+						<button value="SAVE" height="50px" width="70px" type="button" onClick={() => this.onSave(this.state.code)}>SAVE</button>
 						</TabPanel>)
 					)}
 			</Tabs>
 		)}
-	}	
-		
+	}
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)
