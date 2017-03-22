@@ -12,17 +12,20 @@ export default class extends React.Component {
 			displayBranchList:false,
 		}
 		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
+		this.getBranchList = this.getBranchList.bind(this);
 	}
 
 	componentDidMount(){
-
+		this.getBranchList();
 	}
 
 	getBranchList(){
 		Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
-				this.props.handleError(error);
+				if (error) {
+					this.props.handleError(error);	
+				}
 			}
 		);
 	}
@@ -32,32 +35,42 @@ export default class extends React.Component {
 	}
 
 
-	handleBranchCheckout(){
-		console.log(this.props.branchQuery);
+	handleBranchCheckout(e){
+		e.preventDefault();
+		const branchInput = document.getElementById('branchInput')
 		Git.checkoutLocalBranch(
 			this.props.branchQuery, 
 			(error, newBranch) => {
-				this.props.handleError(error);
-				this.props.updateCurrentBranch(newBranch);
+				if(error){
+					this.props.handleError(error);
+					branchInput.style.cssText = "color:red;"
+					console.log(branchInput.style)
+				} else {
+					this.props.handleSuccess('checked out branch: ' + this.props.branchQuery)
+					branchInput.value = ''
+				}
 			}
 		)
 		this.props.toggleDisplayBranches()
 	}
 
-	errorHandler(error, data){
-		this.setState({successData:data});
-		this.setState({errorMessage:error});
-	}
-
-
 	render(){
 
 		return (
 			<div>
-				{this.props.successData}
-				{this.props.errorMessage}
-					<input type="text" onSubmit={this.handleBranchCheckout}onChange={this.props.handleBranchChangeQuery}></input>
+				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
+				{/*this.props.branchList && this.props.branchList.map(
+					(branch) => {
+						<ol> {branch} </ol>
+					}
+					)
+				*/}
+				{this.props.successData }
+				{this.props.errorData }
+				<form onSubmit={this.handleBranchCheckout} >
+					<input type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
 					<button onClick={this.handleBranchCheckout}>Checkout Branch</button>
+				</form>
 				
 				<button onClick={this.handleGitAdd}>Add Files</button>
 				<form onSubmit={this.handleGitCommit}>

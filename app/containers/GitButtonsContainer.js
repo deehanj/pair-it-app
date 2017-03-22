@@ -2,7 +2,7 @@ import React from 'react';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import {connect} from 'react-redux';
-import {toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery} from '../actionCreators/GitButtonsActionCreators'
+import {toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue} from '../actionCreators/GitButtonsActionCreators'
 
 import GitButtonsComponent from '../components/GitButtonsComponent';
 
@@ -19,6 +19,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		displayBranches: () => {
+			dispatch(displayTrue())
+		},
 		toggleDisplayBranches: () => {	
 			dispatch(toggleDisplayBranchList())
 		},
@@ -28,18 +31,14 @@ const mapDispatchToProps = (dispatch) => {
 		handleError: (errorMessage) => {
 			dispatch(errorHandler(errorMessage))
 		},
-		updateCurrentBranch: (branch) => {
-			dispatch(currentBranch(branch))
-		},
 		updateBranchList: (branchSummary) => {
 			dispatch(branchList(branchSummary))
 		},
 		handleBranchChangeQuery: (typedBranch) => {
+			const branchInput = document.getElementById('branchInput')
+			branchInput.style.cssText = "color:black;"
 			dispatch(branchQuery(typedBranch.target.value))
 		},
-		checkoutBranch: () => {
-			dispatch()
-		}
 	}
 }
 
