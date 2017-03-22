@@ -67,18 +67,20 @@ export default class extends React.Component {
 		)
 	}
 
-	handleCommit(e) {
-		e.preventDefault();
+	handleCommit() {
+
 		Git.commit(
 			this.props.commitMessage,
-			// (error, success) => {
-			// 	if (error){
-			// 		this.props.handleError(error)
-			// 		console.log(error)
-			// 	} else {
-			// 		console.log(success)
-			// 	}
-			// }
+			null,
+			null,
+			(error, success) => {
+				if (error){
+					this.props.handleError(error)
+					console.log(error)
+				} else {
+					console.log(success)
+				}
+			}
 			)
 	}
 
