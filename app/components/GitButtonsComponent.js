@@ -19,11 +19,12 @@ export default class extends React.Component {
 	}
 
 	getBranchList(){
-		Git.branchLocal(this.props.handleBranchList, this.props.handleError);
-	}
-
-	handleBranchList(error, branchSummary){
-		this.setState({branchList: branchSummary});
+		Git.branchLocal(
+			(error, branchSummary) => {
+				this.props.updateBranchList(branchSummary);
+				this.props.handleError(error);
+			}
+		);
 	}
 
 	getCurrentBranch(){
@@ -31,8 +32,15 @@ export default class extends React.Component {
 	}
 
 
-	handleBranchCheckout(string){
-		Git.checkoutBranch(this.props.branchQuery, this.props.currentBranch, this.props.handleError)
+	handleBranchCheckout(){
+		console.log(this.props.branchQuery);
+		Git.checkoutLocalBranch(
+			this.props.branchQuery, 
+			(error, newBranch) => {
+				this.props.handleError(error);
+				this.props.updateCurrentBranch(newBranch);
+			}
+		)
 		this.props.toggleDisplayBranches()
 	}
 
@@ -41,7 +49,6 @@ export default class extends React.Component {
 		this.setState({errorMessage:error});
 	}
 
-	handlerFunction(error, )
 
 	render(){
 

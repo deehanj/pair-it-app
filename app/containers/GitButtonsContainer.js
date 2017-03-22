@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
 		errorData: state.GitButtons.errorData,
 		currentBranch: state.GitButtons.currentBranch,
 		displayBranch: state.GitButtons.displayBranch,
+		branchQuery: state.GitButtons.branchQuery,
 	}
 }
 
