@@ -1,5 +1,5 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST} from '../constants/GitButtonsConstants'
-
+import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS} from '../constants/GitButtonsConstants'
+import chalk from 'chalk';
 
 export const toggleDisplayBranchList = () => ({
 	type: TOGGLE_BRANCH_DISPLAY,
@@ -44,3 +44,54 @@ export const branchQuery = (typedQuery) => ({
 export const displayTrue = () => ({
 	type: DISPLAY_BRANCH_LIST,
 })
+
+export const statusHandler = (successObject) => {
+	let status;
+	let staged = successObject.modified;
+	let allFiles = successObject.files.map((fileObj) => fileObj.path);
+	let yetToBeCommitted = [];
+
+	for(var i = 0; i < allFiles.length; i++){
+		if(staged.indexOf(allFiles[i]) === -1){
+			yetToBeCommitted.push(allFiles[i])
+		}
+	}
+
+	let stagingArea = 'Files in your staging area: \n' + staged.join('\n') + '\n\n';
+	let notAdded = 'Files yet to be added to your staging area: \n' + yetToBeCommitted.join('\n');
+
+	if (staged.length == 0){
+		if(yetToBeCommitted.length === 0 ){
+			status = 'No file changes'
+		} else {
+			status = notAdded;
+		}
+	} else if (yetToBeCommitted.length === 0) {
+		status = stagingArea;
+	} else {
+		status = stagingArea + notAdded
+	}
+
+	return {
+		type: UPDATE_STATUS,
+		status
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

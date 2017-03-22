@@ -13,13 +13,15 @@ export default class extends React.Component {
 		}
 		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
 		this.getBranchList = this.getBranchList.bind(this);
+		this.handleGitAdd = this.handleGitAdd.bind(this);
+		this.handleStatus = this.handleStatus.bind(this);
 	}
 
-	componentDidMount(){
+	componentDidMount() {
 		this.getBranchList();
 	}
 
-	getBranchList(){
+	getBranchList() {
 		Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
@@ -30,12 +32,42 @@ export default class extends React.Component {
 		);
 	}
 
-	getCurrentBranch(){
-
+	handleGitAdd() {
+		Git.add(
+			'./*',
+			(error, success) => {
+				if(error){
+					this.props.handleError(error)
+					console.log(error)
+				} else {
+					Git.status(
+						(error, success) => {
+							if(error){
+								this.props.handleError(error)
+							} else {
+								this.props.handleStatus(success);
+							}
+						}
+					)
+				}
+			},
+		);
 	}
 
+	handleStatus() {
+		Git.status(
+			(error, success) => {
+				if(error){
+					this.props.handleError(error)
+				} else {
+					this.props.handleStatus(success);
+				}
+			}
+		)
+	}
 
-	handleBranchCheckout(e){
+ 
+	handleBranchCheckout(e) {
 		e.preventDefault();
 		const branchInput = document.getElementById('branchInput')
 		Git.checkoutLocalBranch(
@@ -55,7 +87,7 @@ export default class extends React.Component {
 	}
 
 	render(){
-
+		Git.status((error,success) => console.log(success))
 		return (
 			<div>
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
@@ -77,7 +109,7 @@ export default class extends React.Component {
 					Commit
 					<input type="text" onChange={this.handleCommitMessage}></input>
 				</form>
-				<button onClick={this.handleGitStatus}>Status</button>
+				<button onClick={this.handleStatus}>Status</button>
 				<button onClick={this.handleGitPush}>Push</button>
 				<button onClick={this.handleGitPull}>Pull</button>
 				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>

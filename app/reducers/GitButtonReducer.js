@@ -1,4 +1,4 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING , DISPLAY_BRANCH_LIST } from '../constants/GitButtonsConstants'
+import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING , DISPLAY_BRANCH_LIST, UPDATE_STATUS} from '../constants/GitButtonsConstants'
 
 const initialState = {
 	branchList: [],
@@ -32,6 +32,9 @@ const reducer = (state = initialState, action) => {
 				break
 			case DISPLAY_BRANCH_LIST:
 				newState.displayBranch = true
+				break
+			case UPDATE_STATUS:
+				newState.successData = action.status
 				break
 			default:
 				return state
