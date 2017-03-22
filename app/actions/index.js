@@ -1,4 +1,5 @@
 import { apiRequest, apiRequestAuth } from '../utils/api-requests';
+import { fetchUsername } from '../reducers/user';
 
 import options from '../utils/github.settings';
 
@@ -28,9 +29,13 @@ export function loginUser(code) {
 
     return apiRequest(url, method, data)
       .then(function (response) {
-        dispatch({type: LOGIN.SUCCESS, payload: response.data});
+        return dispatch({type: LOGIN.SUCCESS, payload: response.data});
+      })
+      .then(() => {
+        fetchUsername()();
       })
       .catch(function (error) {
+        console.log(error);
         dispatch({type: LOGIN.FAILURE, payload: error.response.data});
       });
 
