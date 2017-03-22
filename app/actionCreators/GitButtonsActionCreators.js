@@ -71,7 +71,6 @@ export const statusHandler = (successObject) => {
 	} else {
 		status = stagingArea + notAdded
 	}
-
 	return {
 		type: UPDATE_STATUS,
 		status

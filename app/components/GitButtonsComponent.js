@@ -70,7 +70,7 @@ export default class extends React.Component {
 	handleBranchCheckout(e) {
 		e.preventDefault();
 		const branchInput = document.getElementById('branchInput')
-		Git.checkoutLocalBranch(
+		Git.checkout(
 			this.props.branchQuery, 
 			(error, newBranch) => {
 				if(error){
