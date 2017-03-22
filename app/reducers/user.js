@@ -2,7 +2,7 @@
 
 import { apiRequest, apiRequestAuth } from '../utils/api-requests';
 import store from '../store/configureStore.development'
-
+import {setRepos} from './repo'
 
 const SET_USER = 'SET_USER';
 
@@ -11,9 +11,10 @@ export const setUser = (gitInfo) => ({
   type: SET_USER, gitInfo
 })
 
+
 // INITIAL STATE
 const initialState = {
-  gitInfo: {}
+  gitInfo: {},
 }
 
 // REDUCERS
@@ -37,16 +38,22 @@ export default function reducer( state = initialState, action) {
 
 export function fetchUsername() {
 
-  console.log('Inside fetchUsername');
-
   return (dispatch, getState) => {
-    const url = `https://api.github.com/user`;
+    let url = `https://api.github.com/user`;
     const method = 'GET';
     const token = store.getState().auth.token;
 
     return apiRequestAuth(url, method, token)
       .then( res => store.dispatch(setUser(res.data)) )
+      .then(() => {
+        url = `${url}/repos`
+        return apiRequestAuth(url, method, token)
+      })
+      .then(res => store.dispatch(setRepos(res.data)) )
       .catch(err => console.error(err))
   }
 
 }
+
+
+
