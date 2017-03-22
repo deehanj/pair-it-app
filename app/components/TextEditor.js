@@ -8,7 +8,7 @@ import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { setUser } from '../reducers/UserReducer'
 import { serverLocation } from '../utils/server.settings.js'
-import { activeFile, updateOpenFiles } from '../reducers/FilesReducer'
+import { activeFile, updateOpenFiles, closeFile } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 
 import 'brace/mode/javascript'
@@ -30,7 +30,8 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatchActiveFile: (file) => dispatch(activeFile(file)),
 		dispatchUsername: (username) => dispatch(setUser(username)),
-		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file))
+		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
+		dispatchCloseFile: (file) => dispatch(closeFile(file))
 		}
 	}
 
@@ -53,6 +54,7 @@ class TextEditorContainer extends React.Component {
     this.handleSelect = this.handleSelect.bind(this)
     this.codeIsHappening = this.codeIsHappening.bind(this)
     this.onSave = this.onSave.bind(this)
+    this.onButtonClick = this.onButtonClick.bind(this)
 	}
 
   componentDidMount() {
@@ -107,6 +109,11 @@ class TextEditorContainer extends React.Component {
     .catch(error => console.error('Error writing file: ', error.message))
   }
 
+  onButtonClick(file){
+  	this.props.dispatchCloseFile(file)
+  	this.props.dispatchActiveFile({})
+  }
+
 	render (){
 	if (this.state.openFiles.length === 0) {
 		return (
@@ -136,7 +143,7 @@ class TextEditorContainer extends React.Component {
 			selectedIndex={this.state.tabIndex}>
 				<TabList>
 				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
-					(<Tab key={file.filePath}>{file.filePath}</Tab>)
+					(<Tab key={file.filePath}>{file.filePath}<button onClick={() => this.onButtonClick(file)}>X</button></Tab>)
 					)}
 				</TabList>
 				{this.state.openFiles.length > 0 && this.state.openFiles.map((file, index) =>
