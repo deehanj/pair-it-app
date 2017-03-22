@@ -11,11 +11,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchSelectRepo: repoId => {
-			console.log('repolistcontainer')
-			dispatch(setSelectedRepo(repoId))
-		}
-		}
+		dispatchSelectRepo: repoId => dispatch(setSelectedRepo(repoId))
 	}
 
 class RepoListContainer extends React.Component {
