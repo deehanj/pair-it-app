@@ -24,7 +24,8 @@ class Files extends React.Component {
       dir: props.subDir,
       subFiles: [],
       visible: props.visible,
-      text: ''
+      text: '',
+      level: props.level
     }
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
@@ -41,12 +42,15 @@ class Files extends React.Component {
     .catch(err => console.error(err))
   }
 
-  setVisible(id) {
-    this.setState({ visible: Object.assign({}, this.state.visible, { [id]: true })})
-  }
-
-  setInvisible(id) {
-    this.setState({ visible: Object.assign({}, this.state.visible, { [id]: false })})
+  setVisible(filePath) {
+    // if (this.state.visible[filePath] !== undefined && !this.state.visible[filePath]) {
+      this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
+      console.log('was invisible now: ', this.state)
+    // }
+    // else {
+    //   this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: false })})
+    //   console.log('was visible now: ', this.state.visible[filePath])
+    // }
   }
 
   componentDidMount() {
@@ -69,7 +73,13 @@ class Files extends React.Component {
               // makes a new Files component if fileBool is false
               <li key={`${file.filePath}-inner`} onClick={() => this.setVisible(file.filePath)}>
                 {fileName}
-                {this.state.visible[file.filePath] && <Files subDir={file.filePath} visible={false} fetchActiveFile={this.props.fetchActiveFile} />}
+                {this.state.visible[file.filePath] &&
+                <Files
+                  subDir={file.filePath}
+                  visible={false}
+                  level={this.state.level + 1}
+                  fetchActiveFile={this.props.fetchActiveFile}
+                />}
               </li>
           })
         }
@@ -83,7 +93,8 @@ const mapStateToProps = state => {
   return {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
-    visible: false
+    visible: true,
+    level: 0
   }
 }
 
