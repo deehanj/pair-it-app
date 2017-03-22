@@ -78,7 +78,7 @@ export default class extends React.Component {
 					this.props.handleError(error)
 					console.log(error)
 				} else {
-					this.handleSuccess(success)
+					this.props.handleSuccess(success)
 				}
 			}
 			)
