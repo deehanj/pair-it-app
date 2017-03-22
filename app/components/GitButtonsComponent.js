@@ -87,6 +87,7 @@ export default class extends React.Component {
 	handleBranchCheckout(e) {
 		e.preventDefault();
 		const branchInput = document.getElementById('branchInput')
+		const branchName = document.getElementById('currentBranch')
 		Git.checkout(
 			this.props.branchQuery, 
 			(error, newBranch) => {
@@ -96,6 +97,9 @@ export default class extends React.Component {
 					console.log(branchInput.style)
 				} else {
 					this.props.handleSuccess('checked out branch: ' + this.props.branchQuery)
+					if(this.props.branchQuery === 'master'){
+						branchName.style.cssText = "color:blue;"
+					}
 					branchInput.value = ''
 				}
 			}
@@ -106,29 +110,42 @@ export default class extends React.Component {
 	render(){
 		return (
 			<div>
+				<h2 id="currentBranch">
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
+				</h2>
 				{/*this.props.branchList && this.props.branchList.map(
 					(branch) => {
 						<ol> {branch} </ol>
 					}
 					)
 				*/}
+				{/* SUCCESS MESSAGE */}
 				{this.props.successData }
+				{/* ERROR MESSAGE */}
 				{this.props.errorData }
+				{/* BRANCH CHECKOUT - DONE */}
 				<form onSubmit={this.handleBranchCheckout} >
-					<input type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
 					<button onClick={this.handleBranchCheckout}>Checkout Branch</button>
+					{/* BRANCH NAME TO BE CHECKED OUT */}
+					<input type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
 				</form>
-				
+				{/* ADD - DONE */}
 				<button onClick={this.handleGitAdd}>Add Files</button>
+				{/* COMMIT - DONE*/}
 				<form onSubmit={this.handleCommit}>
 					<button onClick={this.handleCommit} >Commit</button>
+					{/* COMMIT MESSAGE - DONE */}
 					<input type="text" onChange={this.props.handleCommitMessage}></input>
 				</form>
+				{/* STATUS - DONE */}
 				<button onClick={this.handleStatus}>Status</button>
+				{/* PUSH */}
 				<button onClick={this.handleGitPush}>Push</button>
+				{/* PULL */}
 				<button onClick={this.handleGitPull}>Pull</button>
+				{/*  */}
 				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>
+				{/*  */}
 				{this.state.displayBranchList && this.state.branchList.map(el => {
 						if (el === currentBranch){
 							return <ul>{chalk.green(el)}</ul>
