@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(statusHandler(status))
 		},
 		handleCommitMessage: (typedCommit) => {
-			dispatch(commitHandler(typedCommit))
+			dispatch(commitHandler(typedCommit.target.value))
 		}
 	
 	}
