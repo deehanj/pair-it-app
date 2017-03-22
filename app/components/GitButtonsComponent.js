@@ -78,7 +78,8 @@ export default class extends React.Component {
 					this.props.handleError(error)
 					console.log(error)
 				} else {
-					this.props.handleSuccess(this.props.commitMessage);
+					console.log(commitMessage)
+					// this.props.handleSuccess(this.props.commitMessage);
 					setInterval(this.handleStatus, 2000);
 				}
 			}
