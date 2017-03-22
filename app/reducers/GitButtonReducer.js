@@ -1,4 +1,4 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING , DISPLAY_BRANCH_LIST, UPDATE_STATUS} from '../constants/GitButtonsConstants'
+import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING , DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE} from '../constants/GitButtonsConstants'
 
 const initialState = {
 	branchList: [],
@@ -7,6 +7,7 @@ const initialState = {
 	currentBranch: '',
 	displayBranch: false,
 	branchQuery: '',
+	commitMessage: '',
 }
 
 const reducer = (state = initialState, action) => {
@@ -16,7 +17,7 @@ const reducer = (state = initialState, action) => {
 				newState.displayBranch = (state.displayBranch) ? false : true
 				break
 			case SUCCESS_DATA:
-				newState.successData =  action.successMessage
+				newState.successData = action.successMessage
 				break
 			case ERROR_DATA:
 				newState.errorData =  action.errorMessage
@@ -35,6 +36,9 @@ const reducer = (state = initialState, action) => {
 				break
 			case UPDATE_STATUS:
 				newState.successData = action.status
+				break
+			case UPDATE_COMMIT_MESSAGE:
+				newState.commitMessage = action.commitMessage
 				break
 			default:
 				return state

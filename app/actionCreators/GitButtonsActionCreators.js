@@ -1,4 +1,4 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS} from '../constants/GitButtonsConstants'
+import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE} from '../constants/GitButtonsConstants'
 import chalk from 'chalk';
 
 export const toggleDisplayBranchList = () => ({
@@ -77,6 +77,10 @@ export const statusHandler = (successObject) => {
 	}
 }
 
+export const commitHandler = (commitMessage) => ({
+	type: UPDATE_COMMIT_MESSAGE,
+	commitMessage
+})
 
 
 

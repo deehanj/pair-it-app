@@ -15,6 +15,7 @@ export default class extends React.Component {
 		this.getBranchList = this.getBranchList.bind(this);
 		this.handleGitAdd = this.handleGitAdd.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
+		this.handleCommit = this.handleCommit.bind(this);
 	}
 
 	componentDidMount() {
@@ -66,7 +67,21 @@ export default class extends React.Component {
 		)
 	}
 
- 
+	handleCommit(e) {
+		e.preventDefault();
+		Git.commit(
+			this.props.commitMessage,
+			(error, success) => {
+				if (error){
+					this.props.handleError(error)
+					console.log(error)
+				} else {
+					console.log(success)
+				}
+			}
+			)
+	}
+
 	handleBranchCheckout(e) {
 		e.preventDefault();
 		const branchInput = document.getElementById('branchInput')
@@ -87,7 +102,6 @@ export default class extends React.Component {
 	}
 
 	render(){
-		Git.status((error,success) => console.log(success))
 		return (
 			<div>
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
@@ -105,9 +119,9 @@ export default class extends React.Component {
 				</form>
 				
 				<button onClick={this.handleGitAdd}>Add Files</button>
-				<form onSubmit={this.handleGitCommit}>
-					Commit
-					<input type="text" onChange={this.handleCommitMessage}></input>
+				<form onSubmit={this.handleCommit}>
+					<button onClick={this.handleCommit} >Commit</button>
+					<input type="text" onChange={this.props.handleCommitMessage}></input>
 				</form>
 				<button onClick={this.handleStatus}>Status</button>
 				<button onClick={this.handleGitPush}>Push</button>
