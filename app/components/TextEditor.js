@@ -6,7 +6,7 @@ import io from 'socket.io-client'
 import brace from 'brace'
 import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { setUser } from '../reducers/UserReducer'
+import { setUser } from '../reducers/user'
 import { serverLocation } from '../utils/server.settings.js'
 import { activeFile, updateOpenFiles, closeFile } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
 		openFiles: state.fileSystem.openFiles,
-		roomName: state.User.username
+		// roomName: state.User.username
 	}
 }
 
@@ -58,7 +58,7 @@ class TextEditorContainer extends React.Component {
 	}
 
   componentDidMount() {
-  	this.props.dispatchUsername('Christine')
+  	// this.props.dispatchUsername('Christine')
   	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
   }
 
@@ -176,5 +176,3 @@ class TextEditorContainer extends React.Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)
-
-

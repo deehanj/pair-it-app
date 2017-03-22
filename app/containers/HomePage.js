@@ -6,6 +6,7 @@ import VideoChatContainer from '../VideoChat/VideoChatContainer';
 import Dashboard from '../VideoChat/Dashboard';
 import ProjectPage from '../components/ProjectPage'
 
+
 export default class HomePage extends Component {
   render() {
     return (
