@@ -6,7 +6,7 @@ var BrowserWindow = remote.BrowserWindow;
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { loginUser } from '../actions';
+import { loginUser } from '../reducers/auth';
 import options from '../utils/github.settings';
 
 export class LoginPage extends React.Component {
