@@ -15,7 +15,7 @@ export class LoginPage extends React.Component {
     console.log('Next Props: ', nextProps);
     if (nextProps.gitInfo.login && true) {
       ipcRenderer.send('reopen-window');
-      this.context.router.push('/home');
+      this.context.router.push('/repos');
     }
   }
 
