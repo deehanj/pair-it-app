@@ -82,6 +82,7 @@ export default class extends React.Component {
 				}
 			}
 			)
+		this.handleStatus();
 	}
 
 	handleBranchCheckout(e) {
