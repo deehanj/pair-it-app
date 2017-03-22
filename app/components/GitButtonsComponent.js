@@ -78,11 +78,12 @@ export default class extends React.Component {
 					this.props.handleError(error)
 					console.log(error)
 				} else {
-					console.log(success)
+					this.handleSuccess(success)
 				}
 			}
 			)
 		this.handleStatus();
+
 	}
 
 	handleBranchCheckout(e) {
