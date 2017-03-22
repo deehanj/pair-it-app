@@ -4,14 +4,14 @@ import { routerReducer as routing } from 'react-router-redux';
 import files from './FilesReducer'
 import auth from './auth'
 import VideoChatReducer from '../VideoChat/VideoChatReducer';
-import username from './UserReducer'
+import user from './user'
 
 const rootReducer = combineReducers({
   routing,
   fileSystem: files,
   VideoChat: VideoChatReducer,
   auth,
-  User: username
+  user
 });
 
 export default rootReducer;

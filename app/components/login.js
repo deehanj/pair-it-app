@@ -11,8 +11,9 @@ import options from '../utils/github.settings';
 
 export class LoginPage extends React.Component {
   componentWillReceiveProps(nextProps) {
-    const isLoggedIn = nextProps.token !== null;
-    if (isLoggedIn) {
+    // const isLoggedIn = nextProps.gitInfo && true;
+    console.log('Next Props: ', nextProps);
+    if (nextProps.gitInfo.login && true) {
       ipcRenderer.send('reopen-window');
       this.context.router.push('/home');
     }
@@ -99,7 +100,8 @@ function mapStateToProps(state) {
     token: state.auth.token,
     response: state.auth.response,
     failed: state.auth.failed,
-    isFetching: state.auth.isFetching
+    isFetching: state.auth.isFetching,
+    gitInfo: state.user.gitInfo
   };
 }
 
