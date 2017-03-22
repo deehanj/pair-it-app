@@ -5,13 +5,14 @@ import FileListComponent from '../components/FileListComponent'
 import VideoChatContainer from '../VideoChat/VideoChatContainer';
 import Dashboard from '../VideoChat/Dashboard';
 
+
 export default class HomePage extends Component {
   render() {
     return (
       <div>
-        <video id="webchatWindow"></video>
-      	<video id="localWebchat"></video>
-      	<VideoChatContainer />
+        <video id="webchatWindow" />
+        <video id="localWebchat" />
+        <VideoChatContainer />
         <TextEditor />
         <FileListComponent />
       </div>
