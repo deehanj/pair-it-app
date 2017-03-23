@@ -6,11 +6,15 @@ const FILE_ACTIVE = 'FILE_ACTIVE'
 const OPEN_FILES = 'OPEN_FILES'
 const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
 const CLOSE_FILE = 'CLOSE_FILE'
+const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
 
 const initialState = {
   dir: '',
   files: [],
-  activeFile: {},
+  activeFile: {
+    filePath: '',
+    text: ''
+  },
   openFiles: []
 }
 
@@ -35,6 +39,12 @@ const reducer = (state = initialState, action) => {
     case UPDATE_OPEN_FILES:
       newState.openFiles = newState.openFiles.map(file => {
         if (file.filePath === action.file.filePath) return action.file
+        else return file
+      })
+      break
+    case SAVE_NEW_FILE:
+      newState.openFiles = newState.openFiles.map(file => {
+        if (file.filePath === '') return action.file
         else return file
       })
       break
@@ -66,6 +76,10 @@ export const updateOpenFiles = file => ({
 
 export const closeFile = file => ({
   type: CLOSE_FILE, file
+})
+
+export const saveNewFile = file => ({
+  type: SAVE_NEW_FILE, file
 })
 
 export default reducer

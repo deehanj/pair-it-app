@@ -17,7 +17,6 @@ export default class HomePage extends Component {
       	<VideoChatContainer />
         <FilesContainer />
         <TextEditor />
-        <FileListComponent />
         <GitButtonsContainer />
       </div>
     );
