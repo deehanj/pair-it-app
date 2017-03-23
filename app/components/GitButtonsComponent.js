@@ -115,14 +115,18 @@ export default class extends React.Component {
 				this.props.handleError(error);
 				this.props.handleSuccess(success);
 			} )
-		// this.handleStatus(); 
+		this.handleStatus(); 
 	}
 
 	handleGitPull() {
 		Git.pull(
+			'origin',
+			this.props.currentBranch,
 			(error, success) => {
 				this.props.handleError(error);
-				this.props.handleSuccess(success);
+				// let successMessage = success.
+				// this.
+				// this.props.handleSuccess(success);
 			}
 			)
 	}
