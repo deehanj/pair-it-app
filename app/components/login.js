@@ -11,11 +11,8 @@ import options from '../utils/github.settings';
 
 export class LoginPage extends React.Component {
   componentWillReceiveProps(nextProps) {
-    // const isLoggedIn = nextProps.gitInfo && true;
-    console.log('Next Props: ', nextProps);
     if (nextProps.gitInfo.login && true) {
       ipcRenderer.send('reopen-window');
-      console.log('context',this.context)
       this.context.router.push('/repos');
     }
   }

@@ -3,6 +3,10 @@ import {connect} from 'react-redux'
 import RepoList from '../components/RepoList'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
+import { serverLocation } from '../utils/server.settings.js'
+import io from 'socket.io-client'
+
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
@@ -14,6 +18,7 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatchSelectRepo: repoId => {
 			dispatch(setSelectedRepo(repoId))
+			socket.emit('room', {room: repoId})
 			dispatch(push('/collaborators'))
 		}
 	}
