@@ -2,6 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import RepoList from '../components/RepoList'
 import {setSelectedRepo} from '../reducers/repo'
+import {push} from 'react-router-redux'
 
 const mapStateToProps = (state) => {
 	return {
@@ -11,13 +12,19 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchSelectRepo: repoId => dispatch(setSelectedRepo(repoId))
+		dispatchSelectRepo: repoId => {
+			dispatch(setSelectedRepo(repoId))
+			dispatch(push('/collaborators'))
+		}
 	}
+}
 
 class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
     }
+
+
     
 
 	render (){
@@ -28,6 +35,7 @@ class RepoListContainer extends React.Component {
 	}
 
 }
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(RepoListContainer)
 
