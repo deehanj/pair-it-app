@@ -1,4 +1,5 @@
 import React from 'react'
+import ConfigureSocket from '../VideoChat/ConfiguringSocket'
 import io from 'socket.io-client'
 
 import { serverLocation } from '../utils/server.settings.js'
@@ -14,21 +15,84 @@ export default class extends React.Component{
       clickToGoHome: this.props.clickToGoHome,
       collaborator: this.props.collaborator,
       goToPairRoom: this.props.goToPairRoom,
-      myName: this.props.myName
+      myName: this.props.myName,
+      myId: this.props.myId,
+      URL: this.props.URL,
+      incomingCall: this.props.incomingCall
+
+      // allProperties: this.props.allProperties
     }
 
     this.handleClick = this.handleClick.bind(this)
+    this.handleIncomingCall = this.handleIncomingCall.bind(this)
 
   }
 
   handleClick = () => {
-    // console.log('handling click');
     socket.emit('Pair with me', {room: this.state.repoId, name: this.state.collaborator, url: `/${this.state.myName}`})
+    navigator.getUserMedia(
+      //configuration
+      {
+        video:true,
+        audio:false,
+      },
+      //successHandler
+      this.localVideoView,
+      //error handler
+      console.error
+    )
+
   }
 
+  handleIncomingCall = () => {
+    console.log('answering incoming call');
+    const playerInfo = {
+      name: this.state.myName,
+      _id: this.state.myId
+    };
+
+    const MediaStreamURL = this.state.URL;
+    console.log('is this an object?', MediaStreamURL);
+    ConfigureSocket(socket, playerInfo, MediaStreamURL);
+  }
+
+  getUserMedia = () => {
+    navigator.getUserMedia(
+			//configuration
+			{
+				video:true,
+				audio:true,
+			},
+			//successHandler
+			this.streamSuccessHandler,
+			//error handler
+			console.error
+		)
+  }
+
+  streamSuccessHandler(stream) {
+    this.props.UpdateStream(stream);
+    this.initiateConnection();
+  }
+
+  localVideoView(stream) {
+    const localVideo = document.getElementById('localWebchat');
+    console.log(localVideo);
+    localVideo.src = URL.createObjectURL(stream);
+    // localVideo.onloadedmetadata(play());
+    localVideo.play();
+  }
+
+
   render(){
+    console.log('Props: ', this.props);
     return (
+      <div>
       <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator}</div>
+      {
+        this.props.incomingCall && <button onClick={this.handleIncomingCall}>Answer, begin pair</button>
+      }
+      </div>
     )
   }
 }
