@@ -46,6 +46,7 @@ export const displayTrue = () => ({
 })
 
 export const statusHandler = (successObject) => {
+	console.log(successObject);
 	let status;
 	let staged = successObject.modified;
 	let allFiles = successObject.files.map((fileObj) => fileObj.path);
