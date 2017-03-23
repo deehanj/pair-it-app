@@ -65,8 +65,8 @@ export default class extends React.Component{
 	initiateConnection() {
 		  //need to get name and id from state
 		  const playerInfo = {
-		  	name : "mike",
-		  	_id: "thisIsMikesUniqueID"
+		  	name : "james",
+		  	_id: "thisIsjamesUniqueID"
 		  };
 		  var socket = io.connect('http://pair-server.herokuapp.com');
 		  const MediaStreamURL = this.state.URL;

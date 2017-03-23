@@ -26,9 +26,7 @@ export default class extends React.Component {
 		Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
-				if (error) {
 					this.props.handleError(error);	
-				}
 			}
 		);
 	}
@@ -43,11 +41,8 @@ export default class extends React.Component {
 				} else {
 					Git.status(
 						(error, success) => {
-							if(error){
-								this.props.handleError(error)
-							} else {
-								this.props.handleStatus(success);
-							}
+							this.props.handleError(error)
+							this.props.handleStatus(success)
 						}
 					)
 				}
@@ -110,7 +105,30 @@ export default class extends React.Component {
 		this.props.toggleDisplayBranches()
 	}
 
+	handleGitPush() {
+		Git.push(
+			this.props.currentBranch, 
+			null,
+			(error, success) =>{
+				this.props.handleError(error);
+				this.props.handleSuccess(success);
+			} )
+	}
+
+	handleGitPull() {
+		Git.pull(
+			'origin',
+			this.props.currentBranch,
+			null,
+			(error, success) => {
+				this.props.handleError(error);
+				this.props.handleSuccess(success);
+			}
+			)
+	}
+
 	render(){
+		console.log(this.props.branchList)
 		return (
 			<div>
 				<h2 id="currentBranch">
@@ -149,12 +167,16 @@ export default class extends React.Component {
 				{/*  */}
 				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>
 				{/*  */}
-				{this.state.displayBranchList && this.state.branchList.map(el => {
-						if (el === currentBranch){
-							return <ul>{chalk.green(el)}</ul>
-						} else {
-							return <ul>el</ul>
-						}
+				{this.props.displayBranch && this.props.branchList.map(el => {
+						// if (el === currentBranch){
+						// 	return <ul>{chalk.green(el)}</ul>
+						// } else {
+							return (
+								<div>
+									<ul>{el.name + ' :  ' + el.label}</ul>
+								</div>
+							)
+						// }
 					}
 					)
 				}
