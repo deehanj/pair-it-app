@@ -64,8 +64,8 @@ export default class extends React.Component {
 		)
 	}
 
-	handleCommit() {
-
+	handleCommit(e) {
+		e.preventDefault();
 		Git.commit(
 			this.props.commitMessage,
 			null,
@@ -119,9 +119,6 @@ export default class extends React.Component {
 
 	handleGitPull() {
 		Git.pull(
-			'origin',
-			this.props.currentBranch,
-			null,
 			(error, success) => {
 				this.props.handleError(error);
 				this.props.handleSuccess(success);

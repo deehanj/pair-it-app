@@ -79,9 +79,10 @@ export default class extends React.Component{
 		return(
 			<div>
 				<button onClick={this.setStreamState}>GETUSERMEDIA</button>
-				{/*<button onClick={this.initiateConnection}>InititateCall</button>*/}
 				<Dashboard URL={this.props.URL} />
 			</div>
 		)
 	}
 }
+
+
