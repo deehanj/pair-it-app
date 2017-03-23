@@ -30,8 +30,6 @@ export class LoginPage extends React.Component {
       }
     });
     var githubUrl = 'https://github.com/login/oauth/authorize?';
-    console.log('client_id ', options.client_id);
-    console.log('scope ', options.scope);
     var authUrl = githubUrl + 'client_id=' + options.client_id + '&scope=' + options.scope;
     authWindow.loadURL(authUrl);
 

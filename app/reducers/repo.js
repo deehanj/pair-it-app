@@ -16,10 +16,8 @@ export const selectedRepo = (selectedRepo) => ({
 
 export const setSelectedRepo = (repoId) => 
 	(dispatch, getState) => {
-		console.log('repo reducer thunk')
 		const repos = store.getState().repo.repoList
 		const selectedRepoFromList = repos.filter(repo => repo.id === repoId)
-		console.log(selectedRepoFromList)
 		dispatch(selectedRepo(selectedRepoFromList[0]))
 	}
 

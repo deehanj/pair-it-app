@@ -30,28 +30,24 @@ class CollaboratorContainer extends React.Component {
 		}
 
   socket.on('add client', (data) => {
-  	console.log(data.name)
   	let newCollaborator = data.name
   	const findCollaborator = (element) => element === newCollaborator
   	if (this.state.collaborators.findIndex(findCollaborator) === -1){
   		let collabArray = this.state.collaborators
   		collabArray.push(newCollaborator)
   		this.setState({collaborators: collabArray})
-  		console.log('collab list 1', this.state.collaborators)
   	}
 
   socket.emit('I am here', {room: data.room, name: this.props.name})
   })
 
   socket.on('store collaborator', (data) => {
-  	console.log('new person', data.name)
   	let newCollaborator = data.name
   	const findCollaborator = (element) => element === newCollaborator
   	if (this.state.collaborators.findIndex(findCollaborator) === -1){
   		let collabArray = this.state.collaborators
   		collabArray.push(newCollaborator)
   		this.setState({collaborators: collabArray})
-  		console.log('collab list 2', this.state.collaborators)
   	}
   })
 
@@ -61,14 +57,11 @@ componentDidMount() {
 	socket.emit('room', {room: this.props.repo.id, name: this.props.name })
 }
 
-
 	render (){
 	
 		return (
 			<div>
-				<h1>{this.props.repo.name}</h1>
-				<h1 onClick={this.props.clickToGoHome}>CLICK HERE TO GO HOME</h1>
-				
+				<CollaboratorComponent collaborators={this.state.collaborators} clickToGoHome={this.props.clickToGoHome} repo={this.props.repo} />
 			</div>
 		)
 	}

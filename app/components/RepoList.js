@@ -1,5 +1,4 @@
 import React from 'react'
-import {hashhistory} from 'react-router-redux'
 
 const RepoList = (props) => {
 const repos = props.repos
