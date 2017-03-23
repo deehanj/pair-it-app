@@ -62,7 +62,7 @@ export const statusHandler = (successObject) => {
 
 	if (staged.length == 0){
 		if(yetToBeCommitted.length === 0 ){
-			status = 'No file changes'
+			status = 'nothing to commit, working directory clean'
 		} else {
 			status = notAdded;
 		}
