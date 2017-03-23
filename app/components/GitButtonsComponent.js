@@ -16,6 +16,8 @@ export default class extends React.Component {
 		this.handleGitAdd = this.handleGitAdd.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 		this.handleCommit = this.handleCommit.bind(this);
+		this.handleGitPush = this.handleGitPush.bind(this);
+		this.handleGitPull = this.handleGitPull.bind(this);
 	}
 
 	componentDidMount() {
