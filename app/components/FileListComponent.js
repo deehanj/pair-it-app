@@ -30,7 +30,7 @@ class Files extends React.Component {
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
     socket.on('new file is opened', (file) => {
-      this.props.openFileFromNavigator(file)
+      this.props.openFileFromDriver(file)
     });
   }
 
@@ -81,7 +81,14 @@ class Files extends React.Component {
             // checks if its a file or a directory
             return file.fileBool ?
               // makes a file list item if fileBool is true
-              <li key={filePath} onClick={() => this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1))}>{fileName}</li>
+              <li
+                key={filePath}
+                onClick={() => {
+                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1))
+                  socket.emit('opened file', { filePath: file.filePath, text: file.text, room: this.props.room })
+                }
+                }>{fileName}
+              </li>
               :
               // makes a new Files component if fileBool is false
               <li key={filePath} onClick={() => this.setVisible(filePath)}>
@@ -106,7 +113,8 @@ const mapStateToProps = state => {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
     visible: true,
-    level: 0
+    level: 0,
+    room: 'Christine'
   }
 }
 
@@ -118,14 +126,13 @@ const mapDispatchToProps = dispatch => {
         .then(text => {
           text = text.toString()
           const file = {filePath: dir, text}
-          socket.emit('opened file', file)
           dispatch(activeFile(file))
           dispatch(addToOpenFiles(file))
         })
         .catch(error => console.error(error.message))
       }
     },
-    openFileFromNavigator : file => {
+    openFileFromDriver : file => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
     }
