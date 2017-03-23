@@ -3,7 +3,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
 import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
-import serverLocation from '../utils/server.settings.js'
+import { serverLocation } from '../utils/server.settings.js'
 
 import io from 'socket.io-client';
 
@@ -58,6 +58,13 @@ class Files extends React.Component {
     // }
   }
 
+  componentDidMount() {
+    setTimeout(() => socket.emit('room', {room: 'Christine'}), 0)
+  }
+  componentWillUnmount() {
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.state.level === 0) {
       const visible = {}
@@ -86,6 +93,7 @@ class Files extends React.Component {
                 key={filePath}
                 onClick={() => {
                   console.log(file)
+                  console.log(this.props)
                   this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
                   // socket.emit('opened file', { filePath: file.filePath, text: file.text, room: this.props.room })
                 }
@@ -101,6 +109,7 @@ class Files extends React.Component {
                   visible={false}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
+                  room={this.props.room}
                 />}
               </li>
           })
