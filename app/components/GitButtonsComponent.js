@@ -16,6 +16,8 @@ export default class extends React.Component {
 		this.handleGitAdd = this.handleGitAdd.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 		this.handleCommit = this.handleCommit.bind(this);
+		this.handleGitPush = this.handleGitPush.bind(this);
+		this.handleGitPull = this.handleGitPull.bind(this);
 	}
 
 	componentDidMount() {
@@ -26,9 +28,7 @@ export default class extends React.Component {
 		Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
-				if (error) {
 					this.props.handleError(error);	
-				}
 			}
 		);
 	}
@@ -43,11 +43,8 @@ export default class extends React.Component {
 				} else {
 					Git.status(
 						(error, success) => {
-							if(error){
-								this.props.handleError(error)
-							} else {
-								this.props.handleStatus(success);
-							}
+							this.props.handleError(error)
+							this.props.handleStatus(success)
 						}
 					)
 				}
@@ -67,8 +64,8 @@ export default class extends React.Component {
 		)
 	}
 
-	handleCommit() {
-
+	handleCommit(e) {
+		e.preventDefault();
 		Git.commit(
 			this.props.commitMessage,
 			null,
@@ -110,18 +107,37 @@ export default class extends React.Component {
 		this.props.toggleDisplayBranches()
 	}
 
+	handleGitPush() {
+		Git.push(
+			'origin', 
+			this.props.currentBranch,
+			(error, success) =>{
+				this.props.handleError(error);
+				this.props.handleSuccess(success);
+			} )
+		this.handleStatus(); 
+	}
+
+	handleGitPull() {
+		Git.pull(
+			'origin',
+			this.props.currentBranch,
+			(error, success) => {
+				this.props.handleError(error);
+				const successMessage = 'insertions: ' + success.summary.insertions + '\n' + 'deletions: ' + success.summary.deletions + '\n' + 'changes: '+ success.summary.changes;
+				this.props.handleSuccess(successMessage);
+			}
+			)
+	}
+
 	render(){
+		console.log(this.props.branchList)
 		return (
 			<div>
 				<h2 id="currentBranch">
+				{/* CURRENT BRANCH NAME*/}
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
 				</h2>
-				{/*this.props.branchList && this.props.branchList.map(
-					(branch) => {
-						<ol> {branch} </ol>
-					}
-					)
-				*/}
 				{/* SUCCESS MESSAGE */}
 				{this.props.successData }
 				{/* ERROR MESSAGE */}
@@ -142,19 +158,23 @@ export default class extends React.Component {
 				</form>
 				{/* STATUS - DONE */}
 				<button onClick={this.handleStatus}>Status</button>
-				{/* PUSH */}
+				{/* PUSH DONE */}
 				<button onClick={this.handleGitPush}>Push</button>
-				{/* PULL */}
+				{/* PULL DONE */}
 				<button onClick={this.handleGitPull}>Pull</button>
-				{/*  */}
+				{/* TOGGLE DONE */}
 				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>
-				{/*  */}
-				{this.state.displayBranchList && this.state.branchList.map(el => {
-						if (el === currentBranch){
-							return <ul>{chalk.green(el)}</ul>
-						} else {
-							return <ul>el</ul>
-						}
+				{/* BRANCH DISPLAYED */}
+				{this.props.displayBranch && this.props.branchList.map(el => {
+						// if (el === currentBranch){
+						// 	return <ul>{chalk.green(el)}</ul>
+						// } else {
+							return (
+								<div>
+									<ul>{el.name + ' :  ' + el.label}</ul>
+								</div>
+							)
+						// }
 					}
 					)
 				}
