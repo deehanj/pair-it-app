@@ -22,7 +22,7 @@ class Files extends React.Component {
     super(props)
     this.state = {
       dir: props.subDir,
-      subFiles: [],
+      files: [],
       visible: props.visible,
       text: '',
       level: props.level
@@ -35,47 +35,60 @@ class Files extends React.Component {
   }
 
   fetchFiles(dir) {
-    getAllFiles(dir)
-    .then(filesArr => {
-      this.setState({ subFiles: filesArr })
-    })
-    .catch(err => console.error(err))
+    if (dir.length > 0) {
+      getAllFiles(dir + '/')
+      .then(filesArr => {
+        this.setState({ files: filesArr })
+      })
+      .catch(err => console.error(err))
+    }
   }
 
   setVisible(filePath) {
-    // if (this.state.visible[filePath] !== undefined && !this.state.visible[filePath]) {
+    // console.log(filePath)
+    // console.log(this.state.visible)
+    // if (this.state.visible[filePath] === false) {
+    //   console.log('hit if statement')
       this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
-      console.log('was invisible now: ', this.state)
     // }
     // else {
+    //   console.log('hit else statement')
     //   this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: false })})
-    //   console.log('was visible now: ', this.state.visible[filePath])
     // }
   }
 
-  componentDidMount() {
-    this.fetchFiles(this.state.dir)
+  componentWillReceiveProps(nextProps) {
+    if (this.state.level === 0) {
+      const visible = {}
+      nextProps.files.forEach(file => {
+        const filePath = file.filePath
+        visible[filePath] = false
+      })
+      this.setState({ visible })
+    }
+    this.fetchFiles(nextProps.subDir)
   }
 
   render() {
-    const files = this.props.files || this.state.subFiles
+    const files = this.props.files || this.state.files
     return (
       <ul>{this.props.dir}
         {
           files && files.map(file => {
-            const fileNameArr = file.filePath.split('/')
+            const filePath = file.filePath
+            const fileNameArr = filePath.split('/')
             const fileName = fileNameArr[fileNameArr.length - 2]
             // checks if its a file or a directory
             return file.fileBool ?
               // makes a file list item if fileBool is true
-              <li key={file.filePath} onClick={() => this.props.fetchActiveFile(file.filePath.slice(0, file.filePath.length - 1))}>{fileName}</li>
+              <li key={filePath} onClick={() => this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1))}>{fileName}</li>
               :
               // makes a new Files component if fileBool is false
-              <li key={`${file.filePath}-inner`} onClick={() => this.setVisible(file.filePath)}>
+              <li key={filePath} onClick={() => this.setVisible(filePath)}>
                 {fileName}
-                {this.state.visible[file.filePath] &&
+                {(this.state.visible[filePath] === true) &&
                 <Files
-                  subDir={file.filePath}
+                  subDir={filePath}
                   visible={false}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
@@ -87,7 +100,6 @@ class Files extends React.Component {
     )
   }
 }
-
 
 const mapStateToProps = state => {
   return {
@@ -101,15 +113,17 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     fetchActiveFile : dir => {
-      readFile(dir)
-      .then(text => {
-        text = text.toString()
-        const file = {filePath: dir, text}
-        socket.emit('opened file', file)
-        dispatch(activeFile(file))
-        dispatch(addToOpenFiles(file))
-      })
-      .catch(error => console.error(error.message))
+      if (dir.length > 0) {
+        readFile(dir)
+        .then(text => {
+          text = text.toString()
+          const file = {filePath: dir, text}
+          socket.emit('opened file', file)
+          dispatch(activeFile(file))
+          dispatch(addToOpenFiles(file))
+        })
+        .catch(error => console.error(error.message))
+      }
     },
     openFileFromNavigator : file => {
       dispatch(activeFile(file))

@@ -12,12 +12,12 @@ export default class App extends Component {
   };
 
   componentDidMount(){
-    getAllFiles('../puppy-book/')
-    .then(result => {
-      store.dispatch(setFileDir('../puppy-book/'))
-      store.dispatch(loadFiles(result))
-    })
-    .catch(error => console.error(error.message))
+    // getAllFiles('../puppy-book/')
+    // .then(result => {
+    //   store.dispatch(setFileDir('../puppy-book/'))
+    //   store.dispatch(loadFiles(result))
+    // })
+    // .catch(error => console.error(error.message))
   }
 
   render() {
