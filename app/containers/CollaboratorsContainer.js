@@ -83,6 +83,9 @@ class CollaboratorContainer extends React.Component {
 
 componentDidMount() {
 	socket.emit('room', {room: this.props.repo.id, name: this.props.name })
+
+	// events.subscribe('users', this.setUserState)
+
 }
 
 	render (){

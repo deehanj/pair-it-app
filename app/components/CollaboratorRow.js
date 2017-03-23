@@ -1,5 +1,6 @@
 import React from 'react'
 import ConfigureSocket from '../VideoChat/ConfiguringSocket'
+import events from '../VideoChat/events'
 import io from 'socket.io-client'
 
 import { serverLocation } from '../utils/server.settings.js'
@@ -28,6 +29,7 @@ export default class extends React.Component{
 
   }
 
+
   handleClick = () => {
     socket.emit('Pair with me', {room: this.state.repoId, name: this.state.collaborator, url: `/${this.state.myName}`})
     navigator.getUserMedia(
@@ -54,6 +56,8 @@ export default class extends React.Component{
     const MediaStreamURL = this.state.URL;
     console.log('is this an object?', MediaStreamURL);
     ConfigureSocket(socket, playerInfo, MediaStreamURL);
+
+    events.trigger('startCall', this.state.collaborator);
   }
 
   getUserMedia = () => {
@@ -72,15 +76,15 @@ export default class extends React.Component{
 
   streamSuccessHandler(stream) {
     this.props.UpdateStream(stream);
-    this.initiateConnection();
+    // this.initiateConnection();
   }
 
   localVideoView(stream) {
-    const localVideo = document.getElementById('localWebchat');
-    console.log(localVideo);
-    localVideo.src = URL.createObjectURL(stream);
-    // localVideo.onloadedmetadata(play());
-    localVideo.play();
+    // const localVideo = document.getElementById('localWebchat');
+    // console.log(localVideo);
+    // localVideo.src = URL.createObjectURL(stream);
+    // // localVideo.onloadedmetadata(play());
+    // localVideo.play();
   }
 
 
@@ -90,7 +94,7 @@ export default class extends React.Component{
       <div>
       <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator}</div>
       {
-        this.props.incomingCall && <button onClick={this.handleIncomingCall}>Answer, begin pair</button>
+        this.props.incomingCall && <button onClick={() => this.handleIncomingCall(this.state.collaborator)}>Answer, begin pair</button>
       }
       </div>
     )
