@@ -130,6 +130,10 @@ webrtcpak.receiveIceCandidate = (iceCandidate) => {
     }
 }
 
+webrtcpak.hangUp = (event) => {
+    peerConnection.close();
+}
+
 const mergeCandidates = () => {
     if (canAcceptIce) {
         for(let i = 0; i < pendingAcceptCandidates.length; i++){
@@ -148,3 +152,5 @@ const addCandidate = (iceCandidate) => {
 }
 
 export default webrtcpak;
+
+export const pc = peerConnection;
