@@ -7,8 +7,18 @@ import Dashboard from '../VideoChat/Dashboard';
 import FilesContainer from './FilesContainer'
 import GitButtonsContainer from './GitButtonsContainer';
 import ProjectPage from '../components/ProjectPage';
+import io from 'socket.io-client'
+
+const socket = io(serverLocation)
 
 export default class HomePage extends Component {
+
+  componentDidMount() {
+    setTimeout(() => socket.emit('room', {room: this.props.room}), 0)
+  }
+  componentWillUnmount() {
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
+  }
   render() {
     return (
       <div>
