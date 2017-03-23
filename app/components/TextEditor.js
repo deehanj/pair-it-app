@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
 		openFiles: state.fileSystem.openFiles,
-    dir: state.fileSystem.dir
+    dir: state.fileSystem.dir,
 		room: 'Christine'
 	}
 }
@@ -101,11 +101,11 @@ class TextEditorContainer extends React.Component {
   componentDidMount() {
   	// this.props.dispatchUsername('Christine')
     // can put a promise here and get rid of the setTimeout
-  	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
+  	setTimeout(() => socket.emit('room', {room: this.props.room}), 0)
   }
 
   componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor' + this.props.roomName})
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -118,7 +118,7 @@ class TextEditorContainer extends React.Component {
 
   codeIsHappening(newCode) {
     this.setState({ code: newCode })
-    socket.emit('coding event', {code: newCode, room: this.props.roomName})
+    socket.emit('coding event', {code: newCode, room: this.props.room})
   }
 
   handleSelect(index, last) {
@@ -127,7 +127,7 @@ class TextEditorContainer extends React.Component {
     file.text = this.state.code
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchActiveFile(this.props.openFiles[index]))
-    .then(() => socket.emit('tab changed', {index: index, room: this.props.roomName}))
+    .then(() => socket.emit('tab changed', {index: index, room: this.props.room}))
     .then(() => this.setState({tabIndex: index}))
 	  .catch(error => console.error(error.message))
   }

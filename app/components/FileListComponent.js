@@ -30,7 +30,8 @@ class Files extends React.Component {
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
     socket.on('new file is opened', (file) => {
-      this.props.openFileFromDriver(file)
+      console.log(file)
+      this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
     });
   }
 
@@ -84,8 +85,9 @@ class Files extends React.Component {
               <li
                 key={filePath}
                 onClick={() => {
-                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1))
-                  socket.emit('opened file', { filePath: file.filePath, text: file.text, room: this.props.room })
+                  console.log(file)
+                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
+                  // socket.emit('opened file', { filePath: file.filePath, text: file.text, room: this.props.room })
                 }
                 }>{fileName}
               </li>
@@ -120,12 +122,13 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchActiveFile : dir => {
+    fetchActiveFile : (dir, room) => {
       if (dir.length > 0) {
         readFile(dir)
         .then(text => {
           text = text.toString()
           const file = {filePath: dir, text}
+          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
           dispatch(activeFile(file))
           dispatch(addToOpenFiles(file))
         })
