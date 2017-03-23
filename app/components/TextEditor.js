@@ -9,7 +9,7 @@ import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { setUser } from '../reducers/user'
 import { serverLocation } from '../utils/server.settings.js'
-import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles } from '../reducers/FilesReducer'
+import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 import { getAllFiles } from '../utils/FileSystemFunction'
 
@@ -51,7 +51,8 @@ const mapDispatchToProps = (dispatch) => {
         })
         .catch(error => console.error(error.message))
       }
-    }
+    },
+    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file))
 	}
 }
 
@@ -131,11 +132,22 @@ class TextEditorContainer extends React.Component {
 
   onSave(ev) {
     ev.preventDefault()
-    const filePath = this.props.activeFile.filePath.length > 0 ? this.props.activeFile.filePath : `${this.props.dir}/${ev.target.filename.value}.js`
+    let filePath
+    let isNewFile = false
+    if (this.props.activeFile.filePath.length > 0) {
+      filePath = this.props.activeFile.filePath
+    } else {
+      filePath = `${this.props.dir}/${ev.target.filename.value}.js`
+      isNewFile = true
+    }
+    // const filePath = this.props.activeFile.filePath.length > 0 ? this.props.activeFile.filePath : `${this.props.dir}/${ev.target.filename.value}.js`
     writeFile(filePath, this.state.code)
-    .then(() => this.props.dispatchUpdateOpenFiles({filePath, text: this.state.code}))
+    .then(() => this.props.dispatchUpdateOpenFiles({ filePath, text: this.state.code }))
+    .then(() => {
+      if (isNewFile) this.props.dispatchSaveNewFile({ filePath, text: this.state.code })
+    })
     .then(() => this.props.setRootDirectory(this.props.dir))
-    .then(() => socket.emit('save file', {code: this.state.code}))
+    .then(() => socket.emit('save file', { code: this.state.code }))
     .catch(error => console.error('Error writing file: ', error.message))
   }
 
