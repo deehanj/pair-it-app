@@ -7,6 +7,8 @@ import Dashboard from '../VideoChat/Dashboard';
 import FilesContainer from './FilesContainer'
 import GitButtonsContainer from './GitButtonsContainer';
 import ProjectPage from '../components/ProjectPage';
+import ErrorBoxContainer from './ErrorBoxContainer';
+import SuccessBoxContainer from './SuccessBoxContainer';
 
 export default class HomePage extends Component {
   render() {
@@ -19,6 +21,11 @@ export default class HomePage extends Component {
         <TextEditor />
         <FileListComponent />
         <GitButtonsContainer />
+        <ErrorBoxContainer />
+
+        {/* 
+          <SuccessBoxContainer /> 
+         */}
       </div>
     );
   }
