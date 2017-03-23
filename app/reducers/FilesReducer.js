@@ -4,6 +4,8 @@ const SET_FILE_DIR = 'SET_FILE_DIR'
 const LOAD_FILES = 'LOAD_FILES'
 const FILE_ACTIVE = 'FILE_ACTIVE'
 const OPEN_FILES = 'OPEN_FILES'
+const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
+const CLOSE_FILE = 'CLOSE_FILE'
 
 const initialState = {
   dir: '',
@@ -27,6 +29,15 @@ const reducer = (state = initialState, action) => {
     case OPEN_FILES:
       newState.openFiles = newState.openFiles.concat([action.file])
       break
+    case CLOSE_FILE:
+      newState.openFiles = newState.openFiles.filter(file => file.filePath !== action.file.filePath)
+      break
+    case UPDATE_OPEN_FILES:
+      newState.openFiles = newState.openFiles.map(file => {
+        if (file.filePath === action.file.filePath) return action.file
+        else return file
+      })
+      break
     default:
       return state
   }
@@ -49,5 +60,12 @@ export const addToOpenFiles = file => ({
   type: OPEN_FILES, file
 })
 
+export const updateOpenFiles = file => ({
+  type: UPDATE_OPEN_FILES, file
+})
+
+export const closeFile = file => ({
+  type: CLOSE_FILE, file
+})
 
 export default reducer
