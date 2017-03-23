@@ -124,10 +124,9 @@ export default class extends React.Component {
 			this.props.currentBranch,
 			(error, success) => {
 				this.props.handleError(error);
-				console.log(success);
-				// let successMessage = success.
-				// this.
-				// this.props.handleSuccess(success);
+				const successMessage = 'insertions: ' + success.insertions + '\n' + 'deletions: ' + success.deletions + '\n' + 'changes: '+ success.changes
+				console.log(success)
+				this.props.handleSuccess(successMessage);
 			}
 			)
 	}
