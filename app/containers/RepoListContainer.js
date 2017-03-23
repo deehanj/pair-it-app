@@ -10,15 +10,16 @@ const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
-		repos: state.repo.repoList
+		repos: state.repo.repoList,
+		name: state.user.gitInto.login
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchSelectRepo: repoId => {
+		dispatchSelectRepo: (repoId, name) => {
 			dispatch(setSelectedRepo(repoId))
-			socket.emit('room', {room: repoId})
+			socket.emit('room', {room: repoId, name: name})
 			dispatch(push('/collaborators'))
 		}
 	}
