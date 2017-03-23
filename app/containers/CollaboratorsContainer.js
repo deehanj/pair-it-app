@@ -14,8 +14,12 @@ const mapStateToProps = (state) => {
 	}
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
+		goToPairRoom: () => {
+		  console.log('Got to pair room: ', ownProps);
+			// socket.emit('Pair with me', {room: ownProps.repo.id, name: ownProps.collaborator})
+		},
 		clickToGoHome: () => {
 			dispatch(push('/home'))
 		}
@@ -29,27 +33,35 @@ class CollaboratorContainer extends React.Component {
 			collaborators: []
 		}
 
-  socket.on('add client', (data) => {
-  	let newCollaborator = data.name
-  	const findCollaborator = (element) => element === newCollaborator
-  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
-  		let collabArray = this.state.collaborators
-  		collabArray.push(newCollaborator)
-  		this.setState({collaborators: collabArray})
-  	}
+	  socket.on('add client', (data) => {
+	  	let newCollaborator = data.name
+	  	const findCollaborator = (element) => element === newCollaborator
+	  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
+	  		let collabArray = this.state.collaborators
+	  		collabArray.push(newCollaborator)
+	  		this.setState({collaborators: collabArray})
+	  	}
 
-  socket.emit('I am here', {room: data.room, name: this.props.name})
-  })
+	  socket.emit('I am here', {room: data.room, name: this.props.name})
+	  })
 
-  socket.on('store collaborator', (data) => {
-  	let newCollaborator = data.name
-  	const findCollaborator = (element) => element === newCollaborator
-  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
-  		let collabArray = this.state.collaborators
-  		collabArray.push(newCollaborator)
-  		this.setState({collaborators: collabArray})
-  	}
-  })
+	  socket.on('store collaborator', (data) => {
+	  	let newCollaborator = data.name
+	  	const findCollaborator = (element) => element === newCollaborator
+	  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
+	  		let collabArray = this.state.collaborators
+	  		collabArray.push(newCollaborator)
+	  		this.setState({collaborators: collabArray})
+	  	}
+	  })
+
+		socket.on('Partner', (data) => {
+		  const partnerName = data.name
+			const url = data.url
+
+			if (partnerName === this.state.name)
+				console.log('pair with me');
+		})
 
     }
 
@@ -58,10 +70,10 @@ componentDidMount() {
 }
 
 	render (){
-	
+
 		return (
 			<div>
-				<CollaboratorComponent collaborators={this.state.collaborators} clickToGoHome={this.props.clickToGoHome} repo={this.props.repo} />
+				<CollaboratorComponent collaborators={this.state.collaborators} clickToGoHome={this.props.clickToGoHome} repo={this.props.repo} goToPairRoom={this.props.goToPairRoom} />
 			</div>
 		)
 	}
