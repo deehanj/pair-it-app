@@ -3,16 +3,20 @@ import {connect} from 'react-redux'
 import RepoList from '../components/RepoList'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
+import { serverLocation } from '../utils/server.settings.js'
+import io from 'socket.io-client'
+
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
-		repos: state.repo.repoList
+		repos: state.repo.repoList,
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchSelectRepo: repoId => {
+		dispatchSelectRepo: (repoId, name) => {
 			dispatch(setSelectedRepo(repoId))
 			dispatch(push('/collaborators'))
 		}
@@ -23,6 +27,8 @@ class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
     }
+
+
 
 
     

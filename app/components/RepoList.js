@@ -1,8 +1,8 @@
 import React from 'react'
-import {hashhistory} from 'react-router-redux'
 
 const RepoList = (props) => {
 const repos = props.repos
+const name = props.name
 const dispatchSelectRepo = props.onClick
 	return (
 		<div>
