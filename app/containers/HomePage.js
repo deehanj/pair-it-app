@@ -22,10 +22,7 @@ export default class HomePage extends Component {
         <FileListComponent />
         <GitButtonsContainer />
         <ErrorBoxContainer />
-
-        {/* 
-          <SuccessBoxContainer /> 
-         */}
+        <SuccessBoxContainer />
       </div>
     );
   }
