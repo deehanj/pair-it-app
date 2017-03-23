@@ -202,6 +202,7 @@
     "reactify": "^1.1.1",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
+    "simple-git": "^1.67.0",
     "socket.io": "^1.7.3",
     "source-map-support": "^0.4.10",
     "utf-8-validate": "^3.0.1",
