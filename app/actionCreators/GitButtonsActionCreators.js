@@ -72,6 +72,10 @@ export const statusHandler = (successObject) => {
 	} else {
 		status = stagingArea + notAdded
 	}
+	if (successObject.conflicted.length != 0){
+		let conflicted = successObject.conflicted.join('\n');
+		status = status + 'conflictions: ' + conflicted;
+	}
 	return {
 		type: UPDATE_STATUS,
 		status
