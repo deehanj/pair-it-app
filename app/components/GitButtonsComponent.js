@@ -135,14 +135,9 @@ export default class extends React.Component {
 		return (
 			<div>
 				<h2 id="currentBranch">
+				{/* CURRENT BRANCH NAME*/}
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
 				</h2>
-				{/*this.props.branchList && this.props.branchList.map(
-					(branch) => {
-						<ol> {branch} </ol>
-					}
-					)
-				*/}
 				{/* SUCCESS MESSAGE */}
 				{this.props.successData }
 				{/* ERROR MESSAGE */}
@@ -163,13 +158,13 @@ export default class extends React.Component {
 				</form>
 				{/* STATUS - DONE */}
 				<button onClick={this.handleStatus}>Status</button>
-				{/* PUSH */}
+				{/* PUSH DONE */}
 				<button onClick={this.handleGitPush}>Push</button>
-				{/* PULL */}
+				{/* PULL DONE */}
 				<button onClick={this.handleGitPull}>Pull</button>
-				{/*  */}
+				{/* TOGGLE DONE */}
 				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>
-				{/*  */}
+				{/* BRANCH DISPLAYED */}
 				{this.props.displayBranch && this.props.branchList.map(el => {
 						// if (el === currentBranch){
 						// 	return <ul>{chalk.green(el)}</ul>
