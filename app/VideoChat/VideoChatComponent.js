@@ -6,14 +6,16 @@ import _  from 'lodash';
 import ConfigureSocket from './ConfiguringSocket';
 import Dashboard from './Dashboard';
 
+var socket = io.connect('http://pair-server.herokuapp.com');
+
+import pc from './ExchangeFunctions';
+
 
 export default class extends React.Component{
 
 	constructor(props) {
 		super(props);
-		this.state = {
-			URL: {}
-		};
+		this.state = {};
 		this.streamSuccessHandler = this.streamSuccessHandler.bind(this);
 		this.setStreamState = this.setStreamState.bind(this);
 		this.initiateConnection = this.initiateConnection.bind(this);
@@ -62,24 +64,29 @@ export default class extends React.Component{
 		localVideo.play();
 	}
 
+	hangUp(event){
+		pc.close();
+	}
+
 	initiateConnection() {
 		  //need to get name and id from state
 		  const playerInfo = {
-		  	name : "james",
-		  	_id: "thisIsjamesUniqueID"
+		  	name : this.props.name,
+		  	_id: this.props.id
 		  };
-		  var socket = io.connect('http://pair-server.herokuapp.com');
+		  
 		  const MediaStreamURL = this.state.URL;
 		  console.log('is this an object?', MediaStreamURL);
 		  ConfigureSocket(socket, playerInfo, MediaStreamURL);
 	}
 
 	render() {
-
+		console.log(pc)
 		return(
 			<div>
 				<button onClick={this.setStreamState}>GETUSERMEDIA</button>
 				<Dashboard URL={this.props.URL} />
+				<button onClick={this.hangUp} />
 			</div>
 		)
 	}

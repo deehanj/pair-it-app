@@ -139,9 +139,9 @@ export default class extends React.Component {
 				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
 				</h2>
 				{/* SUCCESS MESSAGE */}
-				{this.props.successData }
+				{/*this.props.successData*/}
 				{/* ERROR MESSAGE */}
-				{this.props.errorData }
+				{/*this.props.errorData */}
 				{/* BRANCH CHECKOUT - DONE */}
 				<form onSubmit={this.handleBranchCheckout} >
 					<button onClick={this.handleBranchCheckout}>Checkout Branch</button>
