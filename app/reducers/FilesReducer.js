@@ -10,7 +10,10 @@ const CLOSE_FILE = 'CLOSE_FILE'
 const initialState = {
   dir: '',
   files: [],
-  activeFile: {},
+  activeFile: {
+    filePath: '',
+    text: ''
+  },
   openFiles: []
 }
 
