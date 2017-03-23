@@ -48,13 +48,14 @@ export const displayTrue = () => ({
 export const statusHandler = (successObject) => {
 	console.log(successObject);
 	let status;
-	let staged = successObject.modified;
-	let allFiles = successObject.files.map((fileObj) => fileObj.path);
+	let staged = [];
 	let yetToBeCommitted = [];
 
-	for(var i = 0; i < allFiles.length; i++){
-		if(staged.indexOf(allFiles[i]) === -1){
-			yetToBeCommitted.push(allFiles[i])
+	for(var i = 0; i<successObject.files.length; i++){
+		if(successObject.files[i].working_dir === ' '){
+			staged.push(successObject.files[i].path);
+		} else{
+			yetToBeCommitted.push(successObject.files[i].path)
 		}
 	}
 

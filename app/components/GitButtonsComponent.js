@@ -109,12 +109,13 @@ export default class extends React.Component {
 
 	handleGitPush() {
 		Git.push(
-			this.props.currentBranch, 
-			null,
+			'origin', 
+			this.props.currentBranch,
 			(error, success) =>{
 				this.props.handleError(error);
 				this.props.handleSuccess(success);
 			} )
+		this.handleStatus();
 	}
 
 	handleGitPull() {
