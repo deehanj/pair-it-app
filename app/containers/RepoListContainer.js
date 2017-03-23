@@ -11,7 +11,6 @@ const socket = io(serverLocation)
 const mapStateToProps = (state) => {
 	return {
 		repos: state.repo.repoList,
-		name: state.user.gitInto.login
 	}
 }
 
@@ -19,7 +18,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		dispatchSelectRepo: (repoId, name) => {
 			dispatch(setSelectedRepo(repoId))
-			socket.emit('room', {room: repoId, name: name})
 			dispatch(push('/collaborators'))
 		}
 	}
@@ -29,6 +27,8 @@ class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
     }
+
+
 
 
     

@@ -10,7 +10,7 @@ const dispatchSelectRepo = props.onClick
 			<h1>This is the repo list</h1>
 			<div> {repos && repos.map(repo => 
 				(<div key={repo.id} onClick={() => {
-					dispatchSelectRepo(repo.id, name); 
+					dispatchSelectRepo(repo.id); 
 					}}>{repo.name}</div>))}
 			</div>
 		</div>

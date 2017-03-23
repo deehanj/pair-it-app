@@ -1,11 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import CollaboratorComponent from '../components/CollaboratorComponent'
+import { serverLocation } from '../utils/server.settings.js'
 import {push} from 'react-router-redux'
+import io from 'socket.io-client'
+
+const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
 	return {
-		repo: state.repo.selectedRepo
+		repo: state.repo.selectedRepo,
+		name: state.user.gitInfo.login
 	}
 }
 
@@ -20,8 +25,14 @@ const mapDispatchToProps = (dispatch) => {
 class CollaboratorContainer extends React.Component {
 	constructor(props){
 		super(props)
+
+  socket.on('add client', (data) => console.log(data.name))
     }
-    
+
+componentDidMount() {
+	socket.emit('room', {room: this.props.repo.id, name: this.props.name })
+}
+
 
 	render (){
 	
