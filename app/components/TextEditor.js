@@ -77,10 +77,13 @@ class TextEditorContainer extends React.Component {
       if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFiles()
     })
     socket.on('a tab was closed', payload => {
-      const { filePath, text, room, index } = payload
-      const newActiveFile = { filePath, text }
-      this.props.dispatchCloseFile(this.props.openFiles[index])
-      this.props.dispatchActiveFile(newActiveFile)
+      if (this.props.openFiles.filter(file => file.filePath === payload.filePath).length > 0) {
+        console.log('A TAB WAS CLOSED ON THE OTHER END')
+        const { filePath, text, room, index } = payload
+        const newActiveFile = { filePath, text }
+        this.props.dispatchCloseFile(this.props.openFiles[index])
+        this.props.dispatchActiveFile(newActiveFile)
+      }
     })
     socket.on('file was saved', (payload) => {
       if (this.props.activeFile.text !== payload.text) {
@@ -192,10 +195,12 @@ class TextEditorContainer extends React.Component {
         file = this.props.openFiles[length - 1]
         index = length - 1
       }
+      console.log('before .then', file, index)
       return this.props.dispatchActiveFile(file, index)
     })
     .spread((file, index) => {
-      console.log(file, index)
+      console.log('after .then', file, index)
+      this.setState({ tabIndex: index })
       socket.emit('closed tab', { filePath: file.filePath, text: file.text, room: this.props.room, index: index})
     })
     .catch(error => console.error(error.message))
@@ -240,9 +245,7 @@ class TextEditorContainer extends React.Component {
                 const fileNameArr = file.filePath.split('/')
                 const fileName = fileNameArr[fileNameArr.length - 1]
                 return (
-                  <Tab key={file.filePath}>{fileName}
-                    <button onClick={() => this.onCloseTab(file)}>X</button>
-                  </Tab>
+                  <Tab key={fileName}>{fileName}</Tab>
                 )
               })
             }
@@ -250,6 +253,7 @@ class TextEditorContainer extends React.Component {
           </TabList>
           {this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) =>
             (<TabPanel key={file.filePath}>
+              <button onClick={() => this.onCloseTab(file)}>X</button>
               <AceEditor
               mode="javascript"
               theme="monokai"
