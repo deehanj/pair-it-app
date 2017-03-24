@@ -82,4 +82,16 @@ export const saveNewFile = file => ({
   type: SAVE_NEW_FILE, file
 })
 
+// THUNKS
+
+export const setActiveFileAndReturnFileAndIndex = (file, index) => (dispatch) => {
+  dispatch(activeFile(file))
+  if (arguments.length > 1) return [file, index]
+}
+
+export const addToOpenFilesAndSetActive = () => (dispatch) => {
+  dispatch(addToOpenFiles({ filePath: '', text: '' }))
+  dispatch(activeFile({ filePath: '', text: '' }))
+}
+
 export default reducer
