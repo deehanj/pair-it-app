@@ -29,8 +29,11 @@ class HomePage extends Component {
   render() {
 
 //NO ROLES DEFINED
+<div>
+  <video id="webchatWindow"></video>
+  <video id="localWebchat"></video>
 
-if(this.props.role === ''){
+{if(this.props.role === ''){
   return(
   <div>
         <h1>Who is driving?</h1>
@@ -52,13 +55,15 @@ else if (this.props.role === 'driver'){
 }
 
 //NAVIGATOR VIEW
-else if (this.props.role === 'navigator')
+else if (this.props.role === 'navigator'){
     return (
       <div>
         <TextEditor />
       </div>
     );
-  }
+  }}
+</div>  
+}
 }
 
 export default connect(mapStateToProps, null)(HomePage)
