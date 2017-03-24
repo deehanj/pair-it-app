@@ -28,7 +28,6 @@ const readFile = dir => {
 
 const writeFile = (dir, text) => {
   return fsp.writeFileAsync(dir, text)
-  .return(text)
 }
 
 

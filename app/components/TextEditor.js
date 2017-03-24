@@ -9,7 +9,7 @@ import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { setUser } from '../reducers/user'
 import { serverLocation } from '../utils/server.settings.js'
-import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile } from '../reducers/FilesReducer'
+import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 import { getAllFiles } from '../utils/FileSystemFunction'
 
@@ -31,28 +31,15 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file, index) => {
-      dispatch(activeFile(file))
-      return [file, index]
-    },
+		dispatchSetActiveFileAndReturnFileAndIndex: (file, index) => dispatch(setActiveFileAndReturnFileAndIndex(file, index)),
 		dispatchUsername: (username) => dispatch(setUser(username)),
 		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
-    dispatchAddToOpenFiles: () => {
-      dispatch(addToOpenFiles({ filePath: '', text: '' }))
-      dispatch(activeFile({ filePath: '', text: '' }))
-    },
+    dispatchAddToOpenFilesAndSetActive: () => dispatch(addToOpenFilesAndSetActive()),
 		dispatchCloseFile: (file) => dispatch(closeFile(file)),
-    setRootDirectory: dir => {
-      if (dir.length > 0) {
-        getAllFiles(dir + '/')
-        .then(result => {
-          dispatch(setFileDir(dir))
-          dispatch(loadFiles(result))
-        })
-        .catch(error => console.error(error.message))
-      }
-    },
-    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file))
+    dispatchSetFileDirAndLoadFiles: (dir) => dispatch(setFileDirAndLoadFiles(dir)),
+    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file)),
+    dispatchDriverSave: (filePath, code, isNewFile) => dispatch(driverSave(filePath, code, isNewFile)),
+    dispatchCloseTab: (file, openFiles) => dispatch(closeTab(file, openFiles))
 	}
 }
 
@@ -67,19 +54,19 @@ class TextEditorContainer extends React.Component {
 
 		socket.on('receive code', (payload) => this.setState({ code: payload.code }))
 		socket.on('change to new tab', (payload) => {
-      Promise.resolve(this.props.dispatchActiveFile(this.props.openFiles[payload.index]))
+      Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
       .then(() => this.setState({tabIndex: payload.index}))
       .catch(error => console.error(error.message))
     })
 
     socket.on('new tab added', payload => {
-      if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFiles()
+      if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFilesAndSetActive()
     })
     socket.on('a tab was closed', payload => {
      if (this.props.openFiles.filter(file => file.filePath === payload.fileToClose.filePath).length > 0) {
        Promise.resolve(this.props.dispatchCloseFile(payload.fileToClose))
-       .then(() => this.props.dispatchActiveFile(payload.fileToActive) )
+       .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(payload.fileToActive) )
        .then(() => this.setState({tabIndex: payload.index}))
        .catch(error => console.error(error.message))
      }
@@ -88,7 +75,7 @@ class TextEditorContainer extends React.Component {
       if (this.props.activeFile.text !== payload.text) {
         const file = { filePath: payload.filePath, text: payload.text }
         Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
-        .then(() => this.props.dispatchActiveFile(file))
+        .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(file))
         .then(() => this.props.dispatchSaveNewFile(file))
         .catch(error => console.error(error.message))
       }
@@ -130,14 +117,10 @@ class TextEditorContainer extends React.Component {
     file.text = this.state.code
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
-    .then(() => this.props.dispatchActiveFile(this.props.openFiles[index]))
+    .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[index]))
     .then(() => this.setState({tabIndex: index}))
 	  .catch(error => console.error(error.message))
   }
-
-//WORKING HERE
-// Need to provide a case for user saving a file with no active file open (or do we just want to make the text editor inaccessible until they open a new file?)
-// and for a case when the user wants to make a new file
 
   onSave(ev) {
     ev.preventDefault()
@@ -149,54 +132,19 @@ class TextEditorContainer extends React.Component {
       filePath = `${this.props.dir}/${ev.target.filename.value}.js`
       isNewFile = true
     }
-    // const filePath = this.props.activeFile.filePath.length > 0 ? this.props.activeFile.filePath : `${this.props.dir}/${ev.target.filename.value}.js`
-    writeFile(filePath, this.state.code)
-    .then(text => {
-      const file = { filePath, text }
-      this.props.dispatchUpdateOpenFiles(file)
-      return file
-    })
-    .then(file => {
-      socket.emit('save file', { filePath: file.filePath, text: file.text, room: this.props.room })
-      return file
-    })
-    .then(file => {
-      this.props.dispatchActiveFile(file)
-      return file
-    })
-    .then(file => {
-      if (isNewFile) this.props.dispatchSaveNewFile(file)
-    })
-    .then(() => this.props.setRootDirectory(this.props.dir))
-
-    .catch(error => console.error('Error writing file: ', error.message))
+    this.props.dispatchDriverSave(filePath, this.state.code, isNewFile)
+    .then(() => this.props.dispatchSetFileDirAndLoadFiles(this.props.dir))
+    .then(() => socket.emit('save file', { filePath: filePath, text: this.state.code, room: this.props.room }))
+    .catch(error => console.error(error.message))
   }
 
   onAddNewTab() {
-    Promise.resolve(this.props.dispatchAddToOpenFiles())
+    Promise.resolve(this.props.dispatchAddToOpenFilesAndSetActive())
     .then(() => socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room}))
   }
 
   onCloseTab(file){
-    const oldFileIndex = this.props.openFiles.findIndex(openFile => openFile.filePath === file.filePath)
-    const length = this.props.openFiles.length - 1
-    Promise.resolve(this.props.dispatchCloseFile(file))
-    .then(() => {
-      let fileToActive;
-      let index;
-      if (length === 0) {
-        fileToActive = { filePath: '', text: '' }
-        index = 0
-      } else if (oldFileIndex === length) {
-        fileToActive = this.props.openFiles[length - 1]
-        index = length - 1
-      }else if (oldFileIndex !== length) {
-        fileToActive = this.props.openFiles[oldFileIndex]
-        index = oldFileIndex
-      }
-      console.log('before .then', fileToActive, index)
-      return this.props.dispatchActiveFile(fileToActive, index)
-    })
+    this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
       console.log('after .then', file, index)
       this.setState({ tabIndex: index })
@@ -226,7 +174,7 @@ class TextEditorContainer extends React.Component {
               showPrintMargin: false,
               maxLines: Infinity
             }}
-          />
+            />
           <form onSubmit={this.onSave}>
             <input type="text" name="filename" placeholder="Name your file" />
             <input type="submit" value="SAVE"/>
