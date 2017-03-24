@@ -61,13 +61,14 @@ export default class extends React.Component{
       console.log('MediaStreamURL: ', this.state.MediaStreamURL);
       return setTimeout(() => {
         console.log('~~~Sorting out media~~~')
-        this.props.sortOutMedia()
+        return this.props.sortOutMedia()
       }, 3000)
-      // return this.props.sortOutMedia()
     })
     .then(() => {
+      return setTimeout(() => {
         console.log('~~~TRIGGERING EVENT~~~')
         return events.trigger('startCall', this.state.collaborator)
+      }, 3000)
     })
     .catch(console.error)
     // while (!this.state.MediaStreamURL.id) {
