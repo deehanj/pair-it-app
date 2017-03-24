@@ -39,9 +39,16 @@ class CollaboratorContainer extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			collaborators: [],
+			collaborators: [{
+	      name: '',
+	      _id: ''
+	    }],
 			incomingCall: false,
-			users: []
+			users: [],
+			playerInfo: {
+	      name: props.name,
+	      _id: props.id
+	    }
 		}
 
 		const playerInfo = {
@@ -102,7 +109,7 @@ class CollaboratorContainer extends React.Component {
     }
 
 	componentDidMount() {
-		socket.emit('room', {room: this.props.repo.id, name: this.props.name })
+		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
 
 	}
 
