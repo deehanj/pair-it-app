@@ -60,6 +60,7 @@ class CollaboratorContainer extends React.Component {
     };
 
 	  socket.on('add client', (data) => {
+			// console.log('in add client, data: ', data);
 			let newCollaborator = data.playerInfo
 
 	  	const findCollaborator = (element) => element.name === newCollaborator.name
