@@ -31,9 +31,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => {
+		dispatchActiveFile: (file, index) => {
       dispatch(activeFile(file))
-      return file
+      return [file, index]
     },
 		dispatchUsername: (username) => dispatch(setUser(username)),
 		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
@@ -66,7 +66,7 @@ class TextEditorContainer extends React.Component {
 		}
 
 		socket.on('receive code', (payload) => this.setState({ code: payload.code }))
-		socket.on('changed to new tab', (payload) => {
+		socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchActiveFile(this.props.openFiles[payload.index]))
       .then(() => this.setState({tabIndex: payload.index}))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
@@ -77,13 +77,14 @@ class TextEditorContainer extends React.Component {
       if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFiles()
     })
     socket.on('a tab was closed', payload => {
-      this.props.dispatchCloseFile(payload)
-      this.props.dispatchActiveFile(payload)
+      const { filePath, text, room, index } = payload
+      const newActiveFile = { filePath, text }
+      this.props.dispatchCloseFile(this.props.openFiles[index])
+      this.props.dispatchActiveFile(newActiveFile)
     })
-    socket.on('closed tab', (payload) => this.onCloseTab(payload))
     socket.on('file was saved', (payload) => {
       if (this.props.activeFile.text !== payload.text) {
-        const file = { filePath: payload.filePath, text: filePath.text }
+        const file = { filePath: payload.filePath, text: payload.text }
         Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
         .then(() => this.props.dispatchActiveFile(file))
         .then(() => this.props.dispatchSaveNewFile(file))
@@ -170,8 +171,8 @@ class TextEditorContainer extends React.Component {
   }
 
   onAddNewTab() {
-    this.props.dispatchAddToOpenFiles()
-    socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room})
+    Promise.resolve(this.props.dispatchAddToOpenFiles())
+    .then(() => socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room}))
   }
 
   onCloseTab(file){
@@ -179,15 +180,24 @@ class TextEditorContainer extends React.Component {
     const length = this.props.openFiles.length - 1
     Promise.resolve(this.props.dispatchCloseFile(file))
     .then(() => {
+      let file;
+      let index;
       if (length === 0) {
-        return this.props.dispatchActiveFile({ filePath: '', text: '' })
+        file = { filePath: '', text: '' }
+        index = -1
       } else if (oldFileIndex !== length) {
-        return this.props.dispatchActiveFile(this.props.openFiles[oldFileIndex])
+        file = this.props.openFiles[oldFileIndex]
+        index = oldFileIndex
       } else if (oldFileIndex === length) {
-        return this.props.dispatchActiveFile(this.props.openFiles[length - 1])
+        file = this.props.openFiles[length - 1]
+        index = length - 1
       }
+      return this.props.dispatchActiveFile(file, index)
     })
-    .then(file => socket.emit('closed tab', { filePath: file.filePath, text: file.text, room: this.props.room }))
+    .spread((file, index) => {
+      console.log(file, index)
+      socket.emit('closed tab', { filePath: file.filePath, text: file.text, room: this.props.room, index: index})
+    })
     .catch(error => console.error(error.message))
   }
 
