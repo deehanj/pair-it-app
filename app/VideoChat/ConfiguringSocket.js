@@ -1,5 +1,5 @@
 import webrtcPak from './ExchangeFunctions';
-// import events from './events';
+import events from './events';
 import _ from 'lodash';
 
 const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
@@ -13,7 +13,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 				playerInfo.id = user.id; //Refresh server generated id
 			}
 		}));
-		socket.emit('users', users);
+		events.trigger('users', users);
 	});
 
 	//Emit connected
@@ -21,7 +21,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 	socket.emit('user_connected', playerInfo);
 
 	//Start a call
-	socket.on('startCall', (userDestiny) => {
+	events.subscribe('startCall', (userDestiny) => {
 		console.log('Requested create call', userDestiny, playerInfo);
 		theOtherUser = userDestiny;
 		webrtcPak.createOffer(
@@ -68,7 +68,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 	})
 
 	//Send ice candidates -- for all
-	socket.on('iceCandidate',
+	events.subscribe('iceCandidate',
 		(iceCandidate) => {
 		socket.emit('ice_candidate',
 			{

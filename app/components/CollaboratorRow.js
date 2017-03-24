@@ -48,16 +48,9 @@ export default class extends React.Component{
 
   handleIncomingCall = () => {
     console.log('answering incoming call');
-    // const playerInfo = {
-    //   name: this.state.myName,
-    //   _id: this.state.myId
-    // };
-    //
-    // const MediaStreamURL = this.state.MediaStreamURL;
-    // console.log('is this an object?', MediaStreamURL);
-    // ConfigureSocket(socket, playerInfo, MediaStreamURL);
 
-    socket.emit('startCall', this.state.collaborator);
+
+    events.trigger('startCall', this.state.collaborator);
   }
 
   getUserMedia = () => {
@@ -94,7 +87,7 @@ export default class extends React.Component{
       <div>
       <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator.name}</div>
       {
-        this.props.incomingCall && <button onClick={() => this.handleIncomingCall(this.state.collaborator)}>Answer, begin pair</button>
+        this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
       }
       </div>
     )

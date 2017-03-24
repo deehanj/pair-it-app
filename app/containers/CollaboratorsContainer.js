@@ -43,17 +43,19 @@ class CollaboratorContainer extends React.Component {
 	      name: '',
 	      _id: ''
 	    }],
-			incomingCall: false,
+			incomingCall: true,
 			users: [],
 			playerInfo: {
 	      name: props.name,
-	      _id: props.id
+	      _id: props.id,
+				id: socket.id
 	    }
 		}
 
 		const playerInfo = {
       name: props.name,
-      _id: props.id
+      _id: props.id,
+			id: socket.id
     };
 
 	  socket.on('add client', (data) => {

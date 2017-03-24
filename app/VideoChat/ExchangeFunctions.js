@@ -38,7 +38,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket) => {
         } else if (peerConnection.iceGatheringState == "complete") {
             console.log("Sending ice candidates to callee");
             for (let i = 0; i < iceCandidates.length; i++) {
-                socket.emit('iceCandidate', btoa(iceCandidates[i]));
+                events.trigger('iceCandidate', btoa(iceCandidates[i]));
             }
         }
     };
