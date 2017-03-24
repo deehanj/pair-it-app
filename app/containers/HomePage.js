@@ -33,9 +33,6 @@ class HomePage extends Component {
 if(this.props.role === ''){
   return(
   <div>
-        <video id="webchatWindow"></video>
-        <video id="localWebchat"></video>
-        <VideoChatContainer />
         <h1>Who is driving?</h1>
   </div>      
 )}
@@ -44,10 +41,6 @@ if(this.props.role === ''){
 else if (this.props.role === 'driver'){
   return (
       <div>
-        <video id="webchatWindow"></video>
-        <video id="localWebchat"></video>
-        <VideoChatContainer />
-
         <FilesContainer />
         <TextEditor />
         <GitButtonsContainer />
@@ -62,9 +55,6 @@ else if (this.props.role === 'driver'){
 else if (this.props.role === 'navigator')
     return (
       <div>
-        <video id="webchatWindow"></video>
-      	<video id="localWebchat"></video>
-      	<VideoChatContainer />
         <TextEditor />
       </div>
     );
