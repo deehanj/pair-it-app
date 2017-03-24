@@ -14,7 +14,7 @@ import SuccessBoxContainer from './SuccessBoxContainer';
 
 const mapStateToProps = (state) => {
   return {
-    role: 'navigator'
+    role: ''
   }
 
 }
@@ -26,44 +26,35 @@ const mapStateToProps = (state) => {
 class HomePage extends Component {
 
 
-  render() {
-
-//NO ROLES DEFINED
-<div>
-  <video id="webchatWindow"></video>
-  <video id="localWebchat"></video>
-
-{if(this.props.role === ''){
-  return(
-  <div>
-        <h1>Who is driving?</h1>
-  </div>      
-)}
-
-//DRIVER VIEW
-else if (this.props.role === 'driver'){
+render() {
   return (
-      <div>
-        <FilesContainer />
-        <TextEditor />
-        <GitButtonsContainer />
-        <ErrorBoxContainer />
-        <SuccessBoxContainer />
-      </div>
-    );
-
-}
-
-//NAVIGATOR VIEW
-else if (this.props.role === 'navigator'){
-    return (
-      <div>
-        <TextEditor />
-      </div>
-    );
-  }}
-</div>  
-}
+    //NO ROLES DEFINED
+    <div>
+      <video id="webchatWindow"></video>
+      <video id="localWebchat"></video>
+      {(this.props.role === '') ?
+          <div>
+            <h1>Who is driving?</h1>
+          </div>
+      :
+    //DRIVER VIEW
+      (this.props.role === 'driver') ?
+          <div>
+            <FilesContainer />
+            <TextEditor />
+            <GitButtonsContainer />
+            <ErrorBoxContainer />
+            <SuccessBoxContainer />
+          </div>
+      :
+    //NAVIGATOR VIEW
+          <div>
+            <TextEditor />
+          </div>
+    }
+    </div>
+  )
+  }
 }
 
 export default connect(mapStateToProps, null)(HomePage)
