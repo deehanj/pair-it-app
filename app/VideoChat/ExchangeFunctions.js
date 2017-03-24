@@ -72,7 +72,7 @@ webrtcpak.createOffer = (cb, MediaStreamURL, socket) => {
 }
 
 //Receive a call
-webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL) => {
+webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket) => {
     offerSdp = atob(offerSdp);
 
     initiatePC(

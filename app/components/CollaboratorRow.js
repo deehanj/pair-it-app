@@ -19,19 +19,52 @@ export default class extends React.Component{
       myName: this.props.myName,
       myId: this.props.myId,
       MediaStreamURL: this.props.URL,
-      incomingCall: this.props.incomingCall
+      incomingCall: this.props.incomingCall,
+      sortOutMedia: this.props.sortOutMedia
 
       // allProperties: this.props.allProperties
     }
 
-    this.handleClick = this.handleClick.bind(this)
+    this.callCollaborator = this.callCollaborator.bind(this)
     this.handleIncomingCall = this.handleIncomingCall.bind(this)
+    this.streamSuccessHandler = this.streamSuccessHandler.bind(this)
 
   }
 
 
-  handleClick = () => {
-    socket.emit('Pair with me', {room: this.state.repoId, name: this.state.collaborator, url: `/${this.state.myName}`})
+  callCollaborator() {
+    socket.emit('Pair with me', {
+      room: this.state.repoId,
+      name: this.state.collaborator.name,
+      url: `/${this.state.myName}`
+    })
+
+    this.setLocalUserMedia();
+
+    this.setUserMedia();
+    this.state.sortOutMedia();
+
+    //set roomname to store
+
+  }
+
+  handleIncomingCall() {
+    console.log('answering incoming call');
+
+    this.setLocalUserMedia();
+    this.setUserMedia();
+    this.state.sortOutMedia();
+
+    events.trigger('startCall', this.state.collaborator);
+
+    //set room to go to on store
+
+    this.state.goToPairRoom();
+
+    // move to next pair room
+  }
+
+  setLocalUserMedia() {
     navigator.getUserMedia(
       //configuration
       {
@@ -43,17 +76,9 @@ export default class extends React.Component{
       //error handler
       console.error
     )
-
   }
 
-  handleIncomingCall = () => {
-    console.log('answering incoming call');
-
-
-    events.trigger('startCall', this.state.collaborator);
-  }
-
-  getUserMedia = () => {
+  setUserMedia() {
     navigator.getUserMedia(
 			//configuration
 			{
@@ -82,10 +107,10 @@ export default class extends React.Component{
 
 
   render(){
-    console.log('Props: ', this.props);
+    console.log('Props: ', this.props.repoId);
     return (
       <div>
-      <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator.name}</div>
+      <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
       {
         this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
       }

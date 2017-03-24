@@ -24,7 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
 		goToPairRoom: () => {
 		  console.log('Got to pair room: ', ownProps);
-			// socket.emit('Pair with me', {room: ownProps.repo.id, name: ownProps.collaborator})
+			// socket.emit('go to pair room', {room: ownProps.repo.id, name: ownProps.collaborator})
 		},
 		clickToGoHome: () => {
 			dispatch(push('/home'))
@@ -43,13 +43,14 @@ class CollaboratorContainer extends React.Component {
 	      name: '',
 	      _id: ''
 	    }],
-			incomingCall: true,
+			incomingCall: false,
 			users: [],
 			playerInfo: {
 	      name: props.name,
 	      _id: props.id,
 				id: socket.id
-	    }
+	    },
+			MediaStreamURL: this.props.URL
 		}
 
 		const playerInfo = {
@@ -102,13 +103,17 @@ class CollaboratorContainer extends React.Component {
 
 
 
-    const MediaStreamURL = this.state.MediaStreamURL;
-    console.log('is this an object?', MediaStreamURL);
-    ConfigureSocket(socket, playerInfo, MediaStreamURL);
+    // const MediaStreamURL = this.state.MediaStreamURL;
+    // console.log('is this an object?', MediaStreamURL);
+    // ConfigureSocket(socket, playerInfo, MediaStreamURL);
 
 		socket.on('refresh_user_list', this.setUserState);
 
-    }
+		this.sortOutMedia = this.sortOutMedia.bind(this);
+
+		socket.on('go to pair room', this.props.clickToGoHome);
+
+  }
 
 	componentDidMount() {
 		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
@@ -120,17 +125,25 @@ class CollaboratorContainer extends React.Component {
 			// this.setState({users: users});
 	}
 
+	sortOutMedia(){
+		const MediaStreamURL = this.props.URL;
+		console.log('is this an object?', MediaStreamURL);
+		ConfigureSocket(socket, this.state.playerInfo, MediaStreamURL);
+	}
+
 	render (){
 
-		if (this.state.users) console.log('Users in state:', this.state.users);
+		// if (this.state.users) console.log('Users in state:', this.state.users);
 
 		return (
 			<div>
+				<video id='webchatWindow'></video>
+				<button onClick={this.sortOutMedia}>Sort out media</button>
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repoId} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  />
+					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} sortOutMedia={this.sortOutMedia} />
 				)) }
 			</div>
 		)
