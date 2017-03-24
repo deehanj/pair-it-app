@@ -3,7 +3,7 @@ import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
 import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
-import serverLocation from '../utils/server.settings.js'
+import { serverLocation } from '../utils/server.settings.js'
 
 import io from 'socket.io-client';
 
@@ -30,7 +30,8 @@ class Files extends React.Component {
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
     socket.on('new file is opened', (file) => {
-      this.props.openFileFromNavigator(file)
+      console.log(file)
+      this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
     });
   }
 
@@ -57,6 +58,13 @@ class Files extends React.Component {
     // }
   }
 
+  componentDidMount() {
+    setTimeout(() => socket.emit('room', {room: 'Christine'}), 0)
+  }
+  componentWillUnmount() {
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
+  }
+
   componentWillReceiveProps(nextProps) {
     if (this.state.level === 0) {
       const visible = {}
@@ -81,7 +89,16 @@ class Files extends React.Component {
             // checks if its a file or a directory
             return file.fileBool ?
               // makes a file list item if fileBool is true
-              <li key={filePath} onClick={() => this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1))}>{fileName}</li>
+              <li
+                key={filePath}
+                onClick={() => {
+                  console.log(file)
+                  console.log(this.props)
+                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
+                  // socket.emit('opened file', { filePath: file.filePath, text: file.text, room: this.props.room })
+                }
+                }>{fileName}
+              </li>
               :
               // makes a new Files component if fileBool is false
               <li key={filePath} onClick={() => this.setVisible(filePath)}>
@@ -92,6 +109,7 @@ class Files extends React.Component {
                   visible={false}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
+                  room={this.props.room}
                 />}
               </li>
           })
@@ -106,26 +124,27 @@ const mapStateToProps = state => {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
     visible: true,
-    level: 0
+    level: 0,
+    room: 'Christine'
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchActiveFile : dir => {
+    fetchActiveFile : (dir, room) => {
       if (dir.length > 0) {
         readFile(dir)
         .then(text => {
           text = text.toString()
           const file = {filePath: dir, text}
-          socket.emit('opened file', file)
+          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
           dispatch(activeFile(file))
           dispatch(addToOpenFiles(file))
         })
         .catch(error => console.error(error.message))
       }
     },
-    openFileFromNavigator : file => {
+    openFileFromDriver : file => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
     }
