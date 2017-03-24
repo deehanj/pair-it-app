@@ -25,7 +25,8 @@ const mapStateToProps = (state) => {
 		activeFile: state.fileSystem.activeFile,
 		openFiles: state.fileSystem.openFiles,
     dir: state.fileSystem.dir,
-		room: 'Christine'
+		room: 'Christine',
+    role: 'navigator'
 	}
 }
 
@@ -174,11 +175,12 @@ class TextEditorContainer extends React.Component {
               showPrintMargin: false,
               maxLines: Infinity
             }}
-            />
-          <form onSubmit={this.onSave}>
+          />
+          {this.props.role === 'driver' && <form onSubmit={this.onSave}>
             <input type="text" name="filename" placeholder="Name your file" />
             <input type="submit" value="SAVE"/>
-          </form>
+          </form>}
+
         </div>
       )
     } else {
@@ -219,7 +221,7 @@ class TextEditorContainer extends React.Component {
                 maxLines: Infinity
               }}
               />
-              {this.props.activeFile.filePath.length > 0 ?
+              {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
               <button value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
               :
               <form onSubmit={this.onSave}>
@@ -232,7 +234,6 @@ class TextEditorContainer extends React.Component {
         </Tabs>
 		  )}
 	  }
-
   }
 
 export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)
