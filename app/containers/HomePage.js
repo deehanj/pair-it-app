@@ -1,5 +1,7 @@
 // @flow
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
+
 import TextEditor from '../components/TextEditor';
 import FileListComponent from '../components/FileListComponent'
 import VideoChatContainer from '../VideoChat/VideoChatContainer';
@@ -7,26 +9,45 @@ import Dashboard from '../VideoChat/Dashboard';
 import FilesContainer from './FilesContainer'
 import GitButtonsContainer from './GitButtonsContainer';
 import ProjectPage from '../components/ProjectPage';
-import io from 'socket.io-client'
-import { serverLocation } from '../utils/server.settings'
-const socket = io(serverLocation)
 import ErrorBoxContainer from './ErrorBoxContainer';
 import SuccessBoxContainer from './SuccessBoxContainer';
 
-export default class HomePage extends Component {
+const mapStateToProps = (state) => {
+  return {
+    role: 'navigator'
+  }
 
-  componentDidMount() {
-    setTimeout(() => socket.emit('room', {room: 'Christine'}), 0)
-  }
-  componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
-  }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+
+// }
+
+class HomePage extends Component {
+
+
   render() {
-    return (
+
+//NO ROLES DEFINED
+
+if(this.props.role === ''){
+  return(
+  <div>
+        <video id="webchatWindow"></video>
+        <video id="localWebchat"></video>
+        <VideoChatContainer />
+        <h1>Who is driving?</h1>
+  </div>      
+)}
+
+//DRIVER VIEW
+else if (this.props.role === 'driver'){
+  return (
       <div>
         <video id="webchatWindow"></video>
-      	<video id="localWebchat"></video>
-      	<VideoChatContainer />
+        <video id="localWebchat"></video>
+        <VideoChatContainer />
+
         <FilesContainer />
         <TextEditor />
         <GitButtonsContainer />
@@ -34,5 +55,21 @@ export default class HomePage extends Component {
         <SuccessBoxContainer />
       </div>
     );
+
+}
+
+//NAVIGATOR VIEW
+else if (this.props.role === 'navigator')
+    return (
+      <div>
+        <video id="webchatWindow"></video>
+      	<video id="localWebchat"></video>
+      	<VideoChatContainer />
+        <TextEditor />
+      </div>
+    );
   }
 }
+
+export default connect(mapStateToProps, null)(HomePage)
+
