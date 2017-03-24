@@ -2,6 +2,7 @@ import store from '../store/configureStore.development'
 
 const SET_REPOS = 'SET_REPOS';
 const SELECT_REPO = 'SELECT_REPO';
+const SET_PAIRING_ROOM = 'SET_PAIRING_ROOM'
 
 //ACTION CREATOR
 export const setRepos = (repoList) => ({
@@ -10,6 +11,10 @@ export const setRepos = (repoList) => ({
 
 export const selectedRepo = (selectedRepo) => ({
 	type: SELECT_REPO, selectedRepo
+})
+
+export const setPairingRoom = (url) => ({
+  type: SET_PAIRING_ROOM, url
 })
 
 //THUNK
@@ -39,6 +44,9 @@ export default function reducer( state = initialState, action) {
     case SELECT_REPO:
     	newState.selectedRepo = action.selectedRepo
     	break;
+    case SET_PAIRING_ROOM:
+      newState.url = action.url
+      break
     default:
       return state;
   }
