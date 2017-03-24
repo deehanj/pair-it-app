@@ -40,7 +40,7 @@ export default class extends React.Component{
       name: this.state.collaborator.name,
       url: `/${this.state.myName}`
     })
-
+    this.props.setPairingRoomURL(`/${this.state.myName}`)
     Promise.resolve(this.setLocalUserMedia())
     .then(() => this.setUserMedia())
     .then(() => {
@@ -51,7 +51,7 @@ export default class extends React.Component{
       }, 3000)
     })
     .catch(console.error)
-
+    this.props.clickToGoHome()
     //set roomname to store
 
   }
@@ -78,7 +78,8 @@ export default class extends React.Component{
 
     //set room to go to on store
 
-    this.state.goToPairRoom();
+    // this.state.goToPairRoom();
+    this.props.clickToGoHome()
 
     // move to next pair room
   }

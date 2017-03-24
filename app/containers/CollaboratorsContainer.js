@@ -8,6 +8,7 @@ import {push} from 'react-router-redux'
 // import events from '../VideoChat/events'
 import ConfigureSocket from '../VideoChat/ConfiguringSocket'
 import io from 'socket.io-client'
+import {setPairingRoom} from '../reducers/repo';
 
 const socket = io(serverLocation)
 
@@ -31,7 +32,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		UpdateStream: (stream) => {
 			dispatch(UpdateURL(stream))
+		},
+		setPairingRoomURL: (url) => {
+			dispatch(setPairingRoom(url))
 		}
+
 	}
 }
 
@@ -92,9 +97,12 @@ class CollaboratorContainer extends React.Component {
 		  const partnerName = data.name
 			const url = data.url
 
-			if (partnerName === props.name)
+			if (partnerName === props.name){
 				this.setState({incomingCall: true})
 				console.log('pair with me, incomingCall', this.state.incomingCall)
+				this.props.setPairingRoomURL(data.url);
+			}
+				
 				//1. let current user know someone wants to pair
 				//2. say yes, let other person know you said yes
 				//3. place room name on global state
@@ -144,7 +152,7 @@ class CollaboratorContainer extends React.Component {
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} sortOutMedia={this.sortOutMedia} />
+					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} sortOutMedia={this.sortOutMedia} setPairingRoomURL= {this.props.setPairingRoomURL} clickToGoHome={this.props.clickToGoHome}/>
 				)) }
 			</div>
 		)
