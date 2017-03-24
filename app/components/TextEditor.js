@@ -24,16 +24,16 @@ const mapStateToProps = (state) => {
 	return {
 		activeFile: state.fileSystem.activeFile,
 		openFiles: state.fileSystem.openFiles,
-    dir: state.fileSystem.dir
-		// roomName: state.User.username
+    dir: state.fileSystem.dir,
+		room: 'Christine'
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		dispatchActiveFile: (file) => {
+		dispatchActiveFile: (file, index) => {
       dispatch(activeFile(file))
-      return file
+      return [file, index]
     },
 		dispatchUsername: (username) => dispatch(setUser(username)),
 		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
@@ -65,13 +65,34 @@ class TextEditorContainer extends React.Component {
 			tabIndex: 0,
 		}
 
-		socket.on('receive code', (payload) => this.updateCodeInState(payload))
-		socket.on('changed to new tab', (payload) => {
-      this.changeTabFromNavigator(payload.index)
-      this.props.dispatchUpdateOpenFiles(payload.file)
+		socket.on('receive code', (payload) => this.setState({ code: payload.code }))
+		socket.on('change to new tab', (payload) => {
+      Promise.resolve(this.props.dispatchActiveFile(this.props.openFiles[payload.index]))
+      .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
+      .then(() => this.setState({tabIndex: payload.index}))
+      .catch(error => console.error(error.message))
     })
-    socket.on('added a tab', () => this.props.dispatchAddToOpenFiles())
-    socket.on('closed tab', (payload) => this.onCloseTab(payload))
+
+    socket.on('new tab added', payload => {
+      if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFiles()
+    })
+    socket.on('a tab was closed', payload => {
+     if (this.props.openFiles.filter(file => file.filePath === payload.fileToClose.filePath).length > 0) {
+       Promise.resolve(this.props.dispatchCloseFile(payload.fileToClose))
+       .then(() => this.props.dispatchActiveFile(payload.fileToActive) )
+       .then(() => this.setState({tabIndex: payload.index}))
+       .catch(error => console.error(error.message))
+     }
+   })
+    socket.on('file was saved', (payload) => {
+      if (this.props.activeFile.text !== payload.text) {
+        const file = { filePath: payload.filePath, text: payload.text }
+        Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
+        .then(() => this.props.dispatchActiveFile(file))
+        .then(() => this.props.dispatchSaveNewFile(file))
+        .catch(error => console.error(error.message))
+      }
+    })
 
     this.handleSelect = this.handleSelect.bind(this)
     this.codeIsHappening = this.codeIsHappening.bind(this)
@@ -83,11 +104,11 @@ class TextEditorContainer extends React.Component {
   componentDidMount() {
   	// this.props.dispatchUsername('Christine')
     // can put a promise here and get rid of the setTimeout
-  	setTimeout(() => socket.emit('room', {room: this.props.roomName}), 0)
+  	setTimeout(() => socket.emit('room', {room: this.props.room}), 0)
   }
 
   componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor' + this.props.roomName})
+    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
   }
 
   componentWillReceiveProps(nextProps) {
@@ -100,30 +121,18 @@ class TextEditorContainer extends React.Component {
 
   codeIsHappening(newCode) {
     this.setState({ code: newCode })
-    socket.emit('coding event', {code: newCode, room: this.props.roomName})
-  }
-
-  updateCodeInState(payload) {
-    this.setState({
-      code: payload.code,
-    })
+    socket.emit('coding event', {code: newCode, room: this.props.room})
   }
 
   handleSelect(index, last) {
     console.log('Selected tab: ' + index + ', Last tab: ' + last)
     const file = this.props.activeFile
     file.text = this.state.code
+    socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchActiveFile(this.props.openFiles[index]))
-    .then(() => socket.emit('tab changed', {index: index, room: this.props.roomName}))
     .then(() => this.setState({tabIndex: index}))
 	  .catch(error => console.error(error.message))
-  }
-
-  changeTabFromNavigator(index) {
-  	Promise.resolve(this.props.dispatchActiveFile(this.props.openFiles[index]))
-    .then(this.setState({tabIndex: index}))
-  	.catch(error => console.error(error.message))
   }
 
 //WORKING HERE
@@ -142,18 +151,30 @@ class TextEditorContainer extends React.Component {
     }
     // const filePath = this.props.activeFile.filePath.length > 0 ? this.props.activeFile.filePath : `${this.props.dir}/${ev.target.filename.value}.js`
     writeFile(filePath, this.state.code)
-    .then(() => this.props.dispatchUpdateOpenFiles({ filePath, text: this.state.code }))
-    .then(() => {
-      if (isNewFile) this.props.dispatchSaveNewFile({ filePath, text: this.state.code })
+    .then(text => {
+      const file = { filePath, text }
+      this.props.dispatchUpdateOpenFiles(file)
+      return file
+    })
+    .then(file => {
+      socket.emit('save file', { filePath: file.filePath, text: file.text, room: this.props.room })
+      return file
+    })
+    .then(file => {
+      this.props.dispatchActiveFile(file)
+      return file
+    })
+    .then(file => {
+      if (isNewFile) this.props.dispatchSaveNewFile(file)
     })
     .then(() => this.props.setRootDirectory(this.props.dir))
-    .then(() => socket.emit('save file', { code: this.state.code }))
+
     .catch(error => console.error('Error writing file: ', error.message))
   }
 
   onAddNewTab() {
-    this.props.dispatchAddToOpenFiles()
-    socket.emit('added a tab')
+    Promise.resolve(this.props.dispatchAddToOpenFiles())
+    .then(() => socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room}))
   }
 
   onCloseTab(file){
@@ -161,13 +182,25 @@ class TextEditorContainer extends React.Component {
     const length = this.props.openFiles.length - 1
     Promise.resolve(this.props.dispatchCloseFile(file))
     .then(() => {
+      let fileToActive;
+      let index;
       if (length === 0) {
-        return this.props.dispatchActiveFile({ filePath: '', text: '' })
-      } else if (oldFileIndex !== length) {
-        return this.props.dispatchActiveFile(this.props.openFiles[oldFileIndex])
+        fileToActive = { filePath: '', text: '' }
+        index = 0
       } else if (oldFileIndex === length) {
-        return this.props.dispatchActiveFile(this.props.openFiles[length - 1])
+        fileToActive = this.props.openFiles[length - 1]
+        index = length - 1
+      }else if (oldFileIndex !== length) {
+        fileToActive = this.props.openFiles[oldFileIndex]
+        index = oldFileIndex
       }
+      console.log('before .then', fileToActive, index)
+      return this.props.dispatchActiveFile(fileToActive, index)
+    })
+    .spread((fileToActive, index) => {
+      console.log('after .then', file, index)
+      this.setState({ tabIndex: index })
+      socket.emit('closed tab', { fileToClose: file, fileToActive: fileToActive, room: this.props.room, index: index})
     })
     .catch(error => console.error(error.message))
   }
@@ -211,13 +244,7 @@ class TextEditorContainer extends React.Component {
                 const fileNameArr = file.filePath.split('/')
                 const fileName = fileNameArr[fileNameArr.length - 1]
                 return (
-                  <Tab key={file.filePath}>{fileName}
-                    <button onClick={() => {
-                        this.onCloseTab(file)
-                        socket.emit('closed tab', file)
-                      }
-                    }>X</button>
-                  </Tab>
+                  <Tab key={fileName}>{fileName}</Tab>
                 )
               })
             }
@@ -225,6 +252,7 @@ class TextEditorContainer extends React.Component {
           </TabList>
           {this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) =>
             (<TabPanel key={file.filePath}>
+              <button onClick={() => this.onCloseTab(file)}>X</button>
               <AceEditor
               mode="javascript"
               theme="monokai"
