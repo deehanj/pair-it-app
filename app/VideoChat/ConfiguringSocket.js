@@ -18,23 +18,24 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 
 	//Emit connected
 	console.log('User connected', playerInfo)
-	socket.emit('user_connected', playerInfo);  
+	socket.emit('user_connected', playerInfo);
 
 	//Start a call
 	events.suscribe('startCall', (userDestiny) => {
 		console.log('Requested create call', userDestiny, playerInfo);
 		theOtherUser = userDestiny;
 		webrtcPak.createOffer(
-			(offer) => {  
-				socket.emit('start_call_with', 
+			(offer) => {
+				socket.emit('start_call_with',
 					{
 						userDestiny: theOtherUser,
 						userCalling: playerInfo,
 						offer: offer
 					}
 				);
-			}, 
-			MediaStreamURL
+			},
+			MediaStreamURL,
+			socket
 		);
 	});
 
@@ -46,17 +47,18 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 	socket.on('receiveOffer', (options) => {
 		theOtherUser = options.caller;
 		webrtcPak.receiveOffer(
-			options.offer, 
+			options.offer,
 			(answer) => {
-				socket.emit('answer', 
+				socket.emit('answer',
 					{
 					    userDestiny: theOtherUser,
 					    userCalling: playerInfo,
 					    answer: answer
 		  			}
 		  		);
-			}, 
-			MediaStreamURL
+			},
+			MediaStreamURL,
+			socket
 		);
 	});
 
@@ -66,9 +68,9 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 	})
 
 	//Send ice candidates -- for all
-	events.suscribe('iceCandidate', 
+	events.suscribe('iceCandidate',
 		(iceCandidate) => {
-		socket.emit('ice_candidate', 
+		socket.emit('ice_candidate',
 			{
 			    userDestiny: theOtherUser,
 			    userCalling: playerInfo,
@@ -85,4 +87,3 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 }
 
 export default ConfigureSocket;
-
