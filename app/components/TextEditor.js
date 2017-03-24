@@ -174,7 +174,7 @@ class TextEditorContainer extends React.Component {
               showPrintMargin: false,
               maxLines: Infinity
             }}
-          />
+            />
           <form onSubmit={this.onSave}>
             <input type="text" name="filename" placeholder="Name your file" />
             <input type="submit" value="SAVE"/>
