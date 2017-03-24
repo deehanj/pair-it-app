@@ -41,46 +41,40 @@ export default class extends React.Component{
       url: `/${this.state.myName}`
     })
 
-    this.setLocalUserMedia();
-
-    this.setUserMedia();
-    this.props.sortOutMedia();
+    Promise.resolve(this.setLocalUserMedia())
+    .then(() => this.setUserMedia())
+    .then(() => {
+      // console.log('MediaStreamURL: ', this.state.MediaStreamURL);
+      return setTimeout(() => {
+        // console.log('~~~Sorting out media~~~')
+        return this.props.sortOutMedia()
+      }, 3000)
+    })
+    .catch(console.error)
 
     //set roomname to store
 
   }
 
   handleIncomingCall() {
-    console.log('answering incoming call');
+    // console.log('answering incoming call');
 
     Promise.resolve(this.setLocalUserMedia())
+    .then(() => this.setUserMedia())
     .then(() => {
-      return this.setUserMedia()
-    })
-    .then(() => {
-      console.log('MediaStreamURL: ', this.state.MediaStreamURL);
+      // console.log('MediaStreamURL: ', this.state.MediaStreamURL);
       return setTimeout(() => {
-        console.log('~~~Sorting out media~~~')
+        // console.log('~~~Sorting out media~~~')
         return this.props.sortOutMedia()
       }, 3000)
     })
     .then(() => {
       return setTimeout(() => {
-        console.log('~~~TRIGGERING EVENT~~~')
+        // console.log('~~~TRIGGERING EVENT~~~')
         return events.trigger('startCall', this.state.collaborator)
       }, 3000)
     })
     .catch(console.error)
-    // while (!this.state.MediaStreamURL.id) {
-    //
-    // }
-    // setTimeout(() => {
-    //   console.log('~~~TRIGGERING EVENT~~~')
-    //   events.trigger('startCall', this.state.collaborator)
-    // }, 15)
-
-    // console.log('~~~TRIGGERING EVENT~~~');
-    // events.trigger('startCall', this.state.collaborator);
 
     //set room to go to on store
 
@@ -132,7 +126,7 @@ export default class extends React.Component{
 
 
   render(){
-    console.log('Props: ', this.props.repoId);
+    // console.log('Props: ', this.props.repoId);
     return (
       <div>
       <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
