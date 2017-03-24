@@ -5,7 +5,8 @@ import CollaboratorRow from "../components/CollaboratorRow"
 import { serverLocation } from '../utils/server.settings.js'
 import {UpdateURL} from '../VideoChat/VideoChatActionCreators'
 import {push} from 'react-router-redux'
-import events from '../VideoChat/events'
+// import events from '../VideoChat/events'
+import ConfigureSocket from '../VideoChat/ConfiguringSocket'
 import io from 'socket.io-client'
 
 const socket = io(serverLocation)
@@ -39,8 +40,14 @@ class CollaboratorContainer extends React.Component {
 		super(props)
 		this.state = {
 			collaborators: [],
-			incomingCall: false
+			incomingCall: false,
+			users: []
 		}
+
+		const playerInfo = {
+      name: props.name,
+      _id: props.id
+    };
 
 	  socket.on('add client', (data) => {
 	  	let newCollaborator = data.name
@@ -51,7 +58,7 @@ class CollaboratorContainer extends React.Component {
 	  		this.setState({collaborators: collabArray})
 	  	}
 
-	  socket.emit('I am here', {room: data.room, name: this.props.name})
+	  socket.emit('I am here', {room: data.room, name: this.props.name, playerInfo})
 	  })
 
 	  socket.on('store collaborator', (data) => {
@@ -80,7 +87,13 @@ class CollaboratorContainer extends React.Component {
 				//5. push to text editor
 		})
 
-		socket.on('users', this.setUserState);
+
+
+    const MediaStreamURL = this.state.MediaStreamURL;
+    console.log('is this an object?', MediaStreamURL);
+    ConfigureSocket(socket, playerInfo, MediaStreamURL);
+
+		socket.on('refresh_user_list', this.setUserState);
 
     }
 
@@ -90,12 +103,13 @@ class CollaboratorContainer extends React.Component {
 	}
 
 	setUserState(users){
-			this.setState({users: users});
+		console.log('User list from server: ', users);
+			// this.setState({users: users});
 	}
 
 	render (){
 
-		if (this.state.users) console.log(this.state.users);
+		// if (this.state.users) console.log(this.state.users);
 
 		return (
 			<div>

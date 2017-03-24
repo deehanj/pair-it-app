@@ -48,14 +48,14 @@ export default class extends React.Component{
 
   handleIncomingCall = () => {
     console.log('answering incoming call');
-    const playerInfo = {
-      name: this.state.myName,
-      _id: this.state.myId
-    };
-
-    const MediaStreamURL = this.state.MediaStreamURL;
-    console.log('is this an object?', MediaStreamURL);
-    ConfigureSocket(socket, playerInfo, MediaStreamURL);
+    // const playerInfo = {
+    //   name: this.state.myName,
+    //   _id: this.state.myId
+    // };
+    //
+    // const MediaStreamURL = this.state.MediaStreamURL;
+    // console.log('is this an object?', MediaStreamURL);
+    // ConfigureSocket(socket, playerInfo, MediaStreamURL);
 
     socket.emit('startCall', this.state.collaborator);
   }
