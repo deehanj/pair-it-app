@@ -92,7 +92,7 @@ export default class extends React.Component{
     console.log('Props: ', this.props);
     return (
       <div>
-      <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator}</div>
+      <div key={this.state.collaborator} onClick={this.handleClick}>{this.state.collaborator.name}</div>
       {
         this.props.incomingCall && <button onClick={() => this.handleIncomingCall(this.state.collaborator)}>Answer, begin pair</button>
       }

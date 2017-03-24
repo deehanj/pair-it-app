@@ -50,8 +50,10 @@ class CollaboratorContainer extends React.Component {
     };
 
 	  socket.on('add client', (data) => {
-	  	let newCollaborator = data.name
-	  	const findCollaborator = (element) => element === newCollaborator
+			let newCollaborator = data.playerInfo
+
+	  	const findCollaborator = (element) => element.name === newCollaborator.name
+
 	  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
 	  		let collabArray = this.state.collaborators
 	  		collabArray.push(newCollaborator)
@@ -62,8 +64,10 @@ class CollaboratorContainer extends React.Component {
 	  })
 
 	  socket.on('store collaborator', (data) => {
-	  	let newCollaborator = data.name
-	  	const findCollaborator = (element) => element === newCollaborator
+	  	let newCollaborator = data.playerInfo
+
+	  	const findCollaborator = (element) => element.name === newCollaborator.name
+
 	  	if (this.state.collaborators.findIndex(findCollaborator) === -1){
 	  		let collabArray = this.state.collaborators
 	  		collabArray.push(newCollaborator)
@@ -109,7 +113,7 @@ class CollaboratorContainer extends React.Component {
 
 	render (){
 
-		// if (this.state.users) console.log(this.state.users);
+		if (this.state.users) console.log('Users in state:', this.state.users);
 
 		return (
 			<div>
@@ -117,7 +121,7 @@ class CollaboratorContainer extends React.Component {
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRow key={collaborator} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repoId} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  />
+					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repoId} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  />
 				)) }
 			</div>
 		)
