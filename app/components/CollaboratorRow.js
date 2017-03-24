@@ -28,6 +28,8 @@ export default class extends React.Component{
     this.callCollaborator = this.callCollaborator.bind(this)
     this.handleIncomingCall = this.handleIncomingCall.bind(this)
     this.streamSuccessHandler = this.streamSuccessHandler.bind(this)
+    this.setUserMedia = this.setUserMedia.bind(this)
+    this.setLocalUserMedia = this.setLocalUserMedia.bind(this)
 
   }
 
@@ -42,7 +44,7 @@ export default class extends React.Component{
     this.setLocalUserMedia();
 
     this.setUserMedia();
-    this.state.sortOutMedia();
+    this.props.sortOutMedia();
 
     //set roomname to store
 
@@ -51,11 +53,33 @@ export default class extends React.Component{
   handleIncomingCall() {
     console.log('answering incoming call');
 
-    this.setLocalUserMedia();
-    this.setUserMedia();
-    this.state.sortOutMedia();
+    Promise.resolve(this.setLocalUserMedia())
+    .then(() => {
+      return this.setUserMedia()
+    })
+    .then(() => {
+      console.log('MediaStreamURL: ', this.state.MediaStreamURL);
+      return setTimeout(() => {
+        console.log('~~~Sorting out media~~~')
+        this.props.sortOutMedia()
+      }, 3000)
+      // return this.props.sortOutMedia()
+    })
+    .then(() => {
+        console.log('~~~TRIGGERING EVENT~~~')
+        return events.trigger('startCall', this.state.collaborator)
+    })
+    .catch(console.error)
+    // while (!this.state.MediaStreamURL.id) {
+    //
+    // }
+    // setTimeout(() => {
+    //   console.log('~~~TRIGGERING EVENT~~~')
+    //   events.trigger('startCall', this.state.collaborator)
+    // }, 15)
 
-    events.trigger('startCall', this.state.collaborator);
+    // console.log('~~~TRIGGERING EVENT~~~');
+    // events.trigger('startCall', this.state.collaborator);
 
     //set room to go to on store
 
