@@ -18,7 +18,7 @@ export default class extends React.Component{
       goToPairRoom: this.props.goToPairRoom,
       myName: this.props.myName,
       myId: this.props.myId,
-      URL: this.props.URL,
+      MediaStreamURL: this.props.URL,
       incomingCall: this.props.incomingCall
 
       // allProperties: this.props.allProperties
@@ -53,11 +53,11 @@ export default class extends React.Component{
       _id: this.state.myId
     };
 
-    const MediaStreamURL = this.state.URL;
+    const MediaStreamURL = this.state.MediaStreamURL;
     console.log('is this an object?', MediaStreamURL);
     ConfigureSocket(socket, playerInfo, MediaStreamURL);
 
-    events.trigger('startCall', this.state.collaborator);
+    socket.emit('startCall', this.state.collaborator);
   }
 
   getUserMedia = () => {

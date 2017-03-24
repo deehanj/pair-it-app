@@ -5,6 +5,7 @@ import CollaboratorRow from "../components/CollaboratorRow"
 import { serverLocation } from '../utils/server.settings.js'
 import {UpdateURL} from '../VideoChat/VideoChatActionCreators'
 import {push} from 'react-router-redux'
+import events from '../VideoChat/events'
 import io from 'socket.io-client'
 
 const socket = io(serverLocation)
@@ -79,16 +80,22 @@ class CollaboratorContainer extends React.Component {
 				//5. push to text editor
 		})
 
+		socket.on('users', this.setUserState);
+
     }
 
-componentDidMount() {
-	socket.emit('room', {room: this.props.repo.id, name: this.props.name })
+	componentDidMount() {
+		socket.emit('room', {room: this.props.repo.id, name: this.props.name })
 
-	// events.subscribe('users', this.setUserState)
+	}
 
-}
+	setUserState(users){
+			this.setState({users: users});
+	}
 
 	render (){
+
+		if (this.state.users) console.log(this.state.users);
 
 		return (
 			<div>
@@ -96,7 +103,7 @@ componentDidMount() {
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRow key={collaborator} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repoId} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall} />
+					<CollaboratorRow key={collaborator} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repoId} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  />
 				)) }
 			</div>
 		)

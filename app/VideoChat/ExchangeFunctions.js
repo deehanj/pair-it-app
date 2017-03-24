@@ -11,7 +11,7 @@ const error = (err) =>{
   console.log('Error doing things', err);
 }
 
-const initiatePC = (onSuccess, MediaStreamURL) => {
+const initiatePC = (onSuccess, MediaStreamURL, socket) => {
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
             "url": "stun:stun.l.google.com:19302"
@@ -27,7 +27,7 @@ const initiatePC = (onSuccess, MediaStreamURL) => {
     peerConnection.onaddstream = (event) => {
         console.log("onaddstream");
         console.log(event);
-        
+
         video.src = URL.createObjectURL(event.stream);
         video.play();
     };
@@ -38,7 +38,7 @@ const initiatePC = (onSuccess, MediaStreamURL) => {
         } else if (peerConnection.iceGatheringState == "complete") {
             console.log("Sending ice candidates to callee");
             for (let i = 0; i < iceCandidates.length; i++) {
-                events.trigger('iceCandidate', btoa(iceCandidates[i]));
+                socket.emit('iceCandidate', btoa(iceCandidates[i]));
             }
         }
     };
@@ -48,7 +48,7 @@ const initiatePC = (onSuccess, MediaStreamURL) => {
 
 
 //Create a call
-webrtcpak.createOffer = (cb, MediaStreamURL) => {
+webrtcpak.createOffer = (cb, MediaStreamURL, socket) => {
     initiatePC(
         (localMediaStream) => {
 
@@ -61,12 +61,13 @@ webrtcpak.createOffer = (cb, MediaStreamURL) => {
                 () => {
                     cb(btoa(offer.sdp));
                 });
-            }, 
+            },
             (error) => {
                 console.log(error)
             });
-        }, 
-        MediaStreamURL
+        },
+        MediaStreamURL,
+        socket
     );
 }
 
@@ -93,7 +94,7 @@ webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL) => {
                             canAcceptIce = true;
                             cb(btoa(answer.sdp));
                         },
-                        error, 
+                        error,
                         {
                             mandatory: {
                                 OfferToReceiveAudio: true,
@@ -104,8 +105,9 @@ webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL) => {
                 },
                 error
             );
-        }, 
-        MediaStreamURL
+        },
+        MediaStreamURL,
+        socket
     );
 }
 
@@ -115,7 +117,7 @@ webrtcpak.receiveAnswer = (answerSdp) => {
             {
                 type: "answer",
                 sdp: atob(answerSdp)
-            }   
+            }
         )
     );
     canAcceptIce = true;
