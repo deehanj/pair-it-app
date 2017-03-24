@@ -9,18 +9,18 @@ import GitButtonsContainer from './GitButtonsContainer';
 import ProjectPage from '../components/ProjectPage';
 import io from 'socket.io-client'
 import { serverLocation } from '../utils/server.settings'
-const socket = io(serverLocation)
+// const socket = io(serverLocation)
 import ErrorBoxContainer from './ErrorBoxContainer';
 import SuccessBoxContainer from './SuccessBoxContainer';
 
 export default class HomePage extends Component {
 
-  componentDidMount() {
-    setTimeout(() => socket.emit('room', {room: 'Christine'}), 0)
-  }
-  componentWillUnmount() {
-    socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
-  }
+  // componentDidMount() {
+  //   setTimeout(() => socket.emit('room', {room: 'Christine'}), 0)
+  // }
+  // componentWillUnmount() {
+  //   socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
+  // }
   render() {
     return (
       <div>
