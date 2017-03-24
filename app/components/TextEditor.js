@@ -9,7 +9,7 @@ import AceEditor from 'react-ace'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 import { setUser } from '../reducers/user'
 import { serverLocation } from '../utils/server.settings.js'
-import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive } from '../reducers/FilesReducer'
+import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab } from '../reducers/FilesReducer'
 import { writeFile } from '../utils/FileSystemFunction'
 import { getAllFiles } from '../utils/FileSystemFunction'
 
@@ -36,17 +36,10 @@ const mapDispatchToProps = (dispatch) => {
 		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
     dispatchAddToOpenFilesAndSetActive: () => dispatch(addToOpenFilesAndSetActive()),
 		dispatchCloseFile: (file) => dispatch(closeFile(file)),
-    setRootDirectory: dir => {
-      if (dir.length > 0) {
-        getAllFiles(dir + '/')
-        .then(result => {
-          dispatch(setFileDir(dir))
-          dispatch(loadFiles(result))
-        })
-        .catch(error => console.error(error.message))
-      }
-    },
-    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file))
+    dispatchSetFileDirAndLoadFiles: (dir) => dispatch(setFileDirAndLoadFiles(dir)),
+    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file)),
+    dispatchDriverSave: (filePath, code, isNewFile) => dispatch(driverSave(filePath, code, isNewFile)),
+    dispatchCloseTab: (file, openFiles) => dispatch(closeTab(file, openFiles))
 	}
 }
 
@@ -129,10 +122,6 @@ class TextEditorContainer extends React.Component {
 	  .catch(error => console.error(error.message))
   }
 
-//WORKING HERE
-// Need to provide a case for user saving a file with no active file open (or do we just want to make the text editor inaccessible until they open a new file?)
-// and for a case when the user wants to make a new file
-
   onSave(ev) {
     ev.preventDefault()
     let filePath
@@ -143,27 +132,10 @@ class TextEditorContainer extends React.Component {
       filePath = `${this.props.dir}/${ev.target.filename.value}.js`
       isNewFile = true
     }
-    // const filePath = this.props.activeFile.filePath.length > 0 ? this.props.activeFile.filePath : `${this.props.dir}/${ev.target.filename.value}.js`
-    writeFile(filePath, this.state.code)
-    .then(text => {
-      const file = { filePath, text }
-      this.props.dispatchUpdateOpenFiles(file)
-      return file
-    })
-    .then(file => {
-      socket.emit('save file', { filePath: file.filePath, text: file.text, room: this.props.room })
-      return file
-    })
-    .then(file => {
-      this.props.dispatchActiveFile(file)
-      return file
-    })
-    .then(file => {
-      if (isNewFile) this.props.dispatchSaveNewFile(file)
-    })
-    .then(() => this.props.setRootDirectory(this.props.dir))
-
-    .catch(error => console.error('Error writing file: ', error.message))
+    this.props.dispatchDriverSave(filePath, this.state.code, isNewFile)
+    .then(() => this.props.dispatchSetFileDirAndLoadFiles(this.props.dir))
+    .then(() => socket.emit('save file', { filePath: filePath, text: this.state.code, room: this.props.room }))
+    .catch(error => console.error(error.message))
   }
 
   onAddNewTab() {
@@ -172,25 +144,7 @@ class TextEditorContainer extends React.Component {
   }
 
   onCloseTab(file){
-    const oldFileIndex = this.props.openFiles.findIndex(openFile => openFile.filePath === file.filePath)
-    const length = this.props.openFiles.length - 1
-    Promise.resolve(this.props.dispatchCloseFile(file))
-    .then(() => {
-      let fileToActive;
-      let index;
-      if (length === 0) {
-        fileToActive = { filePath: '', text: '' }
-        index = 0
-      } else if (oldFileIndex === length) {
-        fileToActive = this.props.openFiles[length - 1]
-        index = length - 1
-      }else if (oldFileIndex !== length) {
-        fileToActive = this.props.openFiles[oldFileIndex]
-        index = oldFileIndex
-      }
-      console.log('before .then', fileToActive, index)
-      return this.props.dispatchActiveFile(fileToActive, index)
-    })
+    this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
       console.log('after .then', file, index)
       this.setState({ tabIndex: index })

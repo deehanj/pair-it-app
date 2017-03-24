@@ -1,4 +1,5 @@
-import { readFile } from '../utils/FileSystemFunction'
+import { getAllFiles, readFile, writeFile } from '../utils/FileSystemFunction'
+import Promise from 'bluebird'
 
 const SET_FILE_DIR = 'SET_FILE_DIR'
 const LOAD_FILES = 'LOAD_FILES'
@@ -92,6 +93,50 @@ export const setActiveFileAndReturnFileAndIndex = (file, index) => (dispatch) =>
 export const addToOpenFilesAndSetActive = () => (dispatch) => {
   dispatch(addToOpenFiles({ filePath: '', text: '' }))
   dispatch(activeFile({ filePath: '', text: '' }))
+}
+
+export const setFileDirAndLoadFiles = (dir) => (dispatch) => {
+  if (dir.length > 0) {
+    getAllFiles(dir + '/')
+    .then(result => {
+      dispatch(setFileDir(dir))
+      dispatch(loadFiles(result))
+    })
+    .catch(error => console.error(error.message))
+  }
+}
+
+export const driverSave = (filePath, code, isNewFile) => (dispatch) => {
+  return writeFile(filePath, code)
+    .then(() => {
+      const file = { filePath, text: code }
+      if (isNewFile) dispatch(saveNewFile(file))
+      dispatch(updateOpenFiles(file))
+      return file
+    })
+    .then(file => dispatch(setActiveFileAndReturnFileAndIndex(file)))
+}
+
+export const closeTab = (file, openFiles) => (dispatch) => {
+  const oldFileIndex = openFiles.findIndex(openFile => openFile.filePath === file.filePath)
+    const length = openFiles.length - 1
+    return Promise.resolve(dispatch(closeFile(file)))
+    .then(() => {
+      let fileToActive;
+      let index;
+      if (length === 0) {
+        fileToActive = { filePath: '', text: '' }
+        index = 0
+      } else if (oldFileIndex === length) {
+        fileToActive = openFiles[length - 1]
+        index = length - 1
+      }else if (oldFileIndex !== length) {
+        fileToActive = openFiles[oldFileIndex]
+        index = oldFileIndex
+      }
+      console.log('before .then', fileToActive, index)
+      return dispatch(setActiveFileAndReturnFileAndIndex(fileToActive, index))
+    })
 }
 
 export default reducer
