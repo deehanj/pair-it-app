@@ -38,6 +38,10 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		);
 	});
 
+	socket.on('hang_up', () =>{
+		webrtcPak.hangUp()
+	})
+
 	//Receive a call -- only for !isCaller
 	socket.on('receiveOffer', (options) => {
 		theOtherUser = options.caller;

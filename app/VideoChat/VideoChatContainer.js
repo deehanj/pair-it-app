@@ -5,6 +5,8 @@ import {UpdateURL} from './VideoChatActionCreators';
 const mapStateToProps = (state) => {
 	return {
 		URL: state.VideoChat.URL,
+		name: state.user.gitInfo.login,
+		id: state.user.id,
 	};
 };
 

@@ -9,8 +9,9 @@ import GitButtonsContainer from './GitButtonsContainer';
 import ProjectPage from '../components/ProjectPage';
 import io from 'socket.io-client'
 import { serverLocation } from '../utils/server.settings'
-
 const socket = io(serverLocation)
+import ErrorBoxContainer from './ErrorBoxContainer';
+import SuccessBoxContainer from './SuccessBoxContainer';
 
 export default class HomePage extends Component {
 
@@ -29,6 +30,8 @@ export default class HomePage extends Component {
         <FilesContainer />
         <TextEditor />
         <GitButtonsContainer />
+        <ErrorBoxContainer />
+        <SuccessBoxContainer />
       </div>
     );
   }
