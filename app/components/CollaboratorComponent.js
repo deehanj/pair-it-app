@@ -15,7 +15,7 @@ export default class CollaboratorComponent extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			collaborators: [{}],
+			collaborators: [],
 			incomingCall: false,
 			users: [],
 			playerInfo: {
