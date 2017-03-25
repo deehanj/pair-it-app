@@ -2,7 +2,7 @@ import webrtcPak from './ExchangeFunctions';
 import events from './events';
 import _ from 'lodash';
 
-const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
+const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) => {
 	let theOtherUser;
 
 	socket.on('refresh_user_list', (users) => {
@@ -35,7 +35,8 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 				);
 			},
 			MediaStreamURL,
-			socket
+			socket,
+			dispatchFunction
 		);
 	});
 
@@ -58,7 +59,8 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL) => {
 		  		);
 			},
 			MediaStreamURL,
-			socket
+			socket,
+			dispatchFunction
 		);
 	});
 

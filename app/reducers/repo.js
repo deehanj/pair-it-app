@@ -2,7 +2,8 @@ import store from '../store/configureStore.development'
 
 const SET_REPOS = 'SET_REPOS';
 const SELECT_REPO = 'SELECT_REPO';
-const SET_PAIRING_ROOM = 'SET_PAIRING_ROOM'
+const SET_PAIRING_ROOM = 'SET_PAIRING_ROOM';
+const SET_PAIRING_PARTNER = 'SET_PAIRING_PARTNER';
 
 //ACTION CREATOR
 export const setRepos = (repoList) => ({
@@ -17,9 +18,13 @@ export const setPairingRoom = (url) => ({
   type: SET_PAIRING_ROOM, url
 })
 
+export const setPairingPartner = (collaborator) => ({
+  type: SET_PAIRING_ROOM, collaborator
+})
+
 //THUNK
 
-export const setSelectedRepo = (repoId) => 
+export const setSelectedRepo = (repoId) =>
 	(dispatch, getState) => {
 		const repos = store.getState().repo.repoList
 		const selectedRepoFromList = repos.filter(repo => repo.id === repoId)
@@ -47,6 +52,9 @@ export default function reducer( state = initialState, action) {
     case SET_PAIRING_ROOM:
       newState.url = action.url
       break
+    case SET_PAIRING_PARTNER:
+      newState.url = action.url
+      break
     default:
       return state;
   }
@@ -54,7 +62,3 @@ export default function reducer( state = initialState, action) {
   return newState;
 
 }
-
-
-
-

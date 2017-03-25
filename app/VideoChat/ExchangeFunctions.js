@@ -11,7 +11,7 @@ const error = (err) =>{
   console.log('Error doing things', err);
 }
 
-const initiatePC = (onSuccess, MediaStreamURL, socket) => {
+const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
             "url": "stun:stun.l.google.com:19302"
@@ -22,14 +22,14 @@ const initiatePC = (onSuccess, MediaStreamURL, socket) => {
 
     iceCandidates = [];
     pendingAcceptCandidates = [];
-    const video = document.getElementById('webchatWindow');
+    // const video = document.getElementById('webchatWindow');
 
     peerConnection.onaddstream = (event) => {
         console.log("onaddstream");
         console.log(event);
-
-        video.src = URL.createObjectURL(event.stream);
-        video.play();
+        dispatchFunction(URL.createObjectURL(event.stream))
+        // video.src = URL.createObjectURL(event.stream);
+        // video.play();
     };
 
     peerConnection.onicecandidate = (event) => {
@@ -48,7 +48,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket) => {
 
 
 //Create a call
-webrtcpak.createOffer = (cb, MediaStreamURL, socket) => {
+webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
     initiatePC(
         (localMediaStream) => {
 
@@ -67,12 +67,13 @@ webrtcpak.createOffer = (cb, MediaStreamURL, socket) => {
             });
         },
         MediaStreamURL,
-        socket
+        socket,
+        dispatchFunction
     );
 }
 
 //Receive a call
-webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket) => {
+webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket, dispatchFunction) => {
     offerSdp = atob(offerSdp);
 
     initiatePC(
@@ -107,7 +108,8 @@ webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket) => {
             );
         },
         MediaStreamURL,
-        socket
+        socket,
+        dispatchFunction
     );
 }
 
