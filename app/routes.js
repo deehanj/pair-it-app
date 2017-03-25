@@ -3,7 +3,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import App from './containers/App';
 
-import HomePage from './containers/HomePage';
+import HomePage from './containers/HomePageContainer';
 import RepoListContainer from './containers/RepoListContainer'
 import CollaboratorsContainer from './containers/CollaboratorsContainer'
 import login from './components/login';
