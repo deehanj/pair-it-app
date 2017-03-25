@@ -17,11 +17,11 @@ import events from '../VideoChat/events'
 
 const mapStateToProps = (state) => {
   return {
-    ULR: state.VideoChat.URL,
+    URL: state.VideoChat.URL,
     localURL: state.VideoChat.localURL,
     remoteURL: state.VideoChat.remoteURL,
     role: '',
-    collaborator: state.repo.collaborator
+    collaborator: state.repo.collaborator,
   }
 
 }
@@ -33,15 +33,12 @@ const mapStateToProps = (state) => {
 class HomePage extends Component {
 
   componentDidMount(){
-    const RemoteVideo = document.getElementById('webchatWindow');
+    
     const LocalVideo = document.getElementById('localWebchat')
 
-
-    if(this.props.URL != {}){
-      RemoteVideo.src = this.props.URL;
-      RemoteVideo.play();
-    }
-    LocalVideo.src = this.props.localURL;
+    console.log('remote:', this.props.remoteURL)
+    
+    LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
 
     //if you want to try and do this make sure that you are setting the store with the collaborator name in the CollaboratorRow Container
@@ -51,6 +48,11 @@ class HomePage extends Component {
 
 
   render() {
+    const RemoteVideo = document.getElementById('webchatWindow');
+    if(this.props.remoteURL.length){
+      RemoteVideo.src = this.props.remoteURL;
+      RemoteVideo.play();
+    }
     return (
       //NO ROLES DEFINED
       <div>

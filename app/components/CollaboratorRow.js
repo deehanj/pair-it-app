@@ -30,6 +30,7 @@ export default class extends React.Component{
     this.streamSuccessHandler = this.streamSuccessHandler.bind(this)
     this.setUserMedia = this.setUserMedia.bind(this)
     this.setLocalUserMedia = this.setLocalUserMedia.bind(this)
+    this.localVideoView = this.localVideoView.bind(this)
 
   }
 
@@ -45,11 +46,14 @@ export default class extends React.Component{
     .then(() => this.setUserMedia())
     .then(() => {
       return setTimeout(() => {
-        return this.props.sortOutMedia()
+
+         
+          this.props.sortOutMedia()
+        return this.props.clickToGoHome()
       }, 3000)
     })
     .catch(console.error)
-    // this.props.clickToGoHome()
+    
     //set roomname to store
 
   }
@@ -61,18 +65,22 @@ export default class extends React.Component{
     .then(() => this.setUserMedia())
     .then(() => {
       return setTimeout(() => {
+        this.props.clickToGoHome()
         return this.props.sortOutMedia()
+
       }, 3000)
     })
     .then(() => {
       return setTimeout(() => {
         // console.log('~~~TRIGGERING EVENT~~~')
+        
         return events.trigger('startCall', this.state.collaborator)
+        
       }, 3000)
     })
     .catch(console.error)
 
-    // this.props.clickToGoHome()
+    
 
   }
 
