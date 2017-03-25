@@ -20,7 +20,7 @@ export default class extends React.Component{
       myId: this.props.myId,
       MediaStreamURL: this.props.URL,
       incomingCall: this.props.incomingCall,
-      sortOutMedia: this.props.sortOutMedia,
+      sortOutMedia: this.props.sortOutMedia
 
       // allProperties: this.props.allProperties
     }
@@ -65,16 +65,14 @@ export default class extends React.Component{
       }, 3000)
     })
     .then(() => {
-      this.props.setPairPartner(this.state.collaborator)
-      this.props.clickToGoHome()
-      // return setTimeout(() => {
-      //   // console.log('~~~TRIGGERING EVENT~~~')
-      //   return events.trigger('startCall', this.state.collaborator)
-      // }, 3000)
+      return setTimeout(() => {
+        // console.log('~~~TRIGGERING EVENT~~~')
+        return events.trigger('startCall', this.state.collaborator)
+      }, 3000)
     })
     .catch(console.error)
 
-    //this.props.clickToGoHome()
+    // this.props.clickToGoHome()
 
   }
 

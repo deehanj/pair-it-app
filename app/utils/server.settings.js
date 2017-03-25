@@ -8,4 +8,3 @@ export const serverLocation = 'http://pair-server.herokuapp.com';
 // export const serverLocation = 'http://192.168.5.48:1337'; //Christine on FullstackSeniors 5G
 
 // export const serverLocation = 'http://192.168.5.93:1337'; //Mike on FullstackSeniors 5G
-

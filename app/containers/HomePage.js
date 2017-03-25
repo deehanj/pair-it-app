@@ -30,7 +30,9 @@ const mapStateToProps = (state) => {
 class HomePage extends Component {
 
   componentDidMount(){
-    events.trigger('startCall', this.props.collaborator)
+    //if you want to try and do this make sure that you are setting the store with the collaborator name in the CollaboratorRow Container
+    //this breaks heroku, when you move from one container to the next
+    // events.trigger('startCall', this.props.collaborator)
   }
 
 
