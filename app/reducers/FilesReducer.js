@@ -131,10 +131,9 @@ export const closeTab = (file, openFiles) => (dispatch) => {
         fileToActive = openFiles[length - 1]
         index = length - 1
       }else if (oldFileIndex !== length) {
-        fileToActive = openFiles[oldFileIndex]
+        fileToActive = openFiles[oldFileIndex + 1]
         index = oldFileIndex
       }
-      console.log('before .then', fileToActive, index)
       return dispatch(setActiveFileAndReturnFileAndIndex(fileToActive, index))
     })
 }

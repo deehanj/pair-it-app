@@ -2,49 +2,20 @@
 
 import React from 'react'
 import Promise from 'bluebird'
-import {connect} from 'react-redux'
-import io from 'socket.io-client'
-import brace from 'brace'
-import AceEditor from 'react-ace'
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
-import { setUser } from '../reducers/user'
-import { serverLocation } from '../utils/server.settings.js'
-import { activeFile, updateOpenFiles, addToOpenFiles, closeFile, setFileDir, loadFiles, saveNewFile, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab } from '../reducers/FilesReducer'
-import { writeFile } from '../utils/FileSystemFunction'
-import { getAllFiles } from '../utils/FileSystemFunction'
 
+import AceEditor from 'react-ace'
+import brace from 'brace'
 import 'brace/mode/javascript'
 import 'brace/theme/monokai'
 import 'brace/ext/language_tools'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
+import io from 'socket.io-client'
+import { serverLocation } from '../utils/server.settings.js'
 
 const socket = io(serverLocation)
 
-const mapStateToProps = (state) => {
-	return {
-		activeFile: state.fileSystem.activeFile,
-		openFiles: state.fileSystem.openFiles,
-    dir: state.fileSystem.dir,
-		room: 'Christine',
-    role: 'navigator'
-	}
-}
-
-const mapDispatchToProps = (dispatch) => {
-	return {
-		dispatchSetActiveFileAndReturnFileAndIndex: (file, index) => dispatch(setActiveFileAndReturnFileAndIndex(file, index)),
-		dispatchUsername: (username) => dispatch(setUser(username)),
-		dispatchUpdateOpenFiles: (file) => dispatch(updateOpenFiles(file)),
-    dispatchAddToOpenFilesAndSetActive: () => dispatch(addToOpenFilesAndSetActive()),
-		dispatchCloseFile: (file) => dispatch(closeFile(file)),
-    dispatchSetFileDirAndLoadFiles: (dir) => dispatch(setFileDirAndLoadFiles(dir)),
-    dispatchSaveNewFile: (file) => dispatch(saveNewFile(file)),
-    dispatchDriverSave: (filePath, code, isNewFile) => dispatch(driverSave(filePath, code, isNewFile)),
-    dispatchCloseTab: (file, openFiles) => dispatch(closeTab(file, openFiles))
-	}
-}
-
-class TextEditorContainer extends React.Component {
+export default class TextEditorComponent extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
@@ -90,9 +61,7 @@ class TextEditorContainer extends React.Component {
 	}
 
   componentDidMount() {
-  	// this.props.dispatchUsername('Christine')
-    // can put a promise here and get rid of the setTimeout
-  	setTimeout(() => socket.emit('room', {room: this.props.room}), 0)
+  	socket.emit('room', {room: this.props.room})
   }
 
   componentWillUnmount() {
@@ -113,7 +82,6 @@ class TextEditorContainer extends React.Component {
   }
 
   handleSelect(index, last) {
-    console.log('Selected tab: ' + index + ', Last tab: ' + last)
     const file = this.props.activeFile
     file.text = this.state.code
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
@@ -147,7 +115,6 @@ class TextEditorContainer extends React.Component {
   onCloseTab(file){
     this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
-      console.log('after .then', file, index)
       this.setState({ tabIndex: index })
       socket.emit('closed tab', { fileToClose: file, fileToActive: fileToActive, room: this.props.room, index: index})
     })
@@ -236,4 +203,3 @@ class TextEditorContainer extends React.Component {
 	  }
   }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TextEditorContainer)

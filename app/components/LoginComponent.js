@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { loginUser } from '../reducers/auth';
 import options from '../utils/github.settings';
 
-export class LoginPage extends React.Component {
+export class LoginComponent extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.gitInfo.login && true) {
       ipcRenderer.send('reopen-window');
@@ -87,7 +87,7 @@ export class LoginPage extends React.Component {
   }
 }
 
-LoginPage.contextTypes = {
+LoginComponent.contextTypes = {
   router: React.PropTypes.object.isRequired
 };
 
@@ -101,4 +101,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, { loginUser })(LoginPage);
+export default connect(mapStateToProps, { loginUser })(LoginComponent);
