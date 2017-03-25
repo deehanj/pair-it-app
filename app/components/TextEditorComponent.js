@@ -189,7 +189,7 @@ export default class TextEditorComponent extends React.Component {
               }}
               />
               {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
-              <button value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
+              <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
               :
               <form onSubmit={this.onSave}>
                 <input type="text" name="filename" placeholder="Name your file" />
