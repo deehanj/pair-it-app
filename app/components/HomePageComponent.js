@@ -1,12 +1,14 @@
-import React, { Component } from 'react';
 
-import TextEditor from './TextEditor';
+// @flow
+import React, { Component } from 'react';
+import TextEditorContainer from '../containers/TextEditorContainer';
 import FilesContainer from '../containers/FilesContainer'
 import GitButtonsContainer from '../containers/GitButtonsContainer';
 import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
 
-export default class HomePage extends Component {
+
+export default class HomePageComponent extends Component {
 
   constructor(props){
     super(props)
@@ -47,7 +49,7 @@ export default class HomePage extends Component {
         (this.props.role === 'driver') ?
             <div>
               <FilesContainer />
-              <TextEditor />
+              <TextEditorContainer />
               <GitButtonsContainer />
               <ErrorBoxContainer />
               <SuccessBoxContainer />
@@ -62,3 +64,4 @@ export default class HomePage extends Component {
     )
     }
 }
+

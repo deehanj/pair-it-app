@@ -1,12 +1,9 @@
 // @flow
 import React, { Component } from 'react';
 import type { Children } from 'react';
-import { setFileDir, loadFiles } from '../reducers/FilesReducer';
-import { getAllFiles } from '../utils/FileSystemFunction'
 import store from '../store/configureStore.development'
 
-
-export default class App extends Component {
+export default class AppContainer extends Component {
   props: {
     children: Children
   };
