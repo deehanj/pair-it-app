@@ -20,7 +20,7 @@ export default class extends React.Component{
       myId: this.props.myId,
       MediaStreamURL: this.props.URL,
       incomingCall: this.props.incomingCall,
-      sortOutMedia: this.props.sortOutMedia
+      sortOutMedia: this.props.sortOutMedia,
 
       // allProperties: this.props.allProperties
     }
@@ -44,14 +44,12 @@ export default class extends React.Component{
     Promise.resolve(this.setLocalUserMedia())
     .then(() => this.setUserMedia())
     .then(() => {
-      // console.log('MediaStreamURL: ', this.state.MediaStreamURL);
       return setTimeout(() => {
-        // console.log('~~~Sorting out media~~~')
         return this.props.sortOutMedia()
       }, 3000)
     })
     .catch(console.error)
-    this.props.clickToGoHome()
+    // this.props.clickToGoHome()
     //set roomname to store
 
   }
@@ -62,26 +60,22 @@ export default class extends React.Component{
     Promise.resolve(this.setLocalUserMedia())
     .then(() => this.setUserMedia())
     .then(() => {
-      // console.log('MediaStreamURL: ', this.state.MediaStreamURL);
       return setTimeout(() => {
-        // console.log('~~~Sorting out media~~~')
         return this.props.sortOutMedia()
       }, 3000)
     })
     .then(() => {
-      return setTimeout(() => {
-        // console.log('~~~TRIGGERING EVENT~~~')
-        return events.trigger('startCall', this.state.collaborator)
-      }, 3000)
+      this.props.setPairPartner(this.state.collaborator)
+      this.props.clickToGoHome()
+      // return setTimeout(() => {
+      //   // console.log('~~~TRIGGERING EVENT~~~')
+      //   return events.trigger('startCall', this.state.collaborator)
+      // }, 3000)
     })
     .catch(console.error)
 
-    //set room to go to on store
+    //this.props.clickToGoHome()
 
-    // this.state.goToPairRoom();
-    this.props.clickToGoHome()
-
-    // move to next pair room
   }
 
   setLocalUserMedia() {
