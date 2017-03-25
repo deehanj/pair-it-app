@@ -21,6 +21,7 @@ export default class extends React.Component{
             MediaStreamURL: this.props.URL,
             incomingCall: this.props.incomingCall,
             sortOutMedia: this.props.sortOutMedia
+            // setPairPartner: this.props.setPairPartner
         }
 
         this.callCollaborator = this.callCollaborator.bind(this)
@@ -40,6 +41,7 @@ export default class extends React.Component{
             url: `/${this.state.myName}`
         })
         this.props.setPairingRoomURL(`/${this.state.myName}`)
+        this.props.setPairPartner(this.state.collaborator)
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
         .then(() => {
@@ -59,6 +61,10 @@ export default class extends React.Component{
     handleIncomingCall() {
         // console.log('answering incoming call');
 
+        console.log(this.props.setPairPartner);
+
+        this.props.setPairPartner(this.state.collaborator)
+
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
         .then(() => {
@@ -68,15 +74,15 @@ export default class extends React.Component{
             }, 3000)
         })
         .then(() => {
-            return setTimeout(() => {
-                return events.trigger('startCall', this.state.collaborator)
-            }, 3000)
+          return setTimeout(() => {
+            return events.trigger('startCall', this.state.collaborator)
+          }, 3000)
         })
         .catch(console.error)
 
-    
 
-    } 
+
+    }
 
     setLocalUserMedia() {
         navigator.getUserMedia(

@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { setRoleToDriver, setRoleToNavigator } from '../reducers/repo';
 import {connect} from 'react-redux';
 
 import HomePageComponent from '../components/HomePageComponent'
@@ -13,4 +14,22 @@ const mapStateToProps = (state) => {
     collaborator: state.repo.collaborator,
 	}
 }
-export default connect(mapStateToProps, null)(HomePageComponent)
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    setDriverToMe: () => {
+      //if driver name is mine, then set my role to 'driver'
+      dispatch(setRoleToDriver())
+      //emit to set other person to nav
+    },
+    setDriverToYou: () => {
+      //if driver name is yours, then set my role to 'navigator'
+      dispatch(setRoleToNavigator())
+      //emit to set other person to drive
+    }
+
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomePageComponent)
