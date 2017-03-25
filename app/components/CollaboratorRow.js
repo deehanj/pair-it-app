@@ -110,11 +110,7 @@ export default class extends React.Component{
   }
 
   localVideoView(stream) {
-    // const localVideo = document.getElementById('localWebchat');
-    // console.log(localVideo);
-    // localVideo.src = URL.createObjectURL(stream);
-    // // localVideo.onloadedmetadata(play());
-    // localVideo.play();
+    this.props.UpdateLocalStream(stream);
   }
 
 

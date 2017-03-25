@@ -17,6 +17,9 @@ import events from '../VideoChat/events'
 
 const mapStateToProps = (state) => {
   return {
+    ULR: state.VideoChat.URL,
+    localURL: state.VideoChat.localURL,
+    remoteURL: state.VideoChat.remoteURL,
     role: '',
     collaborator: state.repo.collaborator
   }
@@ -30,6 +33,17 @@ const mapStateToProps = (state) => {
 class HomePage extends Component {
 
   componentDidMount(){
+    const RemoteVideo = document.getElementById('webchatWindow');
+    const LocalVideo = document.getElementById('localWebchat')
+
+
+    if(this.props.URL != {}){
+      RemoteVideo.src = this.props.URL;
+      RemoteVideo.play();
+    }
+    LocalVideo.src = this.props.localURL;
+    LocalVideo.play();
+
     //if you want to try and do this make sure that you are setting the store with the collaborator name in the CollaboratorRow Container
     //this breaks heroku, when you move from one container to the next
     // events.trigger('startCall', this.props.collaborator)

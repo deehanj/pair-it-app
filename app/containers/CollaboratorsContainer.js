@@ -3,12 +3,13 @@ import {connect} from 'react-redux'
 import CollaboratorComponent from '../components/CollaboratorComponent'
 import CollaboratorRow from "../components/CollaboratorRow"
 import { serverLocation } from '../utils/server.settings.js'
-import {UpdateURL} from '../VideoChat/VideoChatActionCreators'
+import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../VideoChat/VideoChatActionCreators'
 import {push} from 'react-router-redux'
 // import events from '../VideoChat/events'
 import ConfigureSocket from '../VideoChat/ConfiguringSocket'
 import io from 'socket.io-client'
 import {setPairingRoom, setPairingPartner} from '../reducers/repo';
+
 
 const socket = io(serverLocation)
 
@@ -32,6 +33,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		UpdateStream: (stream) => {
 			dispatch(UpdateURL(stream))
+		},
+		UpdateLocalStream: (stream) => {
+			dispatch(UpdateLocalURL(stream))
+		},
+		UpdateRemoteStream: (stream) => {
+			dispatch(UpdateRemoteURL(stream))
 		},
 		setPairingRoomURL: (url) => {
 			dispatch(setPairingRoom(url))
@@ -140,7 +147,8 @@ class CollaboratorContainer extends React.Component {
 	sortOutMedia(){
 		const MediaStreamURL = this.props.URL;
 		console.log('is this an object?', MediaStreamURL);
-		ConfigureSocket(socket, this.state.playerInfo, MediaStreamURL);
+		const updateStoreRemoteURL = this.props.UpdateRemoteStream.bind(this);
+		ConfigureSocket(socket, this.state.playerInfo, MediaStreamURL, updateStoreRemoteURL);
 	}
 
 	render (){
@@ -155,7 +163,7 @@ class CollaboratorContainer extends React.Component {
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} sortOutMedia={this.sortOutMedia} setPairingRoomURL={this.props.setPairingRoomURL} clickToGoHome={this.props.clickToGoHome} setPairPartner={this.props.setPairPartner} />
+					<CollaboratorRow key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} UpdateLocalStream= {this.props.UpdateLocalStream}sortOutMedia={this.sortOutMedia} setPairingRoomURL={this.props.setPairingRoomURL} clickToGoHome={this.props.clickToGoHome} setPairPartner={this.props.setPairPartner} />
 				)) }
 			</div>
 		)
