@@ -26,7 +26,7 @@ const mapStateToProps = state => {
     activeFile: state.fileSystem.activeFile,
     visible: true,
     level: 0,
-    room: 'Christine'
+    room: state.room.name
   }
 }
 
