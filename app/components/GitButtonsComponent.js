@@ -10,6 +10,7 @@ export default class extends React.Component {
 		super(props)
 		this.state = {
 			displayBranchList:false,
+			receivedProps:false,
 		}
 		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
 		this.getBranchList = this.getBranchList.bind(this);
@@ -19,11 +20,17 @@ export default class extends React.Component {
 		this.handleGitPush = this.handleGitPush.bind(this);
 		this.handleGitPull = this.handleGitPull.bind(this);
 
-		this.Git = simpleGit(this.props.dir);
+
+		this.Git = simpleGit();
 	}
 
-	componentDidMount() {
-		this.getBranchList();
+	componentWillReceiveProps(nextProps) {
+		
+		if (!this.state.receivedProps) {
+			this.Git.cwd(nextProps.dir)
+			this.getBranchList();
+			this.setState({receivedProps:true})
+		}
 	}
 
 	getBranchList() {
@@ -104,6 +111,7 @@ export default class extends React.Component {
 				}
 			}
 		)
+		this.getBranchList()
 		this.props.toggleDisplayBranches()
 	}
 
@@ -131,7 +139,7 @@ export default class extends React.Component {
 	}
 
 	render(){
-		console.log(this.props.branchList)
+		console.log(this.props.dir)
 		return (
 			<div>
 				<h2 id="currentBranch">
