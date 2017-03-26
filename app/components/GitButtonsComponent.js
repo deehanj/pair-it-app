@@ -79,9 +79,7 @@ export default class extends React.Component {
 					setTimeout(this.handleStatus, 4000);
 				}
 			}
-			)
-		
-
+		)
 	}
 
 	handleBranchCheckout(e) {

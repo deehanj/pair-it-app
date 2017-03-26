@@ -1,6 +1,7 @@
 'use strict';
 const webrtcpak = {};
-const events = require('./events');
+import events from './events'
+
 let peerConnection = null;
 let iceCandidates;
 let pendingAcceptCandidates;

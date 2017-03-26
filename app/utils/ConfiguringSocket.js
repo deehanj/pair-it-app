@@ -21,7 +21,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) =
 	socket.emit('user_connected', playerInfo);
 
 	//Start a call
-	events.suscribe('startCall', (userDestiny) => {
+	events.subscribe('startCall', (userDestiny) => {
 		console.log('Requested create call', userDestiny, playerInfo);
 		theOtherUser = userDestiny;
 		webrtcPak.createOffer(
@@ -70,7 +70,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) =
 	})
 
 	//Send ice candidates -- for all
-	events.suscribe('iceCandidate',
+	events.subscribe('iceCandidate',
 		(iceCandidate) => {
 		socket.emit('ice_candidate',
 			{
