@@ -9,6 +9,10 @@ const twoFileArr = [file, file]
 const threeFileArr = [file, file, file]
 const index = 3
 
+const closeTabSpy = spy(actions, 'closeTab')
+const setActiveFileAndReturnFileAndIndexSpy = spy(actions, 'setActiveFileAndReturnFileAndIndex')
+const activeFileSpy = spy(actions, 'activeFile')
+
 describe('FileList actions', () => {
 
   it('setFileDir should create SET_FILE_DIR action', () => {
@@ -50,13 +54,13 @@ describe('FileList thunks', () => {
 
   // difficult to test setFileDirAndLoadFiles & driverSave thunks because they involve the filesystem
 
-  it('closeTab should create closeFile and setActiveFileAndReturnFileAndIndex actions with a blank file if closing the final tab', () => {
+  it('closeTab should create closeFile and setActiveFileAndReturnFileAndIndex actions', () => {
     const fn = actions.closeTab(file, singleFileArr);
     const dispatch = spy();
-    const toBeDispatched = [{ filePath: '', text: '' }, 0]
     fn(dispatch);
     expect(dispatch.calledWith({ type: 'CLOSE_FILE', file })).toBe(true);
-    // this doesnt work!
+    expect(closeTabSpy.called).toBe(true);
+    expect(setActiveFileAndReturnFileAndIndexSpy.called).toBe(true);
   });
 
 })
