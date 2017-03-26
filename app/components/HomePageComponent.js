@@ -93,6 +93,7 @@ export default class HomePageComponent extends Component {
             <div>
               <FilesContainer />
               <TextEditorContainer />
+              <FilesContainer />
             </div>
       }
       </div>
