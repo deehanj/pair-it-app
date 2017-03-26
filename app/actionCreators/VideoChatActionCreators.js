@@ -4,6 +4,8 @@ const SET_LOCAL_VIDEO_STREAM_URL = 'SET_LOCAL_VIDEO_STREAM_URL'
 
 const SET_REMOTE_VIDEO_STREAM_URL = 'SET_REMOTE_VIDEO_STREAM_URL'
 
+const CLEAR_ALL_URLS = 'CLEAR_ALL_URLS'
+
 export const UpdateURL = URLObject => (
 	{
 		type: SET_STREAM_URL,
@@ -22,5 +24,11 @@ export const UpdateRemoteURL = URLObject => (
 	{
 		type: SET_REMOTE_VIDEO_STREAM_URL,
 		URL: URLObject
+	}
+)
+
+export const clearAllURLs = () => (
+	{
+		type:CLEAR_ALL_URLS,
 	}
 )

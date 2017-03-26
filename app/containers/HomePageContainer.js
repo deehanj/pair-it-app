@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { setRoleToDriver, setRoleToNavigator } from '../reducers/repo';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux'
+import {clearAllURLs} from '../actionCreators/VideoChatActionCreators' 
 
 import HomePageComponent from '../components/HomePageComponent'
 
@@ -32,6 +33,9 @@ const mapDispatchToProps = (dispatch) => {
     backToCollaborators: () => {
       dispatch(push('/collaborators'))
     },
+    clearURLs: () => {
+      dispatch(clearAllURLs())
+    }
   }
 }
 

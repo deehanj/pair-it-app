@@ -65,7 +65,7 @@ export default class CollaboratorComponent extends React.Component {
 	  	const newCollabArray = this.state.collaborators.filter((collaborator) => {
 	  		collaborator.name != removeCollaborator.name
 	  	})
-	  	this.setState({collaborators: newCollabArray});
+	  		this.setState({collaborators: newCollabArray});
 	  })
 
 		socket.on('Partner', (data) => {
@@ -109,10 +109,7 @@ export default class CollaboratorComponent extends React.Component {
 
 	backToRepos() {
 		this.props.returnToRepos();
-	}
-
-	componentWillUnmount() {
-		socket.emit('leaving room', {room: data.room, playerInfo: this.state.playerInfo})
+		socket.emit('leaving room', {room: this.props.repo.id, playerInfo: this.state.playerInfo})
 	}
 
 	render (){

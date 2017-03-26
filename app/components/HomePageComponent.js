@@ -48,7 +48,7 @@ export default class HomePageComponent extends Component {
     setTimeout(()=>{
       socket.emit('room', {room: this.props.room,})
     }, 0)
-
+    document.getElementById('webchatWindow').style.visibility = 'visible';
 
 
     //listen to set to driver
@@ -77,12 +77,17 @@ export default class HomePageComponent extends Component {
 
   returnToCollaborators() {
     this.props.backToCollaborators();
-    window.pc.close();
     socket.emit('closed connection', {room: this.props.room})
     URL.revokeObjectURL(this.props.remoteURL)
     this.props.localURL.getVideoTracks()[0].stop();
     this.props.URL.getVideoTracks()[0].stop();
     this.props.URL.getAudioTracks()[0].stop();
+    this.props.clearURLs();
+    this.setState({remoteVideoRendered: false});
+  }
+
+  componentWillUnmount() {
+    window.pc.close();
   }
 
   render() {
