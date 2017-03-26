@@ -33,7 +33,7 @@ export default class HomePageComponent extends Component {
     this.returnToCollaborators = this.returnToCollaborators.bind(this);
 
     socket.on('peer connection severed', () => {
-      document.getElementById('webchatWindow').style.visibility = 'hidden';
+      // document.getElementById('webchatWindow').style.visibility = 'hidden';
           URL.revokeObjectURL(this.props.URL);
           URL.revokeObjectURL(this.props.remoteURL)
     })
@@ -48,7 +48,7 @@ export default class HomePageComponent extends Component {
     setTimeout(()=>{
       socket.emit('room', {room: this.props.room,})
     }, 0)
-    document.getElementById('webchatWindow').style.visibility = 'visible';
+    // document.getElementById('webchatWindow').style.visibility = 'visible';
 
 
     //listen to set to driver
