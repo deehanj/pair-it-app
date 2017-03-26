@@ -40,7 +40,7 @@ export default class HomePageComponent extends Component {
       socket.emit('room', {room: this.props.room,})
     }, 0)
 
-    
+
 
     //listen to set to driver
 
@@ -91,6 +91,7 @@ export default class HomePageComponent extends Component {
         :
       //NAVIGATOR VIEW
             <div>
+              <FilesContainer />
               <TextEditorContainer />
               <FilesContainer />
             </div>
