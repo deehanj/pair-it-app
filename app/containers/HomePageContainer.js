@@ -10,10 +10,9 @@ const mapStateToProps = (state) => {
     URL: state.VideoChat.URL,
     localURL: state.VideoChat.localURL,
     remoteURL: state.VideoChat.remoteURL,
-    role: '',
+    role: state.repo.role,
     collaborator: state.repo.collaborator,
     room: state.room.name
-
 	}
 }
 

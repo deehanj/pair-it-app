@@ -48,12 +48,12 @@ export default class HomePageComponent extends Component {
   }
 
   setSelfToDriver(){
-    this.props.setDriverToPartner()
+    this.props.setDriverToMyself()
     socket.emit('driver selected', {room: this.props.room})
   }
 
   setPartnerToDriver(){
-    this.props.setDriverToMyself()
+    this.props.setDriverToPartner()
     socket.emit('navigator selected', {room: this.props.room})
   }
 
@@ -91,7 +91,7 @@ export default class HomePageComponent extends Component {
         :
       //NAVIGATOR VIEW
             <div>
-              <TextEditor />
+              <TextEditorContainer />
             </div>
       }
       </div>
