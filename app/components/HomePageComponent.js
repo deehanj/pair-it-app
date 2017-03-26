@@ -92,6 +92,7 @@ export default class HomePageComponent extends Component {
       //NAVIGATOR VIEW
             <div>
               <TextEditorContainer />
+              <FilesContainer />
             </div>
       }
       </div>
