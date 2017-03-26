@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { setRoleToDriver, setRoleToNavigator } from '../reducers/repo';
 import {connect} from 'react-redux';
+import {push} from 'react-router-redux'
 
 import HomePageComponent from '../components/HomePageComponent'
 
@@ -27,8 +28,10 @@ const mapDispatchToProps = (dispatch) => {
       //if driver name is yours, then set my role to 'navigator'
       dispatch(setRoleToNavigator())
       //emit to set other person to drive
-    }
-
+    },
+    backToCollaborators: () => {
+      dispatch(push('/collaborators'))
+    },
   }
 }
 

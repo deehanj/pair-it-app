@@ -89,6 +89,7 @@ export default class extends React.Component {
 				}
 			}
 		)
+		document.getElementById('commit').value = null;
 	}
 
 	handleBranchCheckout(e) {
@@ -159,7 +160,7 @@ export default class extends React.Component {
 				{/* ADD - DONE */}
 				<button onClick={this.handleGitAdd}>Add Files</button>
 				{/* COMMIT - DONE*/}
-				<form onSubmit={this.handleCommit}>
+				<form id="commit" onSubmit={this.handleCommit}>
 					<button onClick={this.handleCommit} >Commit</button>
 					{/* COMMIT MESSAGE - DONE */}
 					<input type="text" onChange={this.props.handleCommitMessage}></input>

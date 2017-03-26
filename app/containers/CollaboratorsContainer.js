@@ -41,6 +41,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		updateSocketRoom: (room) => {
 			dispatch(setSocketRoom(room))
 		},
+		returnToRepos: () => {
+			dispatch(push('/repos'))
+		}
 	}
 }
 

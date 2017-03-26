@@ -8,6 +8,7 @@ import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
 import{ serverLocation }from '../utils/server.settings'
 import io from 'socket.io-client'
+// import {pc} from '../utils/ExchangeFunctions'
 
 const socket = io(serverLocation)
 
@@ -27,6 +28,14 @@ export default class HomePageComponent extends Component {
 
     socket.on('partner picked you as driver', () => {
       this.props.setDriverToMyself()
+    })
+
+    this.returnToCollaborators = this.returnToCollaborators.bind(this);
+
+    socket.on('peer connection severed', () => {
+      document.getElementById('webchatWindow').style.visibility = 'hidden';
+          URL.revokeObjectURL(this.props.URL);
+          URL.revokeObjectURL(this.props.remoteURL)
     })
 
   }
@@ -66,6 +75,16 @@ export default class HomePageComponent extends Component {
     }
   }
 
+  returnToCollaborators() {
+    this.props.backToCollaborators();
+    window.pc.close();
+    socket.emit('closed connection', {room: this.props.room})
+    URL.revokeObjectURL(this.props.remoteURL)
+    this.props.localURL.getVideoTracks()[0].stop();
+    this.props.URL.getVideoTracks()[0].stop();
+    this.props.URL.getAudioTracks()[0].stop();
+  }
+
   render() {
     console.log(this.state)
     return (
@@ -73,6 +92,7 @@ export default class HomePageComponent extends Component {
       <div>
         <video id="webchatWindow" onClick={this.setPartnerToDriver} />
         <video id="localWebchat" onClick={this.setSelfToDriver} />
+        <button onClick={this.returnToCollaborators}>BACK TO COLLABS</button>
         {(this.props.role === '') ?
             <div>
               <h1>Who is driving?</h1>
