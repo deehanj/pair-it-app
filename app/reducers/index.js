@@ -3,10 +3,11 @@ import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import files from './FilesReducer'
 import auth from './auth'
-import VideoChatReducer from '../VideoChat/VideoChatReducer';
-import GitButtonsReducer from '../reducers/GitButtonReducer'
+import VideoChatReducer from './VideoChatReducer';
+import GitButtonsReducer from './GitButtonReducer'
 import user from './user'
 import repo from './repo'
+import room from './room'
 
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   GitButtons: GitButtonsReducer, 
   auth,
   user,
-  repo
+  repo,
+  room
 });
 
 export default rootReducer;

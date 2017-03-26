@@ -1,7 +1,7 @@
 import React from 'react'
-import ConfigureSocket from '../VideoChat/ConfiguringSocket'
-import events from '../VideoChat/events'
+import events from '../utils/events'
 import io from 'socket.io-client'
+import Promise from 'bluebird'
 
 import { serverLocation } from '../utils/server.settings.js'
 const socket = io(serverLocation)
@@ -21,6 +21,7 @@ export default class extends React.Component{
             MediaStreamURL: this.props.URL,
             incomingCall: this.props.incomingCall,
             sortOutMedia: this.props.sortOutMedia
+            // setPairPartner: this.props.setPairPartner
         }
 
         this.callCollaborator = this.callCollaborator.bind(this)
@@ -39,7 +40,11 @@ export default class extends React.Component{
             name: this.state.collaborator.name,
             url: `/${this.state.myName}`
         })
+
+        var settingLocalMedia = Promise.promisify(this.setUserMedia)
+
         this.props.setPairingRoomURL(`/${this.state.myName}`)
+        this.props.setPairPartner(this.state.collaborator)
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
         .then(() => {
@@ -52,12 +57,16 @@ export default class extends React.Component{
         })
         .catch(console.error)
 
-        //set roomname to store
-
     }
 
     handleIncomingCall() {
+
         // console.log('answering incoming call');
+
+        console.log(this.props.setPairPartner);
+
+        this.props.setPairPartner(this.state.collaborator)
+
 
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
@@ -68,56 +77,47 @@ export default class extends React.Component{
             }, 3000)
         })
         .then(() => {
-            return setTimeout(() => {
-                return events.trigger('startCall', this.state.collaborator)
-            }, 3000)
+          return setTimeout(() => {
+            return events.trigger('startCall', this.state.collaborator)
+          }, 3000)
         })
         .catch(console.error)
 
-    
 
     } 
 
     setLocalUserMedia() {
-        navigator.getUserMedia(
-            //configuration
+        return navigator.getUserMedia(
             {
                 video:true,
                 audio:false,
             },
-            //successHandler
             this.localVideoView,
-            //error handler
             console.error
         )
     }
 
     setUserMedia() {
-        navigator.getUserMedia(
-            //configuration
+        return navigator.getUserMedia(
             {
                 video:true,
                 audio:true,
             },
-            //successHandler
             this.streamSuccessHandler,
-            //error handler
             console.error
         )
     }
 
     streamSuccessHandler(stream) {
-        this.props.UpdateStream(stream);
-        // this.initiateConnection();
+        return this.props.UpdateStream(stream);
     }
 
     localVideoView(stream) {
-        this.props.UpdateLocalStream(stream);
+        return this.props.UpdateLocalStream(stream);
     }
 
 
     render(){
-        // console.log('Props: ', this.props.repoId);
         return (
         <div>
             <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
