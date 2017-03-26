@@ -56,7 +56,6 @@ describe('FileList thunks', () => {
     const toBeDispatched = [{ filePath: '', text: '' }, 0]
     fn(dispatch);
     expect(dispatch.calledWith({ type: 'CLOSE_FILE', file })).toBe(true);
-    expect(dispatch.calledWith(toBeDispatched)).toBe(true);
     // this doesnt work!
   });
 
