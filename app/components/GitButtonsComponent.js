@@ -3,7 +3,7 @@ import simpleGit from 'simple-git';
 import chalk from 'chalk';
 
 
-let Git = simpleGit();
+
 
 export default class extends React.Component {
 	constructor(props){
@@ -18,6 +18,8 @@ export default class extends React.Component {
 		this.handleCommit = this.handleCommit.bind(this);
 		this.handleGitPush = this.handleGitPush.bind(this);
 		this.handleGitPull = this.handleGitPull.bind(this);
+
+		this.Git = simpleGit(this.props.dir);
 	}
 
 	componentDidMount() {
@@ -25,7 +27,7 @@ export default class extends React.Component {
 	}
 
 	getBranchList() {
-		Git.branchLocal(
+		this.Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
 					this.props.handleError(error);	
@@ -34,14 +36,14 @@ export default class extends React.Component {
 	}
 
 	handleGitAdd() {
-		Git.add(
+		this.Git.add(
 			'./*',
 			(error, success) => {
 				if(error){
 					this.props.handleError(error)
 					console.log(error)
 				} else {
-					Git.status(
+					this.Git.status(
 						(error, success) => {
 							this.props.handleError(error)
 							this.props.handleStatus(success)
@@ -53,7 +55,7 @@ export default class extends React.Component {
 	}
 
 	handleStatus() {
-		Git.status(
+		this.Git.status(
 			(error, success) => {
 				if(error){
 					this.props.handleError(error)
@@ -66,7 +68,7 @@ export default class extends React.Component {
 
 	handleCommit(e) {
 		e.preventDefault();
-		Git.commit(
+		this.Git.commit(
 			this.props.commitMessage,
 			null,
 			null,
@@ -86,7 +88,7 @@ export default class extends React.Component {
 		e.preventDefault();
 		const branchInput = document.getElementById('branchInput')
 		const branchName = document.getElementById('currentBranch')
-		Git.checkout(
+		this.Git.checkout(
 			this.props.branchQuery, 
 			(error, newBranch) => {
 				if(error){
@@ -106,7 +108,7 @@ export default class extends React.Component {
 	}
 
 	handleGitPush() {
-		Git.push(
+		this.Git.push(
 			'origin', 
 			this.props.currentBranch,
 			(error, success) =>{
@@ -117,7 +119,7 @@ export default class extends React.Component {
 	}
 
 	handleGitPull() {
-		Git.pull(
+		this.Git.pull(
 			'origin',
 			this.props.currentBranch,
 			(error, success) => {
