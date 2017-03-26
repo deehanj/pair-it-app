@@ -50,7 +50,7 @@ export default class Files extends React.Component {
   }
 
   componentDidMount() {
-    socket.emit('room', {room: 'Christine'})
+    socket.emit('room', {room: this.props.room})
   }
   componentWillUnmount() {
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})

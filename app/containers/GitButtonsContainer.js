@@ -14,7 +14,8 @@ const mapStateToProps = (state) => {
 		currentBranch: state.GitButtons.currentBranch,
 		displayBranch: state.GitButtons.displayBranch,
 		branchQuery: state.GitButtons.branchQuery,
-		commitMessage: state.GitButtons.commitMessage
+		commitMessage: state.GitButtons.commitMessage,
+		dir: state.fileSystem.dir,
 	}
 }
 
