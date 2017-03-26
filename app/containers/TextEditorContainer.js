@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 		openFiles: state.fileSystem.openFiles,
 		dir: state.fileSystem.dir,
 		room: state.room.name,
-		role: state.repo.role,
+		role: state.repo.role
 	}
 }
 
