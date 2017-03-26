@@ -22,6 +22,8 @@ export default class HomePageComponent extends Component {
     const LocalVideo = document.getElementById('localWebchat')
     LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
+    //listen to set to driver
+    //listen to set to navigator
   }
 
   componentDidUpdate(){
@@ -38,11 +40,12 @@ export default class HomePageComponent extends Component {
     return (
       //NO ROLES DEFINED
       <div>
-        <video id="webchatWindow" />
-        <video id="localWebchat" />
+        <video id="webchatWindow" onClick={() => this.props.setDriverToYou()} />
+        <video id="localWebchat" onClick={() => this.props.setDriverToMe()} />
         {(this.props.role === '') ?
             <div>
               <h1>Who is driving?</h1>
+              <p>Click the video to choose.</p>
             </div>
         :
       //DRIVER VIEW
@@ -64,4 +67,3 @@ export default class HomePageComponent extends Component {
     )
     }
 }
-
