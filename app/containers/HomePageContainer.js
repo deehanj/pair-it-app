@@ -12,17 +12,19 @@ const mapStateToProps = (state) => {
     remoteURL: state.VideoChat.remoteURL,
     role: '',
     collaborator: state.repo.collaborator,
+    room: state.room.name
+
 	}
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setDriverToMe: () => {
+    setDriverToMyself: () => {
       //if driver name is mine, then set my role to 'driver'
       dispatch(setRoleToDriver())
       //emit to set other person to nav
     },
-    setDriverToYou: () => {
+    setDriverToPartner: () => {
       //if driver name is yours, then set my role to 'navigator'
       dispatch(setRoleToNavigator())
       //emit to set other person to drive

@@ -7,6 +7,7 @@ import VideoChatReducer from './VideoChatReducer';
 import GitButtonsReducer from './GitButtonReducer'
 import user from './user'
 import repo from './repo'
+import room from './room'
 
 
 const rootReducer = combineReducers({
@@ -16,7 +17,8 @@ const rootReducer = combineReducers({
   GitButtons: GitButtonsReducer, 
   auth,
   user,
-  repo
+  repo,
+  room
 });
 
 export default rootReducer;

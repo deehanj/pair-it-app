@@ -6,7 +6,10 @@ import FilesContainer from '../containers/FilesContainer'
 import GitButtonsContainer from '../containers/GitButtonsContainer';
 import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
+import{ serverLocation }from '../utils/server.settings'
+import io from 'socket.io-client'
 
+const socket = io(serverLocation)
 
 export default class HomePageComponent extends Component {
 
@@ -15,6 +18,16 @@ export default class HomePageComponent extends Component {
     this.state = {
       remoteVideoRendered: false,
     }
+    this.setSelfToDriver = this.setSelfToDriver.bind(this)
+    this.setPartnerToDriver = this.setPartnerToDriver.bind(this)
+
+    socket.on('partner picked self as driver', () => {
+      this.props.setDriverToPartner()
+    })
+
+    socket.on('partner picked you as driver', () => {
+      this.props.setDriverToMyself()
+    })
 
   }
 
@@ -22,8 +35,26 @@ export default class HomePageComponent extends Component {
     const LocalVideo = document.getElementById('localWebchat')
     LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
+    console.log(this.props.room)
+    setTimeout(()=>{
+      socket.emit('room', {room: this.props.room,})
+    }, 0)
+
+    
+
     //listen to set to driver
+
     //listen to set to navigator
+  }
+
+  setSelfToDriver(){
+    this.props.setDriverToPartner()
+    socket.emit('driver selected', {room: this.props.room})
+  }
+
+  setPartnerToDriver(){
+    this.props.setDriverToMyself()
+    socket.emit('navigator selected', {room: this.props.room})
   }
 
   componentDidUpdate(){
@@ -40,8 +71,8 @@ export default class HomePageComponent extends Component {
     return (
       //NO ROLES DEFINED
       <div>
-        <video id="webchatWindow" onClick={() => this.props.setDriverToYou()} />
-        <video id="localWebchat" onClick={() => this.props.setDriverToMe()} />
+        <video id="webchatWindow" onClick={this.setPartnerToDriver} />
+        <video id="localWebchat" onClick={this.setSelfToDriver} />
         {(this.props.role === '') ?
             <div>
               <h1>Who is driving?</h1>

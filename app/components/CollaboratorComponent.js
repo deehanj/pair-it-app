@@ -19,10 +19,10 @@ export default class CollaboratorComponent extends React.Component {
 			incomingCall: false,
 			users: [],
 			playerInfo: {
-	      name: props.name,
-	      _id: props.id,
+				name: props.name,
+				_id: props.id,
 				id: socket.id
-	    },
+	    	},
 			MediaStreamURL: this.props.URL
 		}
 
@@ -41,6 +41,7 @@ export default class CollaboratorComponent extends React.Component {
 	  		let collabArray = this.state.collaborators
 	  		collabArray.push(newCollaborator)
 	  		this.setState({collaborators: collabArray})
+	  		
 	  	}
 
 	  socket.emit('I am here', {room: data.room, name: this.props.name, playerInfo})
@@ -63,7 +64,7 @@ export default class CollaboratorComponent extends React.Component {
 			console.log('state name: ', props.name);
 		  const partnerName = data.name
 			const url = data.url
-
+			this.props.updateSocketRoom(data.name)
 			if (partnerName === props.name){
 				this.setState({incomingCall: true})
 				console.log('pair with me, incomingCall', this.state.incomingCall)
@@ -104,9 +105,28 @@ export default class CollaboratorComponent extends React.Component {
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
 				<h2>Collaborators:</h2>
-				{this.state.collaborators && this.state.collaborators.map(collaborator => (
-					<CollaboratorRowComponent key={collaborator.name} collaborator={collaborator} goToPairRoom={this.props.goToPairRoom} repoId={this.props.repo.id} myName={this.props.name} myId={this.props.id} URL={this.props.URL} incomingCall={this.state.incomingCall}  UpdateStream={this.props.UpdateStream} UpdateLocalStream= {this.props.UpdateLocalStream}sortOutMedia={this.sortOutMedia} setPairingRoomURL={this.props.setPairingRoomURL} clickToGoHome={this.props.clickToGoHome} setPairPartner={this.props.setPairPartner} />
-				)) }
+				{this.state.collaborators && this.state.collaborators.map(collaborator =>
+						(
+							<CollaboratorRowComponent 
+								key={collaborator.name} 
+								collaborator={collaborator} 
+								goToPairRoom={this.props.goToPairRoom} 
+								repoId={this.props.repo.id} 
+								myName={this.props.name} 
+								myId={this.props.id} 
+								URL={this.props.URL} 
+								incomingCall={this.state.incomingCall}  
+								UpdateStream={this.props.UpdateStream} 
+								UpdateLocalStream={this.props.UpdateLocalStream}
+								sortOutMedia={this.sortOutMedia} 
+								setPairingRoomURL={this.props.setPairingRoomURL} 
+								clickToGoHome={this.props.clickToGoHome} 
+								setPairPartner={this.props.setPairPartner} 
+
+							/>
+						)
+					) 
+				}
 			</div>
 		)
 	}

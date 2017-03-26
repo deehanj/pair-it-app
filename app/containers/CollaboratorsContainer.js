@@ -4,6 +4,7 @@ import CollaboratorComponent from '../components/CollaboratorComponent'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
 import {push} from 'react-router-redux'
 import {setPairingRoom, setPairingPartner} from '../reducers/repo';
+import {setSocketRoom }from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
 	return {
@@ -35,9 +36,11 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			dispatch(setPairingRoom(url))
 		},
 		setPairPartner: (collaborator) => {
-		  dispatch(setPairingPartner(collaborator))
-		}
-
+			dispatch(setPairingPartner(collaborator))
+		},
+		updateSocketRoom: (room) => {
+			dispatch(setSocketRoom(room))
+		},
 	}
 }
 
