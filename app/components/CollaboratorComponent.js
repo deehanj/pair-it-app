@@ -97,7 +97,7 @@ export default class CollaboratorComponent extends React.Component {
     })
 
     socket.on('make user available', (data) => {
-      this.props.setAvailable(data.name)
+      this.props.makeAvailable(data.name)
     })
 
 	}

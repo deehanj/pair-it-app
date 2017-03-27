@@ -6,6 +6,7 @@ import {setRepos} from './repo'
 
 const SET_USER = 'SET_USER';
 const SET_UNAVAILABLE = 'SET_UNAVAILABLE'
+const SET_AVAILABLE = 'SET_AVAILABLE'
 
 //ACTION CREATOR
 export const setUser = (gitInfo) => ({

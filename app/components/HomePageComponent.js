@@ -79,7 +79,7 @@ export default class HomePageComponent extends Component {
 
   returnToCollaborators() {
     this.props.backToCollaborators();
-    this.props.setAvailable(this.props.myName)
+    this.props.makeAvailable(this.props.myName)
     socket.emit('closed connection', {room: this.props.room})
     socket.emit('set available', { room: this.props.repoId, name: this.props.myName })
     URL.revokeObjectURL(this.props.remoteURL)

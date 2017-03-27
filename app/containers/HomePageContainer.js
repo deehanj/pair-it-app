@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
     role: state.repo.role,
     collaborator: state.repo.collaborator,
     room: state.room.name,
-    myName: state.user.gitInfo.username,
+    myName: state.user.gitInfo.login,
     repoId: state.repo.selectedRepo.id
 	}
 }
@@ -39,7 +39,7 @@ const mapDispatchToProps = (dispatch) => {
     clearURLs: () => {
       dispatch(clearAllURLs())
     },
-    setAvailable: (name) => {
+    makeAvailable: (name) => {
       dispatch(setAvailable(name))
     }
   }

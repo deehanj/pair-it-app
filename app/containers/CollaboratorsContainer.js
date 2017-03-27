@@ -4,7 +4,7 @@ import CollaboratorComponent from '../components/CollaboratorComponent'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
 import {push} from 'react-router-redux'
 import {setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner} from '../reducers/repo';
-import {setUnavailable} from '../reducers/user'
+import {setUnavailable, setAvailable} from '../reducers/user'
 import {setSocketRoom }from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
@@ -56,6 +56,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
     setUnavailable: (name) => {
       dispatch(setUnavailable(name))
+    },
+    makeAvailable: (name) => {
+      dispatch(setAvailable(name))
     }
 	}
 }
