@@ -34,6 +34,9 @@ export default class extends React.Component{
 
 
     callCollaborator() {
+      if (window.pc) {
+        window.pc.signallingState = 'closed'
+      }
         socket.emit('Pair with me', {
             room: this.state.repoId,
             name: this.state.collaborator.name,

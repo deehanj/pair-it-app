@@ -117,7 +117,6 @@ export default class CollaboratorComponent extends React.Component {
 		return (
 			<div>
 				<button onClick={this.backToRepos}>BACK TO REPOS </button>
-				<button onClick={this.sortOutMedia}>Sort out media</button>
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHomeNav} >CLICK HERE TO GO HOME AS NAV!!!</h1>
 				<h1 onClick={this.props.clickToGoHomeDriver} >CLICK HERE TO GO HOME AS DRIVER!!!</h1>
