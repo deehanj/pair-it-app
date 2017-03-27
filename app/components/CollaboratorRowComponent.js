@@ -123,7 +123,10 @@ export default class extends React.Component{
       console.log('WTFWTFWTF', this.props.incomingCall.find(name => name === this.state.collaborator.name))
         return (
         <div>
-            <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
+            <div key={this.state.collaborator}>{this.state.collaborator.name}</div>
+            {
+              !this.props.unavailable.find(name => name === this.state.collaborator.name) && <button onClick={this.callCollaborator}>Call</button>
+            }
             {
                 this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall }>Answer, begin pair</button>
             }
