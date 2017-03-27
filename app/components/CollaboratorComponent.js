@@ -17,7 +17,6 @@ export default class CollaboratorComponent extends React.Component {
 		this.state = {
 			collaborators: [],
 			incomingCall: [],
-      unavailable: [],
 			users: [],
 			playerInfo: {
 				name: props.name,
@@ -80,8 +79,7 @@ export default class CollaboratorComponent extends React.Component {
         this.setState({ incomingCall: incomingCallArr })
         this.props.setPairingRoomURL(data.url);
       }
-      const unavailableArr = this.state.unavailable.concat([data.caller])
-      this.setState({ unavailable: unavailableArr })
+      this.props.setUnavailable(data.caller)
 		})
 
 		socket.on('refresh_user_list', this.setUserState);
@@ -95,8 +93,7 @@ export default class CollaboratorComponent extends React.Component {
       if (data.caller === props.name) {
         this.props.clickToGoHome()
       }
-      const unavailableArr = this.state.unavailable.concat([data.receiver])
-      this.setState({ unavailable: unavailableArr })
+      this.props.setUnavailable(data.receiver)
     })
 
 	}
@@ -148,7 +145,7 @@ export default class CollaboratorComponent extends React.Component {
 								setPairingRoomURL={this.props.setPairingRoomURL}
 								clickToGoHome={this.props.clickToGoHome}
 								setPairPartner={this.props.setPairPartner}
-                unavailable={this.state.unavailable}
+                unavailable={this.props.unavailable}
 							/>
 						)
 					)

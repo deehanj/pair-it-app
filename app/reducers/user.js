@@ -5,16 +5,22 @@ import store from '../store/configureStore.development'
 import {setRepos} from './repo'
 
 const SET_USER = 'SET_USER';
+const SET_UNAVAILABLE = 'SET_UNAVAILABLE'
 
 //ACTION CREATOR
 export const setUser = (gitInfo) => ({
   type: SET_USER, gitInfo
 })
 
+export const setUnavailable = (name) => ({
+  type: SET_UNAVAILABLE, name
+})
+
 
 // INITIAL STATE
 const initialState = {
   gitInfo: {},
+  unavailable: []
 }
 
 // REDUCERS
@@ -24,8 +30,11 @@ export default function reducer( state = initialState, action) {
 
   switch (action.type) {
     case SET_USER:
-        newState.gitInfo = action.gitInfo;
-        break;
+      newState.gitInfo = action.gitInfo;
+      break;
+    case SET_UNAVAILABLE:
+      newState.unavailable = newState.unavailable.concat([action.name])
+      break;
     default:
       return state;
   }

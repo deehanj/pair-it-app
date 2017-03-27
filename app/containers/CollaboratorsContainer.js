@@ -4,6 +4,7 @@ import CollaboratorComponent from '../components/CollaboratorComponent'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
 import {push} from 'react-router-redux'
 import {setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner} from '../reducers/repo';
+import {setUnavailable} from '../reducers/user'
 import {setSocketRoom }from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
@@ -12,7 +13,7 @@ const mapStateToProps = (state) => {
 		name: state.user.gitInfo.login,
 		URL: state.VideoChat.URL,
 		id: state.user.gitInfo.id,
-
+    unavailable: state.user.unavailable
 	}
 }
 
@@ -52,7 +53,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		},
 		returnToRepos: () => {
 			dispatch(push('/repos'))
-		}
+		},
+    setUnavailable: (name) => {
+      dispatch(setUnavailable(name))
+    }
 	}
 }
 
