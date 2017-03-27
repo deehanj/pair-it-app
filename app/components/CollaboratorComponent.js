@@ -100,6 +100,10 @@ export default class CollaboratorComponent extends React.Component {
 		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
 	}
 
+  componentWillUnmount() {
+    socket.emit('leaving room', {room: this.props.room})
+  }
+
 	setUserState(users){
 		console.log('User list from server: ', users);
 	}

@@ -31,6 +31,11 @@ export default class extends React.Component{
         this.setLocalUserMedia = this.setLocalUserMedia.bind(this)
         this.localVideoView = this.localVideoView.bind(this)
 
+        socket.on('partner answered call', (data) => {
+          console.log('data.caller: ', data.caller)
+          console.log('collaborator: ', this.state.collaborator.name)
+          if (data.caller === this.state.collaborator.name) this.props.clickToGoHome()
+        })
     }
 
 
@@ -53,7 +58,7 @@ export default class extends React.Component{
             return setTimeout(() => {
 
 
-                this.props.clickToGoHome()
+                // this.props.clickToGoHome()
                 return this.props.sortOutMedia();
             }, 3000)
         })
@@ -79,6 +84,7 @@ export default class extends React.Component{
             }, 3000)
         })
         .then(() => {
+          socket.emit('call answered', {room: this.state.repoId, caller: this.props.collaborator.name})
           return setTimeout(() => {
             return events.trigger('startCall', this.state.collaborator)
           }, 3000)
