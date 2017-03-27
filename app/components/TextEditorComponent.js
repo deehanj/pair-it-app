@@ -124,7 +124,7 @@ export default class TextEditorComponent extends React.Component {
 	render() {
     if (this.props.openFiles.length === 0) {
       return (
-        <div>
+        <div id="text-editor" className="col-sm-8 text-editor">
           <AceEditor
             mode="javascript"
             theme="monokai"
@@ -132,6 +132,7 @@ export default class TextEditorComponent extends React.Component {
             name="text-editor"
             value={this.state.code}
             width="100%"
+            height="100vh"
             editorProps={{$blockScrolling: true}}
             setOptions={{
               enableBasicAutocompletion: true,
@@ -152,6 +153,21 @@ export default class TextEditorComponent extends React.Component {
       )
     } else {
       return (
+        <div id="text-editor" className="col-sm-8 text-editor">
+              
+              {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
+              <div>
+                <button onClick={this.onAddNewTab}>+</button>
+                <button className='close-btn' onClick={() => this.onCloseTab(file) }>X</button>
+                <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
+              </div>
+              :
+              <form onSubmit={this.onSave}>
+                <input type="text" name="filename" placeholder="Name your file" />
+                <input type="submit" value="SAVE"/>
+              </form>
+              }
+
         <Tabs
           onSelect={this.handleSelect}
           selectedIndex={this.state.tabIndex}>
@@ -165,11 +181,9 @@ export default class TextEditorComponent extends React.Component {
                 )
               })
             }
-            <button onClick={this.onAddNewTab}>+</button>
           </TabList>
           {this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) =>
             (<TabPanel key={file.filePath}>
-              <button className='close-btn' onClick={() => this.onCloseTab(file)}>X</button>
               <AceEditor
               mode="javascript"
               theme="monokai"
@@ -177,6 +191,7 @@ export default class TextEditorComponent extends React.Component {
               name="text-editor"
               value={this.state.code}
               width="100%"
+              height="100vh"
               editorProps={{$blockScrolling: true}}
               setOptions={{
                 enableBasicAutocompletion: true,
@@ -188,17 +203,10 @@ export default class TextEditorComponent extends React.Component {
                 maxLines: Infinity
               }}
               />
-              {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
-              <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
-              :
-              <form onSubmit={this.onSave}>
-                <input type="text" name="filename" placeholder="Name your file" />
-                <input type="submit" value="SAVE"/>
-              </form>
-              }
               </TabPanel>)
             )}
         </Tabs>
+        </div>
 		  )}
 	  }
   }

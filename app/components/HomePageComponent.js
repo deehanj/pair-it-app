@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import TextEditorContainer from '../containers/TextEditorContainer';
 import FilesContainer from '../containers/FilesContainer'
-import FileListComponent from '../components/FileListComponent'
+import FileListContainer from '../containers/FileListContainer'
 import GitButtonsContainer from '../containers/GitButtonsContainer';
 import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
@@ -50,8 +50,7 @@ export default class HomePageComponent extends Component {
       socket.emit('room', {room: this.props.room,})
     }, 0)
     // document.getElementById('webchatWindow').style.visibility = 'visible';
-
-
+  
     //listen to set to driver
 
     //listen to set to navigator
@@ -60,11 +59,17 @@ export default class HomePageComponent extends Component {
   setSelfToDriver(){
     this.props.setDriverToMyself()
     socket.emit('driver selected', {room: this.props.room})
+    document.getElementById('webchatWindow').className="webchatWindow-text-editor"
+    document.getElementById('localWebchat').className="localWebchat-text-editor"
+    document.getElementById('video-container').className="col-sm-4 text-editor"
   }
 
   setPartnerToDriver(){
     this.props.setDriverToPartner()
     socket.emit('navigator selected', {room: this.props.room})
+    document.getElementById('localWebchat').className="localWebchat-text-editor"
+    document.getElementById('webchatWindow').className="webchatWindow-text-editor"
+    document.getElementById('video-container').className="col-sm-4 text-editor"
   }
 
   componentDidUpdate(){
@@ -98,20 +103,28 @@ export default class HomePageComponent extends Component {
     return (
       //NO ROLES DEFINED
       <div>
-        <video id="webchatWindow" onClick={this.setPartnerToDriver} />
-        <video id="localWebchat" onClick={this.setSelfToDriver} />
-        <button onClick={this.returnToCollaborators}>BACK TO COLLABS</button>
-        {(this.props.role === '') ?
-            <div>
-              <h1>Who is driving?</h1>
-              <p>Click the video to choose.</p>
+      {(this.props.role === '') ?
+            <div className="col-sm-12" id="set-driver">
+                <h1 className="text-center">Who is driving?</h1>
+                <p className="text-center">Click the video to choose.</p>
             </div>
-        :
+        : <div></div>}
+        <div id="video-container" className="col-sm-12 video-padding">
+          <video id="webchatWindow" className="set-driver-view" onClick={this.setPartnerToDriver} />
+          <video id="localWebchat" className="set-driver-view" onClick={this.setSelfToDriver} />
+        </div>
+
+        <footer>
+          <button onClick={this.returnToCollaborators}>BACK TO COLLABORATORS PAGE</button>
+        </footer>    
+        {(this.props.role === '') ?
+           null
+        : 
       //DRIVER VIEW
-        (this.props.role === 'driver') ?
+          (this.props.role === 'driver') ?
             <div>
-              <FilesContainer />
               <TextEditorContainer />
+              <FilesContainer />
               <GitButtonsContainer />
               <ErrorBoxContainer />
               <SuccessBoxContainer />
@@ -119,8 +132,8 @@ export default class HomePageComponent extends Component {
         :
       //NAVIGATOR VIEW
             <div>
+              <FileListContainer/>
               <TextEditorContainer />
-              <FileListComponent/>
             </div>
       }
       </div>

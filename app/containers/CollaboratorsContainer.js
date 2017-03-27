@@ -21,6 +21,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		goToPairRoom: () => {
 		  console.log('Got to pair room: ', ownProps);
 		},
+		clickToGoHome: () => {
+			dispatch(push('/home'))
+		},
 		clickToGoHomeNav: () => {
 			dispatch(setRoleToNavigator())
 			dispatch(push('/home'))

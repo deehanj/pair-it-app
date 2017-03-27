@@ -29,7 +29,7 @@ export default class FilesComponent extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="file-container" className="col-sm-4">
         <div>
           <input type="file" ref="local" onChange={this.selectFile} />
           <button onClick={this.onSubmit}>Pair It!</button>
