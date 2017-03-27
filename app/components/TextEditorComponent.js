@@ -169,7 +169,7 @@ export default class TextEditorComponent extends React.Component {
           </TabList>
           {this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) =>
             (<TabPanel key={file.filePath}>
-              <button onClick={() => this.onCloseTab(file)}>X</button>
+              <button className='close-btn' onClick={() => this.onCloseTab(file)}>X</button>
               <AceEditor
               mode="javascript"
               theme="monokai"
