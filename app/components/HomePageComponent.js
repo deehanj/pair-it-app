@@ -89,6 +89,7 @@ export default class HomePageComponent extends Component {
 
   componentWillUnmount() {
     window.pc.close();
+    window.pc = null;
   }
 
   render() {

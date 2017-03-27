@@ -13,6 +13,7 @@ const error = (err) =>{
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
+    peerConnection = null;
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
             "url": "stun:stun.l.google.com:19302"
