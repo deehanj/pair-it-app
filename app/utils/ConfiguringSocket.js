@@ -17,12 +17,10 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) =
 	});
 
 	//Emit connected
-	console.log('User connected', playerInfo)
 	socket.emit('user_connected', playerInfo);
 
 	//Start a call
 	events.subscribe('startCall', (userDestiny) => {
-		console.log('Requested create call', userDestiny, playerInfo);
 		theOtherUser = userDestiny;
 		webrtcPak.createOffer(
 			(offer) => {

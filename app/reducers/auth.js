@@ -80,7 +80,7 @@ export function loginUser(code) {
         fetchUsername()();
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
         dispatch({type: LOGIN.FAILURE, payload: error.response.data});
       });
 

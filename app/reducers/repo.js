@@ -5,6 +5,7 @@ const SELECT_REPO = 'SELECT_REPO';
 const SET_PAIRING_ROOM = 'SET_PAIRING_ROOM';
 const SET_PAIRING_PARTNER = 'SET_PAIRING_PARTNER';
 const SET_ROLE = 'SET_ROLE';
+const CLEAR_ROLE = 'CLEAR_ROLE';
 
 //ACTION CREATOR
 export const setRepos = (repoList) => ({
@@ -29,6 +30,10 @@ export const setRoleToDriver = () => ({
 
 export const setRoleToNavigator = () => ({
   type: SET_ROLE, role: 'navigator'
+})
+
+export const clearRole = () => ({
+  type: CLEAR_ROLE
 })
 
 //THUNK
@@ -69,6 +74,9 @@ export default function reducer( state = initialState, action) {
       break
     case SET_ROLE:
       newState.role = action.role
+      break
+    case CLEAR_ROLE:
+      newState.role = ''
       break
     default:
       return state

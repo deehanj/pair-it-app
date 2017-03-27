@@ -15,7 +15,6 @@ export default class extends React.Component{
             repoId: this.props.repoId,
             clickToGoHome: this.props.clickToGoHome,
             collaborator: this.props.collaborator,
-            goToPairRoom: this.props.goToPairRoom,
             myName: this.props.myName,
             myId: this.props.myId,
             MediaStreamURL: this.props.URL,
@@ -35,10 +34,14 @@ export default class extends React.Component{
 
 
     callCollaborator() {
+      if (window.pc) {
+        window.pc.signallingState = 'closed'
+      }
         socket.emit('Pair with me', {
             room: this.state.repoId,
             name: this.state.collaborator.name,
-            url: `/${this.state.myName}`
+            url: `/${this.state.myName}`,
+            caller: this.state.myName
         })
 
         var settingLocalMedia = Promise.promisify(this.setUserMedia)
@@ -51,7 +54,7 @@ export default class extends React.Component{
             return setTimeout(() => {
 
 
-                this.props.clickToGoHome()
+                // this.props.clickToGoHome()
                 return this.props.sortOutMedia();
             }, 3000)
         })
@@ -60,14 +63,7 @@ export default class extends React.Component{
     }
 
     handleIncomingCall() {
-
-        // console.log('answering incoming call');
-
-        console.log(this.props.setPairPartner);
-
         this.props.setPairPartner(this.state.collaborator)
-
-
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
         .then(() => {
@@ -81,10 +77,9 @@ export default class extends React.Component{
             return events.trigger('startCall', this.state.collaborator)
           }, 3000)
         })
+        .then(() => socket.emit('call answered', { caller: this.state.collaborator.name, receiver: this.state.myName, room: this.props.repoId }))
         .catch(console.error)
-
-
-    } 
+    }
 
     setLocalUserMedia() {
         return navigator.getUserMedia(
@@ -120,11 +115,16 @@ export default class extends React.Component{
     render(){
         return (
         <div>
-            <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
+            <div key={this.state.collaborator}>{this.state.collaborator.name}</div>
             {
-                this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
+              !this.props.unavailable.find(name => name === this.state.collaborator.name) && <button onClick={this.callCollaborator}>Call</button>
+            }
+            {
+              this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall }>Answer, begin pair</button>
             }
         </div>
         )
     }
 }
+
+

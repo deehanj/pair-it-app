@@ -9,7 +9,6 @@ import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
 import{ serverLocation }from '../utils/server.settings'
 import io from 'socket.io-client'
-// import {pc} from '../utils/ExchangeFunctions'
 
 const socket = io(serverLocation)
 
@@ -34,7 +33,6 @@ export default class HomePageComponent extends Component {
     this.returnToCollaborators = this.returnToCollaborators.bind(this);
 
     socket.on('peer connection severed', () => {
-      // document.getElementById('webchatWindow').style.visibility = 'hidden';
           URL.revokeObjectURL(this.props.URL);
           URL.revokeObjectURL(this.props.remoteURL)
     })
@@ -45,16 +43,9 @@ export default class HomePageComponent extends Component {
     const LocalVideo = document.getElementById('localWebchat')
     LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
-    console.log(this.props.room)
     setTimeout(()=>{
       socket.emit('room', {room: this.props.room,})
     }, 0)
-    // document.getElementById('webchatWindow').style.visibility = 'visible';
-
-
-    //listen to set to driver
-
-    //listen to set to navigator
   }
 
   setSelfToDriver(){
@@ -73,13 +64,16 @@ export default class HomePageComponent extends Component {
         this.setState({remoteVideoRendered: true});
         RemoteVideo.src = this.props.remoteURL;
         RemoteVideo.play();
-      
+
     }
   }
 
   returnToCollaborators() {
     this.props.backToCollaborators();
+    this.props.makeAvailable(this.props.myName)
+    this.props.removeRole()
     socket.emit('closed connection', {room: this.props.room})
+    socket.emit('set available', { room: this.props.repoId, name: this.props.myName })
     URL.revokeObjectURL(this.props.remoteURL)
     this.props.localURL.getVideoTracks()[0].stop();
     this.props.URL.getVideoTracks()[0].stop();
@@ -94,7 +88,6 @@ export default class HomePageComponent extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       //NO ROLES DEFINED
       <div>
