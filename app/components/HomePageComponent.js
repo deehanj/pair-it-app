@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import TextEditorContainer from '../containers/TextEditorContainer';
 import FilesContainer from '../containers/FilesContainer'
+import FileListComponent from '../components/FileListComponent'
 import GitButtonsContainer from '../containers/GitButtonsContainer';
 import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
@@ -118,9 +119,8 @@ export default class HomePageComponent extends Component {
         :
       //NAVIGATOR VIEW
             <div>
-              <FilesContainer />
               <TextEditorContainer />
-              <FilesContainer />
+              <FileListComponent/>
             </div>
       }
       </div>

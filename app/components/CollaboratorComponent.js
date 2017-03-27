@@ -119,7 +119,8 @@ export default class CollaboratorComponent extends React.Component {
 				<button onClick={this.backToRepos}>BACK TO REPOS </button>
 				<button onClick={this.sortOutMedia}>Sort out media</button>
 				<h1>{this.props.repo.name}</h1>
-				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>
+				<h1 onClick={this.props.clickToGoHomeNav} >CLICK HERE TO GO HOME AS NAV!!!</h1>
+				<h1 onClick={this.props.clickToGoHomeDriver} >CLICK HERE TO GO HOME AS DRIVER!!!</h1>
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator =>
 						(
