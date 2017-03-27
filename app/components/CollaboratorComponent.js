@@ -79,10 +79,9 @@ export default class CollaboratorComponent extends React.Component {
         const incomingCallArr = this.state.incomingCall.concat([data.caller])
         this.setState({ incomingCall: incomingCallArr })
         this.props.setPairingRoomURL(data.url);
-      } else {
-        const unavailableArr = this.state.unavailable.concat([data.caller])
-        this.setState({ unavailable: unavailableArr })
       }
+      const unavailableArr = this.state.unavailable.concat([data.caller])
+      this.setState({ unavailable: unavailableArr })
 		})
 
 		socket.on('refresh_user_list', this.setUserState);
