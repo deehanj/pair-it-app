@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 		name: state.user.gitInfo.login,
 		URL: state.VideoChat.URL,
 		id: state.user.gitInfo.id,
-		
+
 	}
 }
 
@@ -21,6 +21,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		goToPairRoom: () => {
 		  console.log('Got to pair room: ', ownProps);
 		},
+    clickToGoHome: () => {
+      dispatch(push('/home'))
+    },
 		clickToGoHomeNav: () => {
 			dispatch(setRoleToNavigator())
 			dispatch(push('/home'))
