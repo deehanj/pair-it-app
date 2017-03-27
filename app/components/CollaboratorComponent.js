@@ -95,6 +95,8 @@ export default class CollaboratorComponent extends React.Component {
       if (data.caller === props.name) {
         this.props.clickToGoHome()
       }
+      const unavailableArr = this.state.unavailable.concat([data.receiver])
+      this.setState({ unavailable: unavailableArr })
     })
 
 	}

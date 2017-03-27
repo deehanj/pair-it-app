@@ -82,7 +82,7 @@ export default class extends React.Component{
             return events.trigger('startCall', this.state.collaborator)
           }, 3000)
         })
-        .then(() => socket.emit('call answered', { caller: this.state.collaborator.name, room: this.props.repoId }))
+        .then(() => socket.emit('call answered', { caller: this.state.collaborator.name, receiver: this.state.myName, room: this.props.repoId }))
         .catch(console.error)
 
 
