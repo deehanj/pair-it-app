@@ -9,7 +9,6 @@ import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
 import{ serverLocation }from '../utils/server.settings'
 import io from 'socket.io-client'
-// import {pc} from '../utils/ExchangeFunctions'
 
 const socket = io(serverLocation)
 
@@ -34,7 +33,6 @@ export default class HomePageComponent extends Component {
     this.returnToCollaborators = this.returnToCollaborators.bind(this);
 
     socket.on('peer connection severed', () => {
-      // document.getElementById('webchatWindow').style.visibility = 'hidden';
           URL.revokeObjectURL(this.props.URL);
           URL.revokeObjectURL(this.props.remoteURL)
     })
@@ -73,6 +71,7 @@ export default class HomePageComponent extends Component {
   returnToCollaborators() {
     this.props.backToCollaborators();
     this.props.makeAvailable(this.props.myName)
+    this.props.clearRole()
     socket.emit('closed connection', {room: this.props.room})
     socket.emit('set available', { room: this.props.repoId, name: this.props.myName })
     URL.revokeObjectURL(this.props.remoteURL)

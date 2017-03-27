@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { setRoleToDriver, setRoleToNavigator } from '../reducers/repo';
+import { setRoleToDriver, setRoleToNavigator, clearRole } from '../reducers/repo';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux'
 import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'
@@ -41,6 +41,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     makeAvailable: (name) => {
       dispatch(setAvailable(name))
+    },
+    removeRole: () => {
+      dispatch(clearRole())
     }
   }
 }
