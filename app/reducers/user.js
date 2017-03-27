@@ -16,6 +16,10 @@ export const setUnavailable = (name) => ({
   type: SET_UNAVAILABLE, name
 })
 
+export const setAvailable = (name) => ({
+  type: SET_AVAILABLE, name
+})
+
 
 // INITIAL STATE
 const initialState = {
@@ -34,6 +38,9 @@ export default function reducer( state = initialState, action) {
       break;
     case SET_UNAVAILABLE:
       newState.unavailable = newState.unavailable.concat([action.name])
+      break;
+    case SET_AVAILABLE:
+      newState.unavailable = newState.unavailable.filter(name => name !== action.name)
       break;
     default:
       return state;

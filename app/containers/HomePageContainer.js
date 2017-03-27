@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 import { setRoleToDriver, setRoleToNavigator } from '../reducers/repo';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux'
-import {clearAllURLs} from '../actionCreators/VideoChatActionCreators' 
+import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'
+import {setAvailable} from '../reducers/user'
 
 import HomePageComponent from '../components/HomePageComponent'
 
@@ -14,7 +15,9 @@ const mapStateToProps = (state) => {
     remoteURL: state.VideoChat.remoteURL,
     role: state.repo.role,
     collaborator: state.repo.collaborator,
-    room: state.room.name
+    room: state.room.name,
+    myName: state.user.gitInfo.username,
+    repoId: state.repo.selectedRepo.id
 	}
 }
 
@@ -35,6 +38,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     clearURLs: () => {
       dispatch(clearAllURLs())
+    },
+    setAvailable: (name) => {
+      dispatch(setAvailable(name))
     }
   }
 }

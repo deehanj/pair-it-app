@@ -73,13 +73,15 @@ export default class HomePageComponent extends Component {
         this.setState({remoteVideoRendered: true});
         RemoteVideo.src = this.props.remoteURL;
         RemoteVideo.play();
-      
+
     }
   }
 
   returnToCollaborators() {
     this.props.backToCollaborators();
+    this.props.setAvailable(this.props.myName)
     socket.emit('closed connection', {room: this.props.room})
+    socket.emit('set available', { room: this.props.repoId, name: this.props.myName })
     URL.revokeObjectURL(this.props.remoteURL)
     this.props.localURL.getVideoTracks()[0].stop();
     this.props.URL.getVideoTracks()[0].stop();
