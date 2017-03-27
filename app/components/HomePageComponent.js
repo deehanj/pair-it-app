@@ -69,9 +69,10 @@ export default class HomePageComponent extends Component {
   componentDidUpdate(){
     if (this.props.remoteURL.length && this.state.remoteVideoRendered === false){
       const RemoteVideo = document.getElementById('webchatWindow');
-      this.setState({remoteVideoRendered: true});
-      RemoteVideo.src = this.props.remoteURL;
-      RemoteVideo.play();
+        this.setState({remoteVideoRendered: true});
+        RemoteVideo.src = this.props.remoteURL;
+        RemoteVideo.play();
+      
     }
   }
 

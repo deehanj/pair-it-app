@@ -19,9 +19,11 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
         }]
     });
     //For debugging purposes
+    window.pc = null;
     window.pc = peerConnection;
 
     iceCandidates = [];
+
     pendingAcceptCandidates = [];
     // const video = document.getElementById('webchatWindow');
 
@@ -45,6 +47,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     };
 
     onSuccess(MediaStreamURL)
+    console.log('iceCandidates',iceCandidates);
 }
 
 
