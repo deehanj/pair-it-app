@@ -15,7 +15,6 @@ export default class extends React.Component{
             repoId: this.props.repoId,
             clickToGoHome: this.props.clickToGoHome,
             collaborator: this.props.collaborator,
-            goToPairRoom: this.props.goToPairRoom,
             myName: this.props.myName,
             myId: this.props.myId,
             MediaStreamURL: this.props.URL,
@@ -61,14 +60,7 @@ export default class extends React.Component{
     }
 
     handleIncomingCall() {
-
-        // console.log('answering incoming call');
-
-        console.log(this.props.setPairPartner);
-
         this.props.setPairPartner(this.state.collaborator)
-
-
         Promise.resolve(this.setLocalUserMedia())
         .then(() => this.setUserMedia())
         .then(() => {
@@ -84,8 +76,6 @@ export default class extends React.Component{
         })
         .then(() => socket.emit('call answered', { caller: this.state.collaborator.name, receiver: this.state.myName, room: this.props.repoId }))
         .catch(console.error)
-
-
     }
 
     setLocalUserMedia() {
@@ -120,8 +110,6 @@ export default class extends React.Component{
 
 
     render(){
-      console.log('****** unavailable ********', this.props.unavailable)
-      console.log('******** collaborator *********', this.state.collaborator.name)
         return (
         <div>
             <div key={this.state.collaborator}>{this.state.collaborator.name}</div>

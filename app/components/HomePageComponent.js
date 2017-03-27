@@ -45,16 +45,9 @@ export default class HomePageComponent extends Component {
     const LocalVideo = document.getElementById('localWebchat')
     LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
-    console.log(this.props.room)
     setTimeout(()=>{
       socket.emit('room', {room: this.props.room,})
     }, 0)
-    // document.getElementById('webchatWindow').style.visibility = 'visible';
-
-
-    //listen to set to driver
-
-    //listen to set to navigator
   }
 
   setSelfToDriver(){
@@ -96,7 +89,6 @@ export default class HomePageComponent extends Component {
   }
 
   render() {
-    console.log(this.state)
     return (
       //NO ROLES DEFINED
       <div>

@@ -19,12 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-		goToPairRoom: () => {
-		  console.log('Got to pair room: ', ownProps);
-		},
-    clickToGoHome: () => {
-      dispatch(push('/home'))
-    },
+    clickToGoHome: () => dispatch(push('/home')),
 		clickToGoHomeNav: () => {
 			dispatch(setRoleToNavigator())
 			dispatch(push('/home'))
@@ -33,33 +28,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 			dispatch(setRoleToDriver())
 			dispatch(push('/home'))
 		},
-		UpdateStream: (stream) => {
-			dispatch(UpdateURL(stream))
-		},
-		UpdateLocalStream: (stream) => {
-			dispatch(UpdateLocalURL(stream))
-		},
-		UpdateRemoteStream: (stream) => {
-			dispatch(UpdateRemoteURL(stream))
-		},
-		setPairingRoomURL: (url) => {
-			dispatch(setPairingRoom(url))
-		},
-		setPairPartner: (collaborator) => {
-			dispatch(setPairingPartner(collaborator))
-		},
-		updateSocketRoom: (room) => {
-			dispatch(setSocketRoom(room))
-		},
-		returnToRepos: () => {
-			dispatch(push('/repos'))
-		},
-    setUnavailable: (name) => {
-      dispatch(setUnavailable(name))
-    },
-    makeAvailable: (name) => {
-      dispatch(setAvailable(name))
-    }
+		UpdateStream: (stream) => dispatch(UpdateURL(stream)),
+		UpdateLocalStream: (stream) => dispatch(UpdateLocalURL(stream)),
+		UpdateRemoteStream: (stream) => dispatch(UpdateRemoteURL(stream)),
+		setPairingRoomURL: (url) => dispatch(setPairingRoom(url)),
+		setPairPartner: (collaborator) => dispatch(setPairingPartner(collaborator)),
+		updateSocketRoom: (room) => dispatch(setSocketRoom(room)),
+		returnToRepos: () => dispatch(push('/repos')),
+    setUnavailable: (name) => dispatch(setUnavailable(name)),
+    makeAvailable: (name) => dispatch(setAvailable(name))
 	}
 }
 

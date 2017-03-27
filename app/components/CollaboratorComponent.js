@@ -104,7 +104,6 @@ export default class CollaboratorComponent extends React.Component {
 
 	sortOutMedia(){
 		const MediaStreamURL = this.props.URL;
-		console.log('is this an object?', MediaStreamURL);
 		const updateStoreRemoteURL = this.props.UpdateRemoteStream.bind(this);
 		ConfigureSocket(socket, this.state.playerInfo, MediaStreamURL, updateStoreRemoteURL);
 	}
@@ -115,7 +114,6 @@ export default class CollaboratorComponent extends React.Component {
 	}
 
 	render (){
-    console.log('pair with me, incomingCall', this.state.incomingCall)
 		return (
 			<div>
 				<button onClick={this.backToRepos}>BACK TO REPOS </button>
@@ -129,7 +127,6 @@ export default class CollaboratorComponent extends React.Component {
 							<CollaboratorRowComponent
 								key={collaborator.name}
 								collaborator={collaborator}
-								goToPairRoom={this.props.goToPairRoom}
 								repoId={this.props.repo.id}
 								myName={this.props.name}
 								myId={this.props.id}

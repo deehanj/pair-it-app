@@ -37,7 +37,7 @@ const installExtensions = async () => {
     //       Promises will fail silently, which isn't what we want in development
     return Promise
       .all(extensions.map(name => installer.default(installer[name], forceDownload)))
-      .catch(console.log);
+      .catch(console.error);
   }
 };
 

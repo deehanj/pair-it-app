@@ -9,7 +9,7 @@ let canAcceptIce = false;
 
 
 const error = (err) =>{
-  console.log('Error doing things', err);
+  console.error(err);
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
