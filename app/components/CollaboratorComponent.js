@@ -77,7 +77,6 @@ export default class CollaboratorComponent extends React.Component {
 			// if (partnerName === props.name){
         const incomingCallArr = this.state.incomingCall.concat([data.caller])
 				this.setState({incomingCall: incomingCallArr})
-				console.log('pair with me, incomingCall', this.state.incomingCall)
 				this.props.setPairingRoomURL(data.url);
 			// }
 
@@ -114,7 +113,7 @@ export default class CollaboratorComponent extends React.Component {
 	}
 
 	render (){
-
+    console.log('pair with me, incomingCall', this.state.incomingCall)
 		return (
 			<div>
 				<button onClick={this.backToRepos}>BACK TO REPOS </button>

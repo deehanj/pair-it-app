@@ -38,7 +38,8 @@ export default class extends React.Component{
         socket.emit('Pair with me', {
             room: this.state.repoId,
             name: this.state.collaborator.name,
-            url: `/${this.state.myName}`
+            url: `/${this.state.myName}`,
+            caller: this.state.myName
         })
 
         var settingLocalMedia = Promise.promisify(this.setUserMedia)
@@ -118,14 +119,16 @@ export default class extends React.Component{
 
 
     render(){
+      console.log('WTFWTFWTF', this.props.incomingCall.find(name => name === this.state.collaborator.name))
         return (
         <div>
             <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
             {
-                // this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
-                this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
+                this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall }>Answer, begin pair</button>
             }
         </div>
         )
     }
 }
+
+
