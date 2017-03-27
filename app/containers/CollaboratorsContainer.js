@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 		name: state.user.gitInfo.login,
 		URL: state.VideoChat.URL,
 		id: state.user.gitInfo.id,
-		
+
 	}
 }
 

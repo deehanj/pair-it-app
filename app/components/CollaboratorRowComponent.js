@@ -35,9 +35,11 @@ export default class extends React.Component{
 
 
     callCollaborator() {
+      console.log('im calling someone and my name is: ',this.state.myName)
         socket.emit('Pair with me', {
             room: this.state.repoId,
             name: this.state.collaborator.name,
+            caller: this.state.myName,
             url: `/${this.state.myName}`
         })
 
@@ -84,7 +86,7 @@ export default class extends React.Component{
         .catch(console.error)
 
 
-    } 
+    }
 
     setLocalUserMedia() {
         return navigator.getUserMedia(
@@ -122,7 +124,8 @@ export default class extends React.Component{
         <div>
             <div key={this.state.collaborator} onClick={this.callCollaborator}>{this.state.collaborator.name}</div>
             {
-                this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
+                // this.props.incomingCall && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
+                this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall}>Answer, begin pair</button>
             }
         </div>
         )
