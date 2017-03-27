@@ -1,2 +1,80 @@
 @import "~font-awesome/css/font-awesome.css";
 @import "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css";
+
+html{
+	padding:0px;
+	margin:0px;
+	border:0px;
+}
+
+h1 {
+ font-family: "FatFrank", sans-serif;
+}
+
+#webchatWindow.set-driver-view{
+	z-index: 1;
+	float:left;
+}
+
+#localWebchat.set-driver-view{
+	z-index: 1;
+	float:right;
+}
+
+#video-container.video-padding{
+	padding-right:50px;
+	padding-left:50px;
+}
+
+#video-container.video-text-editor{
+	height:100px;
+}
+
+.webchatWindow-text-editor{
+	width:100%;
+	position:relative;
+	z-index: 1;
+}
+
+.localWebchat-text-editor{
+	width:33%;
+	top:5px;
+	right:300px;
+	position:absolute;
+	z-index: 2;
+}
+
+.set-driver{
+	text-align: center;
+}
+
+.text-center{
+	text-align: center;
+}
+
+#text-editor{
+	float:right;
+}
+
+.text-editor{
+	padding:0px;
+}
+
+#file-container{
+	margin-bottom: 10px;
+	
+}
+
+#file-list-container{
+	max-height: 300px;
+	overflow: scroll;
+}
+
+.close-btn{
+	
+}
+
+footer{
+	bottom:0;
+	position:absolute;
+}
