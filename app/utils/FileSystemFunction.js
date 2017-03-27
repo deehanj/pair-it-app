@@ -6,7 +6,6 @@ const fsp = Promise.promisifyAll(require('fs'));
 // they all return promises
 
 const getAllFiles = (dir) => {
-  console.log(dir)
   return fsp.readdirAsync(dir)
   .then(allFileNames => {
     const statPromises = allFileNames.map(fileName => {

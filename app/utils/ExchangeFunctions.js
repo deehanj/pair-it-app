@@ -5,14 +5,15 @@ import events from './events'
 let peerConnection = null;
 let iceCandidates;
 let pendingAcceptCandidates;
-let canAcceptIce = false;
+let canAcceptIce;
 
 
 const error = (err) =>{
-  console.log('Error doing things', err);
+  console.error(err);
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
+    canAcceptIce = false;
     peerConnection = null;
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
@@ -26,29 +27,20 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     iceCandidates = [];
 
     pendingAcceptCandidates = [];
-    // const video = document.getElementById('webchatWindow');
 
     peerConnection.onaddstream = (event) => {
-        console.log("onaddstream");
-        console.log(event);
         dispatchFunction(URL.createObjectURL(event.stream))
-        // video.src = URL.createObjectURL(event.stream);
-        // video.play();
     };
-
     peerConnection.onicecandidate = (event) => {
         if (event.candidate) {
             iceCandidates.push(event.candidate.candidate);
         } else if (peerConnection.iceGatheringState == "complete") {
-            console.log("Sending ice candidates to callee");
             for (let i = 0; i < iceCandidates.length; i++) {
                 events.trigger('iceCandidate', btoa(iceCandidates[i]));
             }
         }
     };
-
     onSuccess(MediaStreamURL)
-    console.log('iceCandidates',iceCandidates);
 }
 
 
@@ -68,7 +60,7 @@ webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
                 });
             },
             (error) => {
-                console.log(error)
+                console.error(error)
             });
         },
         MediaStreamURL,

@@ -25,7 +25,7 @@ export default class extends React.Component {
 	}
 
 	componentWillReceiveProps(nextProps) {
-		
+
 		if (!this.state.receivedProps) {
 			this.Git.cwd(nextProps.dir)
 			this.getBranchList();
@@ -37,7 +37,7 @@ export default class extends React.Component {
 		this.Git.branchLocal(
 			(error, branchSummary) => {
 				this.props.updateBranchList(branchSummary);
-					this.props.handleError(error);	
+					this.props.handleError(error);
 			}
 		);
 	}
@@ -48,7 +48,7 @@ export default class extends React.Component {
 			(error, success) => {
 				if(error){
 					this.props.handleError(error)
-					console.log(error)
+					console.error(error)
 				} else {
 					this.Git.status(
 						(error, success) => {
@@ -82,7 +82,7 @@ export default class extends React.Component {
 			(error, success) => {
 				if (error){
 					this.props.handleError(error)
-					console.log(error)
+					console.error(error)
 				} else {
 					this.props.handleSuccess(this.props.commitMessage);
 					setTimeout(this.handleStatus, 4000);
@@ -97,12 +97,11 @@ export default class extends React.Component {
 		const branchInput = document.getElementById('branchInput')
 		const branchName = document.getElementById('currentBranch')
 		this.Git.checkout(
-			this.props.branchQuery, 
+			this.props.branchQuery,
 			(error, newBranch) => {
 				if(error){
 					this.props.handleError(error);
 					branchInput.style.cssText = "color:red;"
-					console.log(branchInput.style)
 				} else {
 					this.props.handleSuccess('checked out branch: ' + this.props.branchQuery)
 					if(this.props.branchQuery === 'master'){
@@ -118,13 +117,13 @@ export default class extends React.Component {
 
 	handleGitPush() {
 		this.Git.push(
-			'origin', 
+			'origin',
 			this.props.currentBranch,
 			(error, success) =>{
 				this.props.handleError(error);
 				this.props.handleSuccess(success);
 			} )
-		this.handleStatus(); 
+		this.handleStatus();
 	}
 
 	handleGitPull() {
@@ -140,7 +139,6 @@ export default class extends React.Component {
 	}
 
 	render(){
-		console.log(this.props.dir)
 		return (
 			<div>
 				<h2 id="currentBranch">
