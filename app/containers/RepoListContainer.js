@@ -11,6 +11,7 @@ const socket = io(serverLocation)
 const mapStateToProps = (state) => {
 	return {
 		repos: state.repo.repoList,
+		userURL: state.user.gitInfo.url,
 	}
 }
 
@@ -26,6 +27,10 @@ const mapDispatchToProps = (dispatch) => {
 class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
+    }
+
+    componentDidMount() {
+    	socket.emit('room', {room: this.props.userURL})
     }
 
 	render (){

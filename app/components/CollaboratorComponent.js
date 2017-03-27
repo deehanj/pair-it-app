@@ -41,7 +41,7 @@ export default class CollaboratorComponent extends React.Component {
 	  		let collabArray = this.state.collaborators
 	  		collabArray.push(newCollaborator)
 	  		this.setState({collaborators: collabArray})
-	  		
+
 	  	}
 
 	  socket.emit('I am here', {room: data.room, name: this.props.name, playerInfo})
@@ -57,6 +57,15 @@ export default class CollaboratorComponent extends React.Component {
 	  		collabArray.push(newCollaborator)
 	  		this.setState({collaborators: collabArray})
 	  	}
+	  })
+
+	  socket.on('remove collaborator', (data) => {
+	  	let removeCollaborator = data.playerInfo
+
+	  	const newCollabArray = this.state.collaborators.filter((collaborator) => {
+	  		collaborator.name != removeCollaborator.name
+	  	})
+	  		this.setState({collaborators: newCollabArray});
 	  })
 
 		socket.on('Partner', (data) => {
@@ -76,8 +85,10 @@ export default class CollaboratorComponent extends React.Component {
 		socket.on('refresh_user_list', this.setUserState);
 
 		this.sortOutMedia = this.sortOutMedia.bind(this);
+		this.backToRepos = this.backToRepos.bind(this);
 
 		socket.on('go to pair room', this.props.clickToGoHome);
+
 
 	}
 
@@ -96,11 +107,16 @@ export default class CollaboratorComponent extends React.Component {
 		ConfigureSocket(socket, this.state.playerInfo, MediaStreamURL, updateStoreRemoteURL);
 	}
 
+	backToRepos() {
+		this.props.returnToRepos();
+		socket.emit('leaving room', {room: this.props.repo.id, playerInfo: this.state.playerInfo})
+	}
+
 	render (){
 
 		return (
 			<div>
-				<video id='webchatWindow'></video>
+				<button onClick={this.backToRepos}>BACK TO REPOS </button>
 				<button onClick={this.sortOutMedia}>Sort out media</button>
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHome} >CLICK HERE TO GO HOME!!!</h1>

@@ -11,7 +11,8 @@ const mapStateToProps = (state) => {
 		repo: state.repo.selectedRepo,
 		name: state.user.gitInfo.login,
 		URL: state.VideoChat.URL,
-		id: state.user.gitInfo.id
+		id: state.user.gitInfo.id,
+		
 	}
 }
 
@@ -41,6 +42,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		updateSocketRoom: (room) => {
 			dispatch(setSocketRoom(room))
 		},
+		returnToRepos: () => {
+			dispatch(push('/repos'))
+		}
 	}
 }
 

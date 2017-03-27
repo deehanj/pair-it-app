@@ -13,15 +13,18 @@ const error = (err) =>{
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
+    peerConnection = null;
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
             "url": "stun:stun.l.google.com:19302"
         }]
     });
     //For debugging purposes
+    window.pc = null;
     window.pc = peerConnection;
 
     iceCandidates = [];
+
     pendingAcceptCandidates = [];
     // const video = document.getElementById('webchatWindow');
 
@@ -45,6 +48,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     };
 
     onSuccess(MediaStreamURL)
+    console.log('iceCandidates',iceCandidates);
 }
 
 

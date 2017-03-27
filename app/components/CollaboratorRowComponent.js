@@ -51,8 +51,8 @@ export default class extends React.Component{
             return setTimeout(() => {
 
 
-                this.props.sortOutMedia()
-                return this.props.clickToGoHome()
+                this.props.clickToGoHome()
+                return this.props.sortOutMedia();
             }, 3000)
         })
         .catch(console.error)
