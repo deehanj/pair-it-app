@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import CollaboratorComponent from '../components/CollaboratorComponent'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
 import {push} from 'react-router-redux'
-import {setPairingRoom, setPairingPartner} from '../reducers/repo';
+import {setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner} from '../reducers/repo';
 import {setSocketRoom }from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
@@ -21,7 +21,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		goToPairRoom: () => {
 		  console.log('Got to pair room: ', ownProps);
 		},
-		clickToGoHome: () => {
+		clickToGoHomeNav: () => {
+			dispatch(setRoleToNavigator())
+			dispatch(push('/home'))
+		},
+		clickToGoHomeDriver: () => {
+			dispatch(setRoleToDriver())
 			dispatch(push('/home'))
 		},
 		UpdateStream: (stream) => {
