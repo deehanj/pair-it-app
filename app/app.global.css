@@ -61,6 +61,11 @@ h1 {
 }
 
 #file-container{
+	margin-bottom: 10px;
+	
+}
+
+#file-list-container{
 	max-height: 300px;
 	overflow: scroll;
 }

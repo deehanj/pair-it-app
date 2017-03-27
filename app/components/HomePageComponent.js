@@ -22,13 +22,16 @@ export default class HomePageComponent extends Component {
     }
     this.setSelfToDriver = this.setSelfToDriver.bind(this)
     this.setPartnerToDriver = this.setPartnerToDriver.bind(this)
+    this.updateCSS = this.updateCSS.bind(this)
 
     socket.on('partner picked self as driver', () => {
       this.props.setDriverToPartner()
+      this.updateCSS()
     })
 
     socket.on('partner picked you as driver', () => {
       this.props.setDriverToMyself()
+      this.updateCSS()
     })
 
     this.returnToCollaborators = this.returnToCollaborators.bind(this);
@@ -59,16 +62,18 @@ export default class HomePageComponent extends Component {
   setSelfToDriver(){
     this.props.setDriverToMyself()
     socket.emit('driver selected', {room: this.props.room})
-    document.getElementById('webchatWindow').className="webchatWindow-text-editor"
-    document.getElementById('localWebchat').className="localWebchat-text-editor"
-    document.getElementById('video-container').className="col-sm-4 text-editor"
+    this.updateCSS()
   }
 
   setPartnerToDriver(){
     this.props.setDriverToPartner()
     socket.emit('navigator selected', {room: this.props.room})
-    document.getElementById('localWebchat').className="localWebchat-text-editor"
+    this.updateCSS()
+  }
+
+  updateCSS(){
     document.getElementById('webchatWindow').className="webchatWindow-text-editor"
+    document.getElementById('localWebchat').className="localWebchat-text-editor"
     document.getElementById('video-container').className="col-sm-4 text-editor"
   }
 

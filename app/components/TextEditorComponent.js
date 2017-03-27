@@ -154,19 +154,22 @@ export default class TextEditorComponent extends React.Component {
     } else {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
-              
-              {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
               <div>
-                <button onClick={this.onAddNewTab}>+</button>
-                <button className='close-btn' onClick={() => this.onCloseTab(file) }>X</button>
-                <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
-              </div>
-              :
-              <form onSubmit={this.onSave}>
-                <input type="text" name="filename" placeholder="Name your file" />
-                <input type="submit" value="SAVE"/>
-              </form>
-              }
+                {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
+                <div>
+                  <button onClick={this.onAddNewTab}>+</button>
+                  <button className='close-btn' onClick={() => this.onCloseTab(file) }>X</button>
+                  <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
+                </div>
+                : { (this.props.role === 'driver') ?
+                <form onSubmit={this.onSave}>
+                  <input type="text" name="filename" placeholder="Name your file" />
+                  <input type="submit" value="SAVE"/>
+                </form>
+                : null  
+                }
+                }
+             </div> 
 
         <Tabs
           onSelect={this.handleSelect}
