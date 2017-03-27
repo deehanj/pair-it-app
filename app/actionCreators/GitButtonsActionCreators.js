@@ -6,17 +6,17 @@ export const toggleDisplayBranchList = () => ({
 })
 
 export const successHandler = (successMessage) => ({
-	type: SUCCESS_DATA, 
+	type: SUCCESS_DATA,
 	successMessage
 })
 
 export const errorHandler = (errorMessage) => ({
-	type: ERROR_DATA,  
+	type: ERROR_DATA,
 	errorMessage
 })
 
 export const currentBranch = (branch) => ({
-	type: UPDATE_CURRENT_BRANCH, 
+	type: UPDATE_CURRENT_BRANCH,
 	currentBranch: branch
 })
 
@@ -30,7 +30,7 @@ export const branchList = (branchSummary) => {
 		branchList.push(branchSummary.branches[branch]);
 	}
 	return {
-		type: UPDATE_BRANCH_LIST, 
+		type: UPDATE_BRANCH_LIST,
 		branchList: branchList,
 		currentBranch
 	}
@@ -46,7 +46,6 @@ export const displayTrue = () => ({
 })
 
 export const statusHandler = (successObject) => {
-	console.log(successObject);
 	let status;
 	let staged = [];
 	let yetToBeCommitted = [];

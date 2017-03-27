@@ -69,8 +69,6 @@ export default class CollaboratorComponent extends React.Component {
 	  })
 
 		socket.on('Partner', (data) => {
-			console.log('Partnering: ', data);
-			console.log('state name: ', props.name);
 		  const partnerName = data.name
 			const url = data.url
 			this.props.updateSocketRoom(data.name)
@@ -81,8 +79,6 @@ export default class CollaboratorComponent extends React.Component {
       }
       this.props.setUnavailable(data.caller)
 		})
-
-		socket.on('refresh_user_list', this.setUserState);
 
 		this.sortOutMedia = this.sortOutMedia.bind(this);
 		this.backToRepos = this.backToRepos.bind(this);
@@ -104,10 +100,6 @@ export default class CollaboratorComponent extends React.Component {
 
 	componentDidMount() {
 		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
-	}
-
-	setUserState(users){
-		console.log('User list from server: ', users);
 	}
 
 	sortOutMedia(){
