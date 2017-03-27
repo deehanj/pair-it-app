@@ -16,7 +16,7 @@ export default class CollaboratorComponent extends React.Component {
 		super(props)
 		this.state = {
 			collaborators: [],
-			incomingCall: false,
+			incomingCall: [],
 			users: [],
 			playerInfo: {
 				name: props.name,
@@ -74,11 +74,12 @@ export default class CollaboratorComponent extends React.Component {
 		  const partnerName = data.name
 			const url = data.url
 			this.props.updateSocketRoom(data.name)
-			if (partnerName === props.name){
-				this.setState({incomingCall: true})
+			// if (partnerName === props.name){
+        const incomingCallArr = this.state.incomingCall.concat([data.caller])
+				this.setState({incomingCall: incomingCallArr})
 				console.log('pair with me, incomingCall', this.state.incomingCall)
 				this.props.setPairingRoomURL(data.url);
-			}
+			// }
 
 		})
 
@@ -124,25 +125,25 @@ export default class CollaboratorComponent extends React.Component {
 				<h2>Collaborators:</h2>
 				{this.state.collaborators && this.state.collaborators.map(collaborator =>
 						(
-							<CollaboratorRowComponent 
-								key={collaborator.name} 
-								collaborator={collaborator} 
-								goToPairRoom={this.props.goToPairRoom} 
-								repoId={this.props.repo.id} 
-								myName={this.props.name} 
-								myId={this.props.id} 
-								URL={this.props.URL} 
-								incomingCall={this.state.incomingCall}  
-								UpdateStream={this.props.UpdateStream} 
+							<CollaboratorRowComponent
+								key={collaborator.name}
+								collaborator={collaborator}
+								goToPairRoom={this.props.goToPairRoom}
+								repoId={this.props.repo.id}
+								myName={this.props.name}
+								myId={this.props.id}
+								URL={this.props.URL}
+								incomingCall={this.state.incomingCall}
+								UpdateStream={this.props.UpdateStream}
 								UpdateLocalStream={this.props.UpdateLocalStream}
-								sortOutMedia={this.sortOutMedia} 
-								setPairingRoomURL={this.props.setPairingRoomURL} 
-								clickToGoHome={this.props.clickToGoHome} 
-								setPairPartner={this.props.setPairPartner} 
+								sortOutMedia={this.sortOutMedia}
+								setPairingRoomURL={this.props.setPairingRoomURL}
+								clickToGoHome={this.props.clickToGoHome}
+								setPairPartner={this.props.setPairPartner}
 
 							/>
 						)
-					) 
+					)
 				}
 			</div>
 		)
