@@ -52,7 +52,7 @@ export default class extends React.Component{
             return setTimeout(() => {
 
 
-                this.props.clickToGoHome()
+                // this.props.clickToGoHome()
                 return this.props.sortOutMedia();
             }, 3000)
         })
@@ -82,6 +82,7 @@ export default class extends React.Component{
             return events.trigger('startCall', this.state.collaborator)
           }, 3000)
         })
+        .then(() => socket.emit('call answered', { caller: this.state.collaborator.name }))
         .catch(console.error)
 
 

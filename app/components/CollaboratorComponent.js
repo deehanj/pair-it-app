@@ -89,6 +89,11 @@ export default class CollaboratorComponent extends React.Component {
 
 		socket.on('go to pair room', this.props.clickToGoHome);
 
+    socket.on('partner answered call', (data) => {
+      if (data.caller === props.name) {
+        this.props.clickToGoHome()
+      }
+    })
 
 	}
 
