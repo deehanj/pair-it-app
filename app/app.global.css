@@ -15,6 +15,12 @@ h3 {
 	margin: 0;
 }
 
+h4{
+	color: gray;
+	font-style: italic;
+	font-size: 16px;
+}
+
 .repo-list-container{
 	padding-left: 50px;
 	padding-right: 50px;
@@ -22,9 +28,56 @@ h3 {
 
 .repo{
 	float:left;
-	border: solid black 1px;
-	border-radius: 10px;
-	margin-top: 2px;
+	border: solid grey 1px;
+	border-radius: 5px;
+	margin-top: 5px;
+	width: 100%;
+	padding: 15px;
+	position: relative;
+}
+
+.repo:hover{
+	border: solid #AAE034 1px;
+}
+
+
+.repo-name{
+	margin-top: 0px;
+	margin-right: 10px;
+	width: 100%;
+	float: left;
+}
+
+.repo-name:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
+}
+
+.repo-name-link{
+	float:left;
+}
+
+.sm-avatar{
+	height: 24px;
+	vertical-align: text-bottom;
+}
+
+.repo-owner{
+	float: left;
+	position: absolute;
+  bottom: 0px;
+  right: 10px;
+}
+
+.repo-owner{
+	vertical-align:text-bottom;
+}
+
+.repo-owner-name:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }
 
 body {

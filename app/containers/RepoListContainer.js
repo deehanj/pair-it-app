@@ -6,6 +6,8 @@ import {push} from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
 import io from 'socket.io-client'
 
+const shell = window.require('electron').shell
+
 const socket = io(serverLocation)
 
 const mapStateToProps = (state) => {
@@ -36,6 +38,22 @@ class RepoListContainer extends React.Component {
     socket.emit('room', {room: this.props.userURL})
   }
 
+	goToRemoteLink(url) {
+		shell.openExternal(url);
+	}
+
+	readableDate(date) {
+		//"2017-03-16T20:51:55Z"
+		const broken = date.split('T')
+		const day = broken[0].split('-')
+		const dayString = `${day[1]}-${day[2]}-${day[0]}`
+		const time = broken[1].split(':')
+		const timeString = `${time[0]}:${time[1]}`
+
+		return `${dayString} at ${timeString}`
+
+	}
+
 	render (){
 
 		return (
@@ -44,7 +62,7 @@ class RepoListContainer extends React.Component {
 				<nav className="row">
 					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
 				</nav>
-				<RepoListComponent repos={this.props.repos} onClick={this.props.dispatchSelectRepo} />
+				<RepoListComponent repos={this.props.repos} dispatchSelectRepo={this.props.dispatchSelectRepo} goToRemoteLink={this.goToRemoteLink} readableDate={this.readableDate} />
 			</div>
 		)
 	}
