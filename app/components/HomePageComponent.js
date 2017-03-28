@@ -121,15 +121,15 @@ export default class HomePageComponent extends Component {
               <TextEditorContainer gitOpen={this.props.openGitMenu}/>
               <FilesContainer />
                 <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-              <Drawer 
+              <Drawer
                 open={this.props.gitOpen}
                 docked={false}
-                width={300}  
+                width={300}
                 >
                 <GitButtonsContainer />
                 <ErrorBoxContainer />
                 <SuccessBoxContainer />
-              </Drawer>    
+              </Drawer>
             </div>
         :
       //NAVIGATOR VIEW

@@ -55,7 +55,7 @@ export default class Files extends React.Component {
   }
   componentWillUnmount() {
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
-    //need to stop listening to sockets
+    socket.removeAllListeners('new file is opened')
   }
 
   componentWillReceiveProps(nextProps) {
