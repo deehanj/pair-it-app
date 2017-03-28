@@ -4,7 +4,9 @@ import FilesComponent from '../components/FilesComponent'
 import { setFileDirAndLoadFiles } from '../reducers/FilesReducer'
 
 const mapStateToProps = state => ({
-  dir: state.fileSystem.dir
+  dir: state.fileSystem.dir,
+  currentBranch: state.GitButtons.currentBranch,
+  repoName: state.repo.selectedRepo.name
 })
 
 const mapDispatchToProps = dispatch => ({

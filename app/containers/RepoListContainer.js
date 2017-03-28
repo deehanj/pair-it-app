@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import RepoList from '../components/RepoList'
+import RepoListComponent from '../components/RepoListComponent'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
@@ -39,11 +39,12 @@ class RepoListContainer extends React.Component {
 	render (){
 
 		return (
+
 			<div>
 				<nav className="row">
 					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
 				</nav>
-				<RepoList repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
+				<RepoListComponent repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
 			</div>
 		)
 	}

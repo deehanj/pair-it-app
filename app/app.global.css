@@ -11,6 +11,17 @@ h1 {
  font-family: "FatFrank", sans-serif;
 }
 
+.repo-list-container{
+	padding-left: 50px;
+	padding-right: 50px;
+}
+
+.repo{
+	float:left;
+	border: solid black 1px;
+	border-radius: 10px;
+	margin-top: 2px;
+  
 body {
 	font-family: "proxima-nova", sans-serif;
 	font-style: normal;
@@ -67,23 +78,79 @@ body {
 	padding:0px;
 }
 
+.admin-btn-container{
+	float:right;
+
+}
+
+.admin-btn{
+	float:left;
+	font-size: 25px;
+	margin:5px;
+}
+
 #file-container{
 	margin-bottom: 10px;
 
 }
 
+
+#file-selector{
+	margin:5px;
+	float:left;
+	width: 200px;
+}
+
 #file-list-container{
 	max-height: 300px;
 	overflow: scroll;
+	size: 15px;
+}
+
+ul {
+	list-style: none;
+}
+
+li{
+	padding:2px;
+}
+
+#files{
+	font-size: 15px;
 }
 
 .close-btn{
 
 }
 
+.footer{
+	float:left;
+	margin:5px;
+	font-size: 15px;
+	display: inline-block;
+	font-family: "FatFrank", sans-serif;
+}
+
+.footer.footer-btn{
+	float:left;
+	margin:5px;
+	padding-top:5px;
+	font-size: 15px;
+	display: inline-block;
+	font-family: "FatFrank", sans-serif;
+
+}
+
+.fa.fa-git{
+	font-size:30px;
+}
+
 footer{
+	background-color: grey;
+	width:100%;
 	bottom:0;
-	position:absolute;
+	position:relative;
+	float:left;
 }
 
 .logo-landing{

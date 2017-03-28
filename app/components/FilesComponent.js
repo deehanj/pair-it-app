@@ -31,7 +31,12 @@ export default class FilesComponent extends React.Component {
     return (
       <div>
         <div id="file-container" className="col-sm-4">
-          <input type="file" ref="local" onChange={this.selectFile} />
+          <h1>{this.props.repoName}</h1>
+          <h3 id="currentBranch"> 
+          {this.props.currentBranch && <i className="fa fa-code-fork"/>}
+          {this.props.currentBranch && '  Working on branch: ' + this.props.currentBranch}
+          </h3>
+          <input id="file-selector" type="file" ref="local" onChange={this.selectFile} />
           <button onClick={this.onSubmit}>Pair It!</button>
         </div>
         <div id="file-list-container" className="col-sm-4">

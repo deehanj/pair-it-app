@@ -71,7 +71,7 @@ export default class Files extends React.Component {
   render() {
     const files = this.props.files || this.state.files
     return (
-      <ul>{this.props.dir}
+      <ul id="files">{this.props.dir}
         {
           files && files.map(file => {
             const filePath = file.filePath
@@ -81,17 +81,19 @@ export default class Files extends React.Component {
             return file.fileBool ?
               // makes a file list item if fileBool is true
               <li
+                id="single-file"
                 key={filePath}
                 onClick={() => {
                   this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
                 }
-                }>{fileName}
+                }><i className="fa fa-file-text-o" aria-hidden="true"/>{fileName}
               </li>
               :
               // makes a new Files component if fileBool is false
-              <li key={filePath} onClick={() => this.setVisible(filePath)}>
-                {fileName}
+              <li id="folder" key={filePath} onClick={() => this.setVisible(filePath)}>
+                <i className="fa fa-folder"/>{fileName}
                 {(this.state.visible[filePath] === true) &&
+
                 <Files
                   subDir={filePath}
                   visible={false}

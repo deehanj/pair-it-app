@@ -141,41 +141,26 @@ export default class extends React.Component {
 	render(){
 		return (
 			<div>
-				<h2 id="currentBranch">
-				{/* CURRENT BRANCH NAME*/}
-				{this.props.currentBranch && 'working on branch: ' + this.props.currentBranch}
-				</h2>
-				{/* SUCCESS MESSAGE */}
-				{/*this.props.successData*/}
-				{/* ERROR MESSAGE */}
-				{/*this.props.errorData */}
-				{/* BRANCH CHECKOUT - DONE */}
-				<form onSubmit={this.handleBranchCheckout} >
-					<button onClick={this.handleBranchCheckout}>Checkout Branch</button>
-					{/* BRANCH NAME TO BE CHECKED OUT */}
-					<input type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
+			<footer>
+				<div className="footer"><i className="fa fa-git"/></div>
+
+				<form className="footer" onSubmit={this.handleBranchCheckout} >
+					<div className="footer" onClick={this.handleBranchCheckout}>Checkout Branch</div>
+					<input className="footer" type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
 				</form>
-				{/* ADD - DONE */}
-				<button onClick={this.handleGitAdd}>Add Files</button>
-				{/* COMMIT - DONE*/}
-				<form id="commit" onSubmit={this.handleCommit}>
-					<button onClick={this.handleCommit} >Commit</button>
-					{/* COMMIT MESSAGE - DONE */}
-					<input type="text" onChange={this.props.handleCommitMessage}></input>
+
+				<div className="footer footer-btn" onClick={this.handleGitAdd}>Add Files</div>
+
+				<form id="commit" className="footer" onSubmit={this.handleCommit}>
+					<div className="footer" onClick={this.handleCommit}>Commit</div>
+					<input className="footer" type="text" onChange={this.props.handleCommitMessage}></input>
 				</form>
-				{/* STATUS - DONE */}
-				<button onClick={this.handleStatus}>Status</button>
-				{/* PUSH DONE */}
-				<button onClick={this.handleGitPush}>Push</button>
-				{/* PULL DONE */}
-				<button onClick={this.handleGitPull}>Pull</button>
-				{/* TOGGLE DONE */}
-				<button onClick={this.props.toggleDisplayBranches}>ShowBranchList</button>
-				{/* BRANCH DISPLAYED */}
+
+				<div className="footer footer-btn" onClick={this.handleStatus}>Status</div>
+				<div className="footer footer-btn" onClick={this.handleGitPush}>Push</div>
+				<div className="footer footer-btn" onClick={this.handleGitPull}>Pull</div>
+				<div className="footer footer-btn" onClick={this.props.toggleDisplayBranches}>Show BranchList</div>
 				{this.props.displayBranch && this.props.branchList.map(el => {
-						// if (el === currentBranch){
-						// 	return <ul>{chalk.green(el)}</ul>
-						// } else {
 							return (
 								<div>
 									<ul>{el.name + ' :  ' + el.label}</ul>
@@ -185,6 +170,7 @@ export default class extends React.Component {
 					}
 					)
 				}
+			</footer>
 			</div>
 			)
 	}
