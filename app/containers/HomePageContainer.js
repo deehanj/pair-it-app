@@ -19,7 +19,6 @@ const mapStateToProps = (state) => {
     room: state.room.name,
     myName: state.user.gitInfo.login,
     repoId: state.repo.selectedRepo.id,
-    gitOpen: state.GitButtons.open
 	}
 }
 
@@ -46,12 +45,6 @@ const mapDispatchToProps = (dispatch) => {
     },
     removeRole: () => {
       dispatch(clearRole())
-    },
-    openGitMenu: () =>{
-      dispatch(openGitMenu(true))
-    },
-    closeGitMenu: () => {
-      dispatch(closeGitMenu(false))
     }
   }
 }

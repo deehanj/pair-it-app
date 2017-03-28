@@ -23,17 +23,12 @@ export default class Files extends React.Component {
       files: [],
       visible: props.visible,
       text: '',
-      level: props.level
+      level: props.level,
+      activeFile: props.activeFile
     }
     this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
-    socket.on('new file is opened', (file) => {
-      if (this.props.activeFile.filePath !== file.filePath){
-        this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
-      }
-    });
   }
-
 
   fetchFiles(dir) {
     if (dir.length > 0) {
@@ -50,10 +45,17 @@ export default class Files extends React.Component {
   }
 
   componentDidMount() {
+    socket.on('new file is opened', (file) => {
+      if (this.props.activeFile.filePath !== file.filePath){
+        this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
+      }
+    });
     socket.emit('room', {room: this.props.room})
+
   }
   componentWillUnmount() {
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
+    //need to stop listening to sockets
   }
 
   componentWillReceiveProps(nextProps) {
