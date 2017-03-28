@@ -124,11 +124,14 @@ export default class HomePageComponent extends Component {
               <Drawer 
                 open={this.props.gitOpen}
                 docked={false}
-                width={300}  
+                width={400}  
+                openSecondary={true}
                 >
+                <div>
                 <GitButtonsContainer />
                 <ErrorBoxContainer />
                 <SuccessBoxContainer />
+                </div>
               </Drawer>    
             </div>
         :
