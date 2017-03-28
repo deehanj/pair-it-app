@@ -119,7 +119,7 @@ body {
 .localWebchat-text-editor{
 	width:33%;
 	top:5px;
-	right:300px;
+	left:5px;
 	position:absolute;
 	z-index: 2;
 }
@@ -152,8 +152,7 @@ body {
 }
 
 #file-container{
-	margin-bottom: 10px;
-
+	margin-bottom: 15px;
 }
 
 
@@ -280,6 +279,16 @@ footer{
 	font-weight: bold;
 	padding-top: 20px;
 
+}
+
+.git-headline-message{
+	text-align: center;
+	font-weight: bold;
+	padding-top: 20px;
+	border: 3px solid #AAE034;
+	border-radius: 10px;
+	float:left;
+	width: %;
 }
 
 #git-branch-container{
