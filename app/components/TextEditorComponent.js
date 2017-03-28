@@ -159,7 +159,7 @@ export default class TextEditorComponent extends React.Component {
                 {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
-                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile.filePath) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile) }><i className="fa fa-times" /></div>
                   <div className="admin-btn" value="SAVE" height="50px" width="70px" type="div" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                   <div className="admin-btn" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
                 </div>
@@ -168,9 +168,9 @@ export default class TextEditorComponent extends React.Component {
                   <input type="text" name="filename" placeholder="Name your file" />
                   <input type="submit" value="SAVE"/>
                 </form>
-                : null  
+                : null
                 }
-             </div> 
+             </div>
 
         <Tabs
           onSelect={this.handleSelect}

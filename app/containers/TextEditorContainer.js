@@ -31,7 +31,7 @@ const mapDispatchToProps = (dispatch) => {
 		dispatchDriverSave: (filePath, code, isNewFile) => dispatch(driverSave(filePath, code, isNewFile)),
 		dispatchCloseTab: (file, openFiles) => dispatch(closeTab(file, openFiles)),
 		dispatchOpenGitMenu: () => dispatch(openGitMenu(true)),
-    	dispatchCloseGitMenu: () => dispatch(closeGitMenu(false))
+    dispatchCloseGitMenu: () => dispatch(closeGitMenu(false))
 	}
 }
 
