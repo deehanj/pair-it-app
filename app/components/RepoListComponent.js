@@ -19,7 +19,7 @@ const readableDate = props.readableDate
 							} >{repo.name}</h1>
 							<h4 className="repo-owner-name" onClick={() => goToRemoteLink(repo.owner.html_url)
 							}><i className="fa fa-github" /> View on GitHub</h4>
-							<h4>Last edited on {readableDate(repo.pushed_at)}</h4>
+							<h4 className="date-changed">Last edited on {readableDate(repo.pushed_at)}</h4>
 							<h4 className="repo-owner">Owned by <span
 									className="repo-owner-name"
 									onClick={() => goToRemoteLink(repo.owner.html_url)
