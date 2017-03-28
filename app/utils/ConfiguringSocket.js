@@ -5,6 +5,14 @@ import _ from 'lodash';
 const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) => {
 	let theOtherUser;
 
+	socket.removeAllListeners("refresh_user_list");
+	socket.removeAllListeners("hang_up");
+	socket.removeAllListeners("receiveOffer");
+	socket.removeAllListeners("answer");
+	socket.removeAllListeners("receiveIceCandidate");
+
+  events.unSubscribe('startCall')
+
 	socket.on('refresh_user_list', (users) => {
 		users = _.compact(users.map((user) => {
 			if(user._id != playerInfo._id){

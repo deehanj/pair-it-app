@@ -5,7 +5,7 @@ import events from './events'
 let peerConnection = null;
 let iceCandidates;
 let pendingAcceptCandidates;
-let canAcceptIce;
+let canAcceptIce = false;
 
 
 const error = (err) =>{
@@ -13,7 +13,6 @@ const error = (err) =>{
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
-    canAcceptIce = false;
     peerConnection = null;
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
@@ -23,6 +22,9 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     //For debugging purposes
     window.pc = null;
     window.pc = peerConnection;
+
+    peerConnection.onsignalingstatechange = function(event) {
+    };
 
     iceCandidates = [];
 

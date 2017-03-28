@@ -35,7 +35,7 @@ const reducer = (state = initialState, action) => {
       newState.openFiles = newState.openFiles.concat([action.file])
       break
     case CLOSE_FILE:
-      newState.openFiles = newState.openFiles.filter(file => file.filePath !== action.file.filePath)
+      newState.openFiles = newState.openFiles.filter(file => file.filePath !== action.file)
       break
     case UPDATE_OPEN_FILES:
       newState.openFiles = newState.openFiles.map(file => {
@@ -104,6 +104,7 @@ export const setFileDirAndLoadFiles = (dir) => (dispatch) => {
     })
     .catch(error => console.error(error.message))
   }
+  
 }
 
 export const driverSave = (filePath, code, isNewFile) => (dispatch) => {

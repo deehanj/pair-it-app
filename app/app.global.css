@@ -149,7 +149,6 @@ body {
 
 #file-container{
 	margin-bottom: 10px;
-
 }
 
 
@@ -160,7 +159,7 @@ body {
 }
 
 #file-list-container{
-	max-height: 300px;
+	max-height: 600px;
 	overflow: scroll;
 	size: 15px;
 }
