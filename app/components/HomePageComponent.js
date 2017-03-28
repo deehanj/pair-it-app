@@ -112,29 +112,36 @@ export default class HomePageComponent extends Component {
           <video id="webchatWindow" className="set-driver-view" onClick={this.setPartnerToDriver} />
           <video id="localWebchat" className="set-driver-view" onClick={this.setSelfToDriver} />
         </div>
-
-        <footer>
-          <button onClick={this.returnToCollaborators}>BACK TO COLLABORATORS PAGE</button>
-        </footer>    
+  
         {(this.props.role === '') ?
-           null
+        <footer>
+            <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+        </footer>  
         : 
       //DRIVER VIEW
           (this.props.role === 'driver') ?
             <div>
               <TextEditorContainer />
               <FilesContainer />
-              <GitButtonsContainer />
-              <ErrorBoxContainer />
-              <SuccessBoxContainer />
+                <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+              <footer>
+                <GitButtonsContainer />
+                <ErrorBoxContainer />
+                <SuccessBoxContainer />
+              </footer> 
             </div>
         :
       //NAVIGATOR VIEW
             <div>
               <FileListContainer/>
               <TextEditorContainer />
+              <footer>
+               <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+              </footer>  
             </div>
       }
+      
+
       </div>
     )
     }

@@ -125,6 +125,10 @@ export default class TextEditorComponent extends React.Component {
     if (this.props.openFiles.length === 0) {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
+          {this.props.role === 'driver' && <form onSubmit={this.onSave}>
+            <input type="text" name="filename" placeholder="Name your file" />
+            <input type="submit" value="SAVE"/>
+          </form>}
           <AceEditor
             mode="javascript"
             theme="monokai"
@@ -144,10 +148,6 @@ export default class TextEditorComponent extends React.Component {
               maxLines: Infinity
             }}
           />
-          {this.props.role === 'driver' && <form onSubmit={this.onSave}>
-            <input type="text" name="filename" placeholder="Name your file" />
-            <input type="submit" value="SAVE"/>
-          </form>}
 
         </div>
       )
@@ -156,10 +156,10 @@ export default class TextEditorComponent extends React.Component {
         <div id="text-editor" className="col-sm-8 text-editor">
               <div>
                 {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
-                <div>
-                  <button onClick={this.onAddNewTab}>+</button>
-                  <button className='close-btn' onClick={() => this.onCloseTab(file) }>X</button>
-                  <button className="save-btn" value="SAVE" height="50px" width="70px" type="button" onClick={this.onSave}>SAVE</button>
+                <div className="admin-btn-container">
+                  <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
+                  <div className="admin-btn" onClick={() => this.onCloseTab(file) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn" value="SAVE" height="50px" width="70px" type="div" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                 </div>
                 : (this.props.role === 'driver') ?
                 <form onSubmit={this.onSave}>

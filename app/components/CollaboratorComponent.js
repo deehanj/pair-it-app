@@ -116,7 +116,6 @@ export default class CollaboratorComponent extends React.Component {
 	render (){
 		return (
 			<div>
-				<button onClick={this.backToRepos}>BACK TO REPOS </button>
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHomeNav} >CLICK HERE TO GO HOME AS NAV!!!</h1>
 				<h1 onClick={this.props.clickToGoHomeDriver} >CLICK HERE TO GO HOME AS DRIVER!!!</h1>
@@ -142,6 +141,9 @@ export default class CollaboratorComponent extends React.Component {
 						)
 					)
 				}
+				<footer>
+		            <div className="footer" onClick={this.backToRepos}><h3><i className="fa fa-arrow-left" />   Return to Repo Page Page</h3></div>
+		        </footer>  
 			</div>
 		)
 	}

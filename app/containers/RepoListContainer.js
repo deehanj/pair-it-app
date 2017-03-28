@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import RepoList from '../components/RepoList'
+import RepoListComponent from '../components/RepoListComponent'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
@@ -36,7 +36,7 @@ class RepoListContainer extends React.Component {
 	render (){
 	
 		return (
-			<RepoList repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
+			<RepoListComponent repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
 		)
 	}
 
