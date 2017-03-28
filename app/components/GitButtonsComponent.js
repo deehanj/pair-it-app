@@ -141,35 +141,58 @@ export default class extends React.Component {
 	render(){
 		return (
 			<div>
-			<footer>
-				<form className="footer" onSubmit={this.handleBranchCheckout} >
-					<div className="footer" onClick={this.handleBranchCheckout}>Checkout Branch</div>
-					<input className="footer" type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
-				</form>
+			 <div className="git-button-container">
 
-				<div className="footer footer-btn" onClick={this.handleGitAdd}>Add Files</div>
+			 	<div className="close-git">
+                  <i className="fa fa-times" onClick={() => this.props.dispatchCloseGitMenu()}/>
+                  <div className="git-logo-modal"><i className="fa fa-git"/></div>
+                </div>
 
-				<form id="commit" className="footer" onSubmit={this.handleCommit}>
-					<div className="footer" onClick={this.handleCommit}>Commit</div>
-					<input className="footer" type="text" onChange={this.props.handleCommitMessage}></input>
-				</form>
-
-				<div className="footer footer-btn" onClick={this.handleStatus}>Status</div>
-				<div className="footer footer-btn" onClick={this.handleGitPush}>Push</div>
-				<div className="footer footer-btn" onClick={this.handleGitPull}>Pull</div>
-				<div className="footer footer-btn" onClick={this.props.toggleDisplayBranches}>Show BranchList</div>
+				<div className="git-headline" onClick={this.props.toggleDisplayBranches}>
+				<button className="git-btn">Show Branch List</button>
+				</div>
+			 	<div id="git-branch-container">
 				{this.props.displayBranch && this.props.branchList.map(el => {
 							return (
-								<div>
-									<ul>{el.name + ' :  ' + el.label}</ul>
-								</div>
+								<ul>
+									<li><i className="fa fa-code-fork"/>{'   '+ el.name + ':  ' + el.label}</li>
+								</ul>
 							)
 						// }
 					}
 					)
 				}
-			</footer>
+				</div>
+				<div >
+					<form className="git-headline" onSubmit={this.handleBranchCheckout} >
+						<input type="text" className="git-input" placeholder="branch name"id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
+						<button className="git-btn" onClick={this.handleBranchCheckout}>Checkout Branch</button>
+					</form>
+				</div>
+
+				<div className="git-headline" onClick={this.handleGitAdd}>
+				<button className="git-btn">Add Files</button>
+				</div>
+
+				<div className="git-headline">
+				<form id="commit" onSubmit={this.handleCommit}>
+					<input className="git-input" type="text" placeholder="commit message" onChange={this.props.handleCommitMessage}></input>
+					 <button className="git-btn" onClick={this.handleCommit}>Commit</button>
+				</form>
+				</div>
+
+				<div className="git-headline" onClick={this.handleStatus}>
+					<button className="git-btn">Status</button>
+				</div>
+				<div className="git-headline" onClick={this.handleGitPush}>
+					<button className="git-btn">Push</button>
+				</div>
+				<div className="git-headline" onClick={this.handleGitPull}>
+					<button className="git-btn">Pull</button>
+				</div>
 			</div>
+			</div>
+
 			)
 	}
 

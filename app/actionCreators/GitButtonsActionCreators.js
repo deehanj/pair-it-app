@@ -1,9 +1,16 @@
 import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE, TOGGLE_GIT_MENU} from '../constants/GitButtonsConstants'
 import chalk from 'chalk';
+import store from '../store/configureStore.development'
 
-export const toggleDisplayBranchList = () => ({
-	type: TOGGLE_BRANCH_DISPLAY,
-})
+
+export const toggleDisplayBranchList = (boolean) => 
+	(dispatch, getState) => {
+		if (getState().GitButtons.displayBranch) {
+			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
+		} else {
+			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
+		}
+	}
 
 export const successHandler = (successMessage) => ({
 	type: SUCCESS_DATA,
