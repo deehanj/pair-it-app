@@ -50,9 +50,11 @@ export default class Files extends React.Component {
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
-    socket.on('partner selected files', (data) => {
-      this.props.loadFiles(data.files)
-    })
+    if (this.props.files.length === 0) {
+      socket.on('partner selected files', (data) => {
+          this.props.loadFiles(data.files)
+      })
+    }
     socket.emit('room', {room: this.props.room})
   }
   componentWillUnmount() {
@@ -70,7 +72,7 @@ export default class Files extends React.Component {
       this.setState({ visible })
     }
     this.fetchFiles(nextProps.subDir)
-    socket.emit('send file tree', {files: this.props.files, room: this.props.room})
+    if (this.props.role === 'driver') socket.emit('send file tree', {files: this.props.files, room: this.props.room})
   }
 
   render() {

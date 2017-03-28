@@ -26,7 +26,8 @@ const mapStateToProps = state => {
     activeFile: state.fileSystem.activeFile,
     visible: true,
     level: 0,
-    room: state.room.name
+    room: state.room.name,
+    role: state.repo.role
   }
 }
 
