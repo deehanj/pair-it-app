@@ -22,33 +22,44 @@ export default class HomePageComponent extends Component {
     this.setSelfToDriver = this.setSelfToDriver.bind(this)
     this.setPartnerToDriver = this.setPartnerToDriver.bind(this)
     this.updateCSS = this.updateCSS.bind(this)
-
-    socket.on('partner picked self as driver', () => {
-      this.props.setDriverToPartner()
-      this.updateCSS()
-    })
-
-    socket.on('partner picked you as driver', () => {
-      this.props.setDriverToMyself()
-      this.updateCSS()
-    })
-
     this.returnToCollaborators = this.returnToCollaborators.bind(this);
-
-    socket.on('peer connection severed', () => {
-          URL.revokeObjectURL(this.props.URL);
-          URL.revokeObjectURL(this.props.remoteURL)
-    })
-
   }
 
   componentDidMount(){
     const LocalVideo = document.getElementById('localWebchat')
     LocalVideo.src = URL.createObjectURL(this.props.localURL);
     LocalVideo.play();
+    socket.on('partner picked self as driver', () => {
+      this.props.setDriverToPartner()
+      this.updateCSS()
+    })
+    socket.on('partner picked you as driver', () => {
+      this.props.setDriverToMyself()
+      this.updateCSS()
+    })
+    socket.on('peer connection severed', () => {
+          URL.revokeObjectURL(this.props.URL);
+          URL.revokeObjectURL(this.props.remoteURL)
+    })
     setTimeout(()=>{
       socket.emit('room', {room: this.props.room,})
     }, 0)
+  }
+
+  componentWillUnmount() {
+    window.pc.close();
+    socket.removeAllListeners('partner picked self as driver')
+    socket.removeAllListeners('partner picked you as driver')
+    socket.removeAllListeners('peer connection severed')
+  }
+
+  componentDidUpdate(){
+    if (this.props.remoteURL.length && this.state.remoteVideoRendered === false){
+      const RemoteVideo = document.getElementById('webchatWindow');
+      this.setState({remoteVideoRendered: true});
+      RemoteVideo.src = this.props.remoteURL;
+      RemoteVideo.play();
+    }
   }
 
   setSelfToDriver(){
@@ -69,16 +80,6 @@ export default class HomePageComponent extends Component {
     document.getElementById('video-container').className="col-sm-4 text-editor"
   }
 
-  componentDidUpdate(){
-    if (this.props.remoteURL.length && this.state.remoteVideoRendered === false){
-      const RemoteVideo = document.getElementById('webchatWindow');
-        this.setState({remoteVideoRendered: true});
-        RemoteVideo.src = this.props.remoteURL;
-        RemoteVideo.play();
-
-    }
-  }
-
   returnToCollaborators() {
     this.props.backToCollaborators();
     this.props.makeAvailable(this.props.myName)
@@ -92,11 +93,6 @@ export default class HomePageComponent extends Component {
     console.log(this.props.URL.getAudioTracks()[0])
     this.props.clearURLs();
     this.setState({remoteVideoRendered: false});
-  }
-
-  componentWillUnmount() {
-    window.pc.close();
-
   }
 
   render() {
@@ -113,12 +109,12 @@ export default class HomePageComponent extends Component {
           <video id="webchatWindow" className="set-driver-view" onClick={this.setPartnerToDriver} />
           <video id="localWebchat" className="set-driver-view" onClick={this.setSelfToDriver} />
         </div>
-  
+
         {(this.props.role === '') ?
         <footer>
             <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-        </footer>  
-        : 
+        </footer>
+        :
       //DRIVER VIEW
           (this.props.role === 'driver') ?
             <div>
@@ -129,7 +125,7 @@ export default class HomePageComponent extends Component {
                 <GitButtonsContainer />
                 <ErrorBoxContainer />
                 <SuccessBoxContainer />
-              </footer> 
+              </footer>
             </div>
         :
       //NAVIGATOR VIEW
@@ -138,10 +134,10 @@ export default class HomePageComponent extends Component {
               <TextEditorContainer />
               <footer>
                <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-              </footer>  
+              </footer>
             </div>
       }
-      
+
 
       </div>
     )

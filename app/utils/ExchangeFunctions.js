@@ -13,7 +13,6 @@ const error = (err) =>{
 }
 
 const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
-
     peerConnection = null;
     peerConnection = new RTCPeerConnection({
         "iceServers": [{
@@ -33,6 +32,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     pendingAcceptCandidates = [];
 
     peerConnection.onaddstream = (event) => {
+        console.log(event.stream)
         dispatchFunction(URL.createObjectURL(event.stream))
     };
     peerConnection.onicecandidate = (event) => {
@@ -50,6 +50,7 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
 
 //Create a call
 webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
+  console.log('this is the stream im sending', MediaStreamURL)
     initiatePC(
         (localMediaStream) => {
 
@@ -75,6 +76,7 @@ webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
 
 //Receive a call
 webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket, dispatchFunction) => {
+    console.log('this is the stream im receiving', MediaStreamURL)
     offerSdp = atob(offerSdp);
 
     initiatePC(

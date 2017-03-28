@@ -32,7 +32,12 @@ export default class CollaboratorComponent extends React.Component {
 			id: socket.id
     };
 
-	  socket.on('add client', (data) => {
+		this.sortOutMedia = this.sortOutMedia.bind(this);
+		this.backToRepos = this.backToRepos.bind(this);
+	}
+
+	componentDidMount() {
+    socket.on('add client', (data) => {
 			let newCollaborator = data.playerInfo
 
 	  	const findCollaborator = (element) => element.name === newCollaborator.name
@@ -79,11 +84,8 @@ export default class CollaboratorComponent extends React.Component {
       }
       this.props.setUnavailable(data.caller)
 		})
-
-		this.sortOutMedia = this.sortOutMedia.bind(this);
-		this.backToRepos = this.backToRepos.bind(this);
-
-		socket.on('go to pair room', this.props.clickToGoHome);
+		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
+    socket.on('go to pair room', this.props.clickToGoHome);
 
     socket.on('partner answered call', (data) => {
       if (data.caller === props.name) {
@@ -95,12 +97,16 @@ export default class CollaboratorComponent extends React.Component {
     socket.on('make user available', (data) => {
       this.props.makeAvailable(data.name)
     })
-
 	}
 
-	componentDidMount() {
-		socket.emit('room', {room: this.props.repo.id, name: this.props.name, playerInfo: this.state.playerInfo})
-	}
+  componentWillUnmount() {
+    socket.removeAllListeners('add client')
+    socket.removeAllListeners('store collaborator')
+    socket.removeAllListeners('remove collaborator')
+    socket.removeAllListeners('Partner')
+    socket.removeAllListeners('partner answered call')
+    socket.removeAllListeners('make user available')
+  }
 
 	sortOutMedia(){
 		const MediaStreamURL = this.props.URL;
@@ -143,7 +149,7 @@ export default class CollaboratorComponent extends React.Component {
 				}
 				<footer>
 		            <div className="footer" onClick={this.backToRepos}><h3><i className="fa fa-arrow-left" />   Return to Repo Page Page</h3></div>
-		        </footer>  
+		        </footer>
 			</div>
 		)
 	}
