@@ -20,11 +20,17 @@ function subscribe (fnName, fn, originModule){
     eventEmitter.on(fnName, fn);
 }
 
+function unSubscribe (fnName){
+  subscribed[fnName] = null;
+  eventEmitter.removeAllListeners(fnName);
+}
+
 function trigger(fnName, args){
     eventEmitter.emit(fnName, args);
 }
 
 module.exports = {
     subscribe : subscribe,
+    unSubscribe: unSubscribe,
     trigger: trigger
 }
