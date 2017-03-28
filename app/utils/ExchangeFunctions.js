@@ -24,7 +24,6 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     window.pc = peerConnection;
 
     peerConnection.onsignalingstatechange = function(event) {
-      console.log(peerConnection.signalingState);
     };
 
     iceCandidates = [];
@@ -32,7 +31,6 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
     pendingAcceptCandidates = [];
 
     peerConnection.onaddstream = (event) => {
-        console.log(event.stream)
         dispatchFunction(URL.createObjectURL(event.stream))
     };
     peerConnection.onicecandidate = (event) => {
@@ -50,7 +48,6 @@ const initiatePC = (onSuccess, MediaStreamURL, socket, dispatchFunction) => {
 
 //Create a call
 webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
-  console.log('this is the stream im sending', MediaStreamURL)
     initiatePC(
         (localMediaStream) => {
 
@@ -76,7 +73,6 @@ webrtcpak.createOffer = (cb, MediaStreamURL, socket, dispatchFunction) => {
 
 //Receive a call
 webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket, dispatchFunction) => {
-    console.log('this is the stream im receiving', MediaStreamURL)
     offerSdp = atob(offerSdp);
 
     initiatePC(
@@ -94,7 +90,6 @@ webrtcpak.receiveOffer = (offerSdp, cb, MediaStreamURL, socket, dispatchFunction
                 () => {
                     peerConnection.createAnswer(
                         (answer) => {
-                            console.log(answer)
                             peerConnection.setLocalDescription(answer);
                             canAcceptIce = true;
                             cb(btoa(answer.sdp));

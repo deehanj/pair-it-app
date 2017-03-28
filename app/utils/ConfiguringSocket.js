@@ -11,7 +11,7 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) =
 	socket.removeAllListeners("answer");
 	socket.removeAllListeners("receiveIceCandidate");
 
-
+  events.unSubscribe('startCall')
 
 	socket.on('refresh_user_list', (users) => {
 		users = _.compact(users.map((user) => {
@@ -52,7 +52,6 @@ const ConfigureSocket = (socket, playerInfo, MediaStreamURL, dispatchFunction) =
 
 	//Receive a call -- only for !isCaller
 	socket.on('receiveOffer', (options) => {
-		console.log('ReceiveOffer')
 		theOtherUser = options.caller;
 		webrtcPak.receiveOffer(
 			options.offer,

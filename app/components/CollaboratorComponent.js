@@ -49,7 +49,7 @@ export default class CollaboratorComponent extends React.Component {
 
 	  	}
 
-	  socket.emit('I am here', {room: data.room, name: this.props.name, playerInfo})
+	  socket.emit('I am here', {room: data.room, name: this.props.name, playerInfo: this.state.playerInfo})
 	  })
 
 	  socket.on('store collaborator', (data) => {
@@ -77,7 +77,7 @@ export default class CollaboratorComponent extends React.Component {
 		  const partnerName = data.name
 			const url = data.url
 			this.props.updateSocketRoom(data.name)
-      if (data.name === props.name) {
+      if (data.name === this.props.name) {
         const incomingCallArr = this.state.incomingCall.concat([data.caller])
         this.setState({ incomingCall: incomingCallArr })
         this.props.setPairingRoomURL(data.url);
@@ -88,7 +88,7 @@ export default class CollaboratorComponent extends React.Component {
     socket.on('go to pair room', this.props.clickToGoHome);
 
     socket.on('partner answered call', (data) => {
-      if (data.caller === props.name) {
+      if (data.caller === this.props.name) {
         this.props.clickToGoHome()
       }
       this.props.setUnavailable(data.receiver)
@@ -105,7 +105,6 @@ export default class CollaboratorComponent extends React.Component {
     socket.removeAllListeners('remove collaborator')
     socket.removeAllListeners('Partner')
     socket.removeAllListeners('partner answered call')
-    socket.removeAllListeners('make user available')
   }
 
 	sortOutMedia(){
