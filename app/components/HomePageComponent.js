@@ -89,13 +89,14 @@ export default class HomePageComponent extends Component {
     this.props.localURL.getVideoTracks()[0].stop();
     this.props.URL.getVideoTracks()[0].stop();
     this.props.URL.getAudioTracks()[0].stop();
+    console.log(this.props.URL.getAudioTracks()[0])
     this.props.clearURLs();
     this.setState({remoteVideoRendered: false});
   }
 
   componentWillUnmount() {
     window.pc.close();
-    window.pc = null;
+
   }
 
   render() {
