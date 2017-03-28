@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import RepoListComponent from '../components/RepoListComponent'
+import NavBar from '../components/NavBarComponent'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
@@ -59,9 +60,7 @@ class RepoListContainer extends React.Component {
 		return (
 
 			<div>
-				<nav className="row">
-					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
-				</nav>
+				<NavBar />
 				<RepoListComponent repos={this.props.repos} dispatchSelectRepo={this.props.dispatchSelectRepo} goToRemoteLink={this.goToRemoteLink} readableDate={this.readableDate} />
 			</div>
 		)

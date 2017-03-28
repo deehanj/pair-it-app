@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import NavBar from './NavBarComponent'
 import CollaboratorRowComponent from "./CollaboratorRowComponent"
 import { serverLocation } from '../utils/server.settings.js'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
@@ -121,6 +122,7 @@ export default class CollaboratorComponent extends React.Component {
 	render (){
 		return (
 			<div>
+				<NavBar />
 				<h1>{this.props.repo.name}</h1>
 				<h1 onClick={this.props.clickToGoHomeNav} >CLICK HERE TO GO HOME AS NAV!!!</h1>
 				<h1 onClick={this.props.clickToGoHomeDriver} >CLICK HERE TO GO HOME AS DRIVER!!!</h1>

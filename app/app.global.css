@@ -30,7 +30,7 @@ h4{
 	float:left;
 	border: solid grey 1px;
 	border-radius: 5px;
-	margin-top: 5px;
+	margin: 5px;
 	width: 100%;
 	padding: 15px;
 	position: relative;
@@ -40,12 +40,22 @@ h4{
 	border: solid #AAE034 1px;
 }
 
-
 .repo-name{
 	margin-top: 0px;
 	margin-right: 10px;
-	width: 100%;
+	margin-bottom: 50px;
+	width: auto;
 	float: left;
+}
+
+.view-on-github{
+	margin-top:14px;
+}
+
+.view-on-github:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }
 
 .repo-name:hover{
@@ -61,6 +71,25 @@ h4{
 .sm-avatar{
 	height: 24px;
 	vertical-align: text-bottom;
+}
+
+.login-avatar{
+	height: 50px;
+	float: right;
+}
+
+.user-name{
+	float: right;
+	margin-right: 5px;
+	margin-top: 2px;
+	font-style: italic;
+	color: gray;
+}
+
+.user-name:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }
 
 .repo-owner{
@@ -81,7 +110,21 @@ h4{
 }
 
 .date-changed{
+	position: absolute;
+	bottom: 0px;
+	left: 10px;
+}
 
+.signed-in-user{
+	float: right;
+	margin-top: 7px;
+	margin-right: 20px;
+	width: auto;
+	padding: 10px;
+}
+
+.navigation-bar{
+	width: 100%;
 }
 
 body {
@@ -252,5 +295,5 @@ footer{
 .logo-nav{
 	width: 200px;
 	float: left;
-	margin-left: 20px;
+	margin-left: 50px;
 }
