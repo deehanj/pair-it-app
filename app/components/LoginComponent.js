@@ -1,7 +1,8 @@
-var electron = window.require('electron');
-var ipcRenderer = window.require('electron').ipcRenderer;
-var remote = electron.remote;
-var BrowserWindow = remote.BrowserWindow;
+const electron = window.require('electron');
+const ipcRenderer = window.require('electron').ipcRenderer;
+const remote = electron.remote;
+const BrowserWindow = remote.BrowserWindow;
+const shell = electron.shell;
 
 import React from 'react';
 import { connect } from 'react-redux';
@@ -70,18 +71,33 @@ export class LoginComponent extends React.Component {
     this.props.loginUser(code);
   }
 
+  linkToGithub() {
+    shell.openExternal('https://github.com/jjdeehan/capstone');
+  }
+
   render() {
     return (
       <div className="container-fluid main-container login">
         <div className="row">
-          <div className="offset-xs-2 col-xs-8">
-            <img className="img-responsive logo" src="images/gitify-logo-outline-dark.png" />
-            <div className="desc">GitHub Notifications<br />in your menu bar.</div>
-            <button className="btn btn-lg btn-block" onClick={this.authGithub.bind(this)}>
-              <i className="fa fa-github" />Log in to GitHub
+          <div className="offset-xs-2 col-xs-12">
+            <img className="img-responsive logo logo-landing" src="images/pairit.logotitle.svg" />
+            {/*<img className="img-responsive logo logo-landing" src="images/pairit.logo.svg" />
+            <img className="img-responsive logo title-landing" src="images/pairit.title.svg" />*/}
+            <div className="desc">
+              <h1>Welcome to Pair.it!</h1>
+              Pair program from anywhere with your collaborators.
+              <br />Start by logging in with your Github account.
+            </div>
+            <button className="btn btn-lg btn-block login-button" onClick={this.authGithub.bind(this)}>
+              <i className="fa fa-github" /> Log in to GitHub
             </button>
           </div>
         </div>
+        <footer>
+          <div className='callToAction' onClick={this.linkToGithub} >
+            <i className="fa fa-github" /> Check out our repo on Github
+          </div>
+        </footer>
       </div>
     );
   }

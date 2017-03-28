@@ -20,6 +20,9 @@ const mapDispatchToProps = (dispatch) => {
 		dispatchSelectRepo: (repoId, name) => {
 			dispatch(setSelectedRepo(repoId))
 			dispatch(push('/collaborators'))
+		},
+		dispatchReturnToLogin: () => {
+		  dispatch(push('/LoginComponent'))
 		}
 	}
 }
@@ -27,16 +30,21 @@ const mapDispatchToProps = (dispatch) => {
 class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
-    }
+  }
 
-    componentDidMount() {
-    	socket.emit('room', {room: this.props.userURL})
-    }
+  componentDidMount() {
+    socket.emit('room', {room: this.props.userURL})
+  }
 
 	render (){
-	
+
 		return (
-			<RepoList repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
+			<div>
+				<nav className="row">
+					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
+				</nav>
+				<RepoList repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
+			</div>
 		)
 	}
 
@@ -44,4 +52,3 @@ class RepoListContainer extends React.Component {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(RepoListContainer)
-
