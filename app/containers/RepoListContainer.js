@@ -44,7 +44,7 @@ class RepoListContainer extends React.Component {
 				<nav className="row">
 					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
 				</nav>
-				<RepoListComponent repos={this.props.repos} onClick={this.props.dispatchSelectRepo}/>
+				<RepoListComponent repos={this.props.repos} onClick={this.props.dispatchSelectRepo} />
 			</div>
 		)
 	}

@@ -11,6 +11,10 @@ h1 {
  font-family: "FatFrank", sans-serif;
 }
 
+h3 {
+	margin: 0;
+}
+
 .repo-list-container{
 	padding-left: 50px;
 	padding-right: 50px;
@@ -124,15 +128,15 @@ li{
 
 }
 
-.footer{
+/*.footer{
 	float:left;
 	margin:5px;
 	font-size: 15px;
 	display: inline-block;
 	font-family: "FatFrank", sans-serif;
-}
+}*/
 
-.footer.footer-btn{
+/*.footer.footer-btn{
 	float:left;
 	margin:5px;
 	padding-top:5px;
@@ -140,18 +144,15 @@ li{
 	display: inline-block;
 	font-family: "FatFrank", sans-serif;
 
-}
+}*/
 
 .fa.fa-git{
 	font-size:30px;
 }
 
 footer{
-	background-color: grey;
-	width:100%;
-	bottom:0;
-	position:relative;
-	float:left;
+	bottom: 0;
+	position: absolute;
 }
 
 .logo-landing{

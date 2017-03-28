@@ -112,12 +112,12 @@ export default class HomePageComponent extends Component {
           <video id="webchatWindow" className="set-driver-view" onClick={this.setPartnerToDriver} />
           <video id="localWebchat" className="set-driver-view" onClick={this.setSelfToDriver} />
         </div>
-  
+
         {(this.props.role === '') ?
         <footer>
             <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-        </footer>  
-        : 
+        </footer>
+        :
       //DRIVER VIEW
           (this.props.role === 'driver') ?
             <div>
@@ -128,7 +128,7 @@ export default class HomePageComponent extends Component {
                 <GitButtonsContainer />
                 <ErrorBoxContainer />
                 <SuccessBoxContainer />
-              </footer> 
+              </footer>
             </div>
         :
       //NAVIGATOR VIEW
@@ -137,10 +137,10 @@ export default class HomePageComponent extends Component {
               <TextEditorContainer />
               <footer>
                <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-              </footer>  
+              </footer>
             </div>
       }
-      
+
 
       </div>
     )
