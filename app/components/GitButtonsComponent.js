@@ -142,8 +142,6 @@ export default class extends React.Component {
 		return (
 			<div>
 			<footer>
-				<div className="footer"><i className="fa fa-git"/></div>
-
 				<form className="footer" onSubmit={this.handleBranchCheckout} >
 					<div className="footer" onClick={this.handleBranchCheckout}>Checkout Branch</div>
 					<input className="footer" type="text" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
