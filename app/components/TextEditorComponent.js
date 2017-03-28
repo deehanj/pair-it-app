@@ -115,6 +115,7 @@ export default class TextEditorComponent extends React.Component {
   onCloseTab(file){
     this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
+      console.log(index)
       this.setState({ tabIndex: index })
       socket.emit('closed tab', { fileToClose: file, fileToActive: fileToActive, room: this.props.room, index: index})
     })
@@ -158,8 +159,9 @@ export default class TextEditorComponent extends React.Component {
                 {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
-                  <div className="admin-btn" onClick={() => this.onCloseTab(file) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile.filePath) }><i className="fa fa-times" /></div>
                   <div className="admin-btn" value="SAVE" height="50px" width="70px" type="div" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
+                  <div className="admin-btn" onClick={() => this.props.gitOpen}><i className="fa fa-git"/></div>
                 </div>
                 : (this.props.role === 'driver') ?
                 <form onSubmit={this.onSave}>

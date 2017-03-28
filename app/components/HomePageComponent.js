@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import TextEditorContainer from '../containers/TextEditorContainer';
 import FilesContainer from '../containers/FilesContainer'
 import FileListContainer from '../containers/FileListContainer'
+import Drawer from 'material-ui/Drawer'
 import GitButtonsContainer from '../containers/GitButtonsContainer';
 import ErrorBoxContainer from '../containers/ErrorBoxContainer';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer';
@@ -117,14 +118,18 @@ export default class HomePageComponent extends Component {
       //DRIVER VIEW
           (this.props.role === 'driver') ?
             <div>
-              <TextEditorContainer />
+              <TextEditorContainer gitOpen={this.props.openGitMenu}/>
               <FilesContainer />
                 <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-              <footer>
+              <Drawer 
+                open={this.props.gitOpen}
+                docked={false}
+                width={300}  
+                >
                 <GitButtonsContainer />
                 <ErrorBoxContainer />
                 <SuccessBoxContainer />
-              </footer>
+              </Drawer>    
             </div>
         :
       //NAVIGATOR VIEW
