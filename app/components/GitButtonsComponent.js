@@ -1,9 +1,8 @@
 import React from 'react';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
-
-
-
+import SuccessBoxContainer from '../containers/SuccessBoxContainer'
+import ErrorBoxContainer from '../containers/ErrorBoxContainer'
 
 export default class extends React.Component {
 	constructor(props){
@@ -115,6 +114,30 @@ export default class extends React.Component {
 		this.props.toggleDisplayBranches()
 	}
 
+	handleNewBranchCheckout(e) {
+		e.preventDefault();
+		const branchInputNew = document.getElementById('branchInputNew')
+		const branchName = document.getElementById('currentBranch')
+		this.Git.checkoutLocalbranch(
+			this.props.branchQuery,
+			(error, newBranch) => {
+				if(error){
+					this.props.handleError(error);
+					branchInputNew.style.cssText = "color:red;"
+				} else {
+					this.props.handleSuccess('checked out new branch: ' + this.props.branchQuery)
+						branchName.style.cssText = "color:black;"
+					}
+					branchInput.value = ''
+				}
+		)
+		this.getBranchList()
+		this.props.toggleDisplayBranches()
+	}
+
+
+
+
 	handleGitPush() {
 		this.Git.push(
 			'origin',
@@ -141,16 +164,16 @@ export default class extends React.Component {
 	render(){
 		return (
 			<div>
-			 <div className="git-button-container">
-
+			<div className="git-button-container">
+			{/***CLOSE BTN & LOGO***/}
 			 	<div className="close-git">
                   <i className="fa fa-times" onClick={() => this.props.dispatchCloseGitMenu()}/>
                   <div className="git-logo-modal"><i className="fa fa-git"/></div>
                 </div>
 
-				<div className="git-headline" onClick={this.props.toggleDisplayBranches}>
-				<button className="git-btn">Show Branch List</button>
-				</div>
+			{this.props.successData ? <SuccessBoxContainer /> : null}
+			{this.props.errorData ? <ErrorBoxContainer /> : null}
+            {/***SHOW ALL BRANCHES***/}
 			 	<div id="git-branch-container">
 				{this.props.displayBranch && this.props.branchList.map(el => {
 							return (
@@ -163,16 +186,40 @@ export default class extends React.Component {
 					)
 				}
 				</div>
+				<div className="git-headline" onClick={this.props.toggleDisplayBranches}>
+					<button className="git-btn">Branch List</button>
+				</div>
+
+			{/***CHECKOUT BRANCH ***/}
 				<div >
 					<form className="git-headline" onSubmit={this.handleBranchCheckout} >
 						<input type="text" className="git-input" placeholder="branch name"id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
-						<button className="git-btn" onClick={this.handleBranchCheckout}>Checkout Branch</button>
+						<button className="git-btn" onClick={this.handleBranchCheckout}>Change Branch</button>
 					</form>
 				</div>
+
+				{/***CHECKOUT BRANCH ***/}
+				<div >
+					<form className="git-headline" onSubmit={this.handleNewBranchCheckout} >
+						<input type="text" className="git-input" placeholder="branch name" id="branchInputNew" onChange={this.props.handleBranchChangeQuery}></input>
+						<button className="git-btn" onClick={this.handleNewBranchCheckout}>New Branch</button>
+					</form>
+				</div>
+
+			{/***GIT STATUS***/}
+
+			<div className="git-headline" onClick={this.handleStatus}>
+				<button className="git-btn">Status</button>
+			</div>
+
+
+			{/***ADD FILES***/}
 
 				<div className="git-headline" onClick={this.handleGitAdd}>
 				<button className="git-btn">Add Files</button>
 				</div>
+
+			{/***COMMIT***/}
 
 				<div className="git-headline">
 				<form id="commit" onSubmit={this.handleCommit}>
@@ -181,12 +228,12 @@ export default class extends React.Component {
 				</form>
 				</div>
 
-				<div className="git-headline" onClick={this.handleStatus}>
-					<button className="git-btn">Status</button>
-				</div>
+			{/***PUSH***/}
 				<div className="git-headline" onClick={this.handleGitPush}>
 					<button className="git-btn">Push</button>
 				</div>
+
+			{/***PULL***/}
 				<div className="git-headline" onClick={this.handleGitPull}>
 					<button className="git-btn">Pull</button>
 				</div>

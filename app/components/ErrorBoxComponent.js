@@ -8,7 +8,7 @@ export default class extends React.Component {
 
 	render() {
 		return (
-			<div>
+			<div className="git-headline-message">
 				{this.props.errorMessage}
 			</div>
 		)

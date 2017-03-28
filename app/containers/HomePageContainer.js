@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
     room: state.room.name,
     myName: state.user.gitInfo.login,
     repoId: state.repo.selectedRepo.id,
-    gitOpen: state.GitButtons.open
+    gitOpen: state.GitButtons.open,
 	}
 }
 
