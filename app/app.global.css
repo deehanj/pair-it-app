@@ -14,7 +14,6 @@ h1 {
 .repo-list-container{
 	padding-left: 50px;
 	padding-right: 50px;
-
 }
 
 .repo{
@@ -22,6 +21,12 @@ h1 {
 	border: solid black 1px;
 	border-radius: 10px;
 	margin-top: 2px;
+  
+body {
+	font-family: "proxima-nova", sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	color: #1A1A1A;
 }
 
 #webchatWindow.set-driver-view{
@@ -86,7 +91,7 @@ h1 {
 
 #file-container{
 	margin-bottom: 10px;
-	
+
 }
 
 
@@ -115,7 +120,7 @@ li{
 }
 
 .close-btn{
-	
+
 }
 
 .footer{
@@ -146,4 +151,47 @@ footer{
 	bottom:0;
 	position:relative;
 	float:left;
+}
+
+.logo-landing{
+	height: 300px;
+	margin: auto;
+	margin-top: 50px
+}
+
+.title-landing{
+	height: 200px;
+	margin: auto;
+}
+
+.desc{
+	text-align: center;
+	font-size: 20px;
+	margin-bottom: 50px;
+}
+
+.login-button{
+	width: 300px;
+	margin-top: 30px;
+	margin: auto;
+	background-color: #AAE034;
+	color: white;
+}
+
+.callToAction{
+	font-size: 20px;
+	color: grey;
+	font-style: italic;
+	margin: 10px;
+}
+
+.callToAction:hover{
+	cursor: default;
+	text-decoration: underline;
+}
+
+.logo-nav{
+	width: 200px;
+	float: left;
+	margin-left: 20px;
 }

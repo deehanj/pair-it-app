@@ -1,8 +1,8 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "ElectronReact",
+  "name": "pair.it",
+  "productName": "Pair.it",
   "version": "0.10.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "A github-enabled remote pair programming application. (squak)",
   "main": "main.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test BABEL_DISABLE_CACHE=1 node ./test/runTests.js",
@@ -30,8 +30,8 @@
   },
   "browserslist": "electron 1.4",
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.develar.ElectronReact",
+    "productName": "Pair.it",
+    "appId": "org.develar.Pair.it",
     "category": "public.app-category.tools",
     "dmg": {
       "contents": [
