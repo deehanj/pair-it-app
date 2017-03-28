@@ -104,6 +104,7 @@ export const setFileDirAndLoadFiles = (dir) => (dispatch) => {
     })
     .catch(error => console.error(error.message))
   }
+  
 }
 
 export const driverSave = (filePath, code, isNewFile) => (dispatch) => {
