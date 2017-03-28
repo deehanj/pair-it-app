@@ -13,6 +13,13 @@ const getAllFiles = (dir) => {
       .then(stats => {
         stats.filePath = dir + fileName + '/'
         stats.fileBool = stats.isFile()
+        if (!stats.isFile()) {
+          stats.files = [];
+          getAllFiles(stats.filePath)
+          .then(fileNames => {
+            stats.files = stats.files.concat(fileNames)
+          })
+        }
         return stats
       })
     })

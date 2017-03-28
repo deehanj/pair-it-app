@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
-import { activeFile, addToOpenFiles } from '../reducers/FilesReducer'
+import { activeFile, addToOpenFiles, loadFiles } from '../reducers/FilesReducer'
 
 import FileListComponent from '../components/FileListComponent'
 
@@ -48,7 +48,8 @@ const mapDispatchToProps = dispatch => {
     openFileFromDriver : file => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
-    }
+    },
+    loadFiles: files => dispatch(loadFiles(files))
   }
 }
 
