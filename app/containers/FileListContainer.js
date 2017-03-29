@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => {
     fetchActiveFile : (dir, room, role) => {
       if(role === 'driver'){
         console.log('reaches the fetch active file dispatch', dir)
-        if (dir.length > 0) {
+        // if (dir.length > 0) {
           console.log('and the length was greater than 0', dir)
           readFile(dir)
           .then(text => {
@@ -47,7 +47,7 @@ const mapDispatchToProps = dispatch => {
             dispatch(addToOpenFiles(file))
           })
           .catch(error => console.error(error.message))
-        }
+        // }
       }
     },
     openFileFromDriver : file => {
