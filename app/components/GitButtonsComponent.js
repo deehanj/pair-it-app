@@ -84,8 +84,8 @@ export default class extends React.Component {
 					this.props.handleError(error)
 					console.error(error)
 				} else {
-					this.props.handleSuccess(this.props.commitMessage);
-					setTimeout(this.handleStatus, 4000);
+					this.props.handleSuccess('Commit Message: ' + this.props.commitMessage);
+					setTimeout(this.handleStatus, 1000);
 				}
 			}
 		)
@@ -142,11 +142,17 @@ export default class extends React.Component {
 			'origin',
 			this.props.currentBranch,
 			(error, success) =>{
-				this.props.handleError(error);
-				this.props.handleSuccess(success);
+				if (error){
+					this.props.handleError(error)
+					console.error(error)
+				} else {
+					this.props.handleSuccess('Push Successful!');
+					setTimeout(this.handleStatus, 1000);
+				}
 			} )
-		this.handleStatus();
-	}
+		}
+
+	
 
 	handleGitPull() {
 		this.Git.pull(
@@ -170,8 +176,8 @@ export default class extends React.Component {
                   <div className="git-logo-modal"><i className="fa fa-git"/></div>
                 </div>
 
-			{this.props.successData ? <SuccessBoxContainer /> : null}
-			{this.props.errorData ? <ErrorBoxContainer /> : null}
+			{(this.props.successData !==null) ? <SuccessBoxContainer /> : null}
+			{(this.props.errorData !== null) ? <ErrorBoxContainer /> : null}
             {/***SHOW ALL BRANCHES***/}
 			 	<div id="git-branch-container">
 				{this.props.displayBranch && this.props.branchList.map(el => {
