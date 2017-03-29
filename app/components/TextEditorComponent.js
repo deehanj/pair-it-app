@@ -24,8 +24,17 @@ export default class TextEditorComponent extends React.Component {
 			tabIndex: 0,
 		}
 
-		socket.on('receive code', (payload) => this.setState({ code: payload.code }))
-		socket.on('change to new tab', (payload) => {
+    this.handleSelect = this.handleSelect.bind(this)
+    this.codeIsHappening = this.codeIsHappening.bind(this)
+    this.onSave = this.onSave.bind(this)
+    this.onAddNewTab = this.onAddNewTab.bind(this)
+    this.onCloseTab = this.onCloseTab.bind(this)
+  }
+
+  componentDidMount() {
+  	socket.emit('room', {room: this.props.room})
+    socket.on('receive code', (payload) => this.setState({ code: payload.code }))
+    socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
       .then(() => this.setState({tabIndex: payload.index}))
@@ -52,19 +61,14 @@ export default class TextEditorComponent extends React.Component {
         .catch(error => console.error(error.message))
       }
     })
-
-    this.handleSelect = this.handleSelect.bind(this)
-    this.codeIsHappening = this.codeIsHappening.bind(this)
-    this.onSave = this.onSave.bind(this)
-    this.onAddNewTab = this.onAddNewTab.bind(this)
-    this.onCloseTab = this.onCloseTab.bind(this)
-	}
-
-  componentDidMount() {
-  	socket.emit('room', {room: this.props.room})
   }
 
   componentWillUnmount() {
+    socket.removeAllListeners('receive code')
+    socket.removeAllListeners('change to new tab')
+    socket.removeAllListeners('new tab added')
+    socket.removeAllListeners('a tab was closed')
+    socket.removeAllListeners('file was saved')
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
   }
 
