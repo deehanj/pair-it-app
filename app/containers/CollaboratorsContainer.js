@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
 		name: state.user.gitInfo.login,
 		URL: state.VideoChat.URL,
 		id: state.user.gitInfo.id,
+		avatar_url: state.user.gitInfo.avatar_url,
     unavailable: state.user.unavailable
 	}
 }
@@ -41,4 +42,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CollaboratorComponent)
-

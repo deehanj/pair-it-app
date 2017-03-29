@@ -7,6 +7,7 @@ import {setRepos} from './repo'
 const SET_USER = 'SET_USER';
 const SET_UNAVAILABLE = 'SET_UNAVAILABLE'
 const SET_AVAILABLE = 'SET_AVAILABLE'
+const REMOVE_USER = 'REMOVE_USER'
 
 //ACTION CREATOR
 export const setUser = (gitInfo) => ({
@@ -19,6 +20,10 @@ export const setUnavailable = (name) => ({
 
 export const setAvailable = (name) => ({
   type: SET_AVAILABLE, name
+})
+
+export const removeUser = () => ({
+  type: REMOVE_USER
 })
 
 
@@ -42,6 +47,9 @@ export default function reducer( state = initialState, action) {
       break;
     case SET_AVAILABLE:
       newState.unavailable = newState.unavailable.filter(name => name !== action.name)
+      break;
+    case REMOVE_USER:
+      newState.gitInfo = {}
       break;
     default:
       return state;
@@ -71,6 +79,3 @@ export function fetchUsername() {
   }
 
 }
-
-
-

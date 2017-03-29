@@ -10,6 +10,8 @@ import ConfigureSocket from '../utils/ConfiguringSocket'
 import io from 'socket.io-client'
 import {setPairingRoom, setPairingPartner} from '../reducers/repo';
 
+const logo = require('img/Pairit.logo.svg')
+
 const shell = window.require('electron').shell
 
 const socket = io(serverLocation)
@@ -24,16 +26,18 @@ export default class CollaboratorComponent extends React.Component {
 			playerInfo: {
 				name: props.name,
 				_id: props.id,
-				id: socket.id
-	    	},
+				id: socket.id,
+				avatar_url: props.avatar_url
+			},
 			MediaStreamURL: this.props.URL
 		}
 
-		const playerInfo = {
-      name: props.name,
-      _id: props.id,
-			id: socket.id
-    };
+		// const playerInfo = {
+    //   name: props.name,
+    //   _id: props.id,
+		// 	id: socket.id,
+		// 	avatar_url: props.avatar_url
+    // };
 
 		this.sortOutMedia = this.sortOutMedia.bind(this);
 		this.backToRepos = this.backToRepos.bind(this);
@@ -71,7 +75,7 @@ export default class CollaboratorComponent extends React.Component {
 	  	let removeCollaborator = data.playerInfo
 
 	  	const newCollabArray = this.state.collaborators.filter((collaborator) => {
-	  		collaborator.name != removeCollaborator.name
+				collaborator.name != removeCollaborator.name
 	  	})
 	  		this.setState({collaborators: newCollabArray});
 	  })
@@ -160,7 +164,7 @@ export default class CollaboratorComponent extends React.Component {
 					<div className="row col-sm-12 collab-list">
 						<h2 id="available-collabs">Available Collaborators:</h2>
 						<div className="collaborators-array">
-						{this.state.collaborators && this.state.collaborators.map(collaborator =>
+						{this.state.collaborators.length ? this.state.collaborators.map(collaborator =>
 								(
 									<CollaboratorRowComponent
 										key={collaborator.name}
@@ -180,6 +184,11 @@ export default class CollaboratorComponent extends React.Component {
 									/>
 								)
 							)
+							:
+							(<div>
+								<h3 className="missing-collabs" >There are no available collaborators.</h3>
+								<img src={logo} className="collab-logo" />
+							</div>)
 						}
 						</div>
 					</div>

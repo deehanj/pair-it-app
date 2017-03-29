@@ -2,8 +2,9 @@ import React from 'react';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import {connect} from 'react-redux';
-import { closeGitMenu, toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue, statusHandler, commitHandler} from '../actionCreators/GitButtonsActionCreators'
+import { resetBranchQuery, closeGitMenu, toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue, statusHandler, commitHandler} from '../actionCreators/GitButtonsActionCreators'
 import GitButtonsComponent from '../components/GitButtonsComponent';
+
 
 const mapStateToProps = (state) => {
 	return {
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => {
 		branchQuery: state.GitButtons.branchQuery,
 		commitMessage: state.GitButtons.commitMessage,
 		dir: state.fileSystem.dir,
+		repo: state.repo.selectedRepo
 	}
 }
 
@@ -25,14 +27,11 @@ const mapDispatchToProps = (dispatch) => {
 		handleSuccess: (successMessage) => dispatch(successHandler(successMessage)),
 		handleError: (errorMessage) => dispatch(errorHandler(errorMessage)),
 		updateBranchList: (branchSummary) => dispatch(branchList(branchSummary)),
-		handleBranchChangeQuery: (typedBranch) => {
-			const branchInput = document.getElementById('branchInput')
-			branchInput.style.cssText = "color:black;"
-			dispatch(branchQuery(typedBranch.target.value))
-		},
+		handleBranchChangeQuery: (typedEvent) => dispatch(branchQuery(typedEvent.target.value)),
 		handleStatus: (status) => dispatch(statusHandler(status)),
-		handleCommitMessage: (typedCommit) => dispatch(commitHandler(typedCommit.target.value)),
+		handleCommitMessage: (typedEvent) => dispatch(commitHandler(typedEvent.target.value)),
 		dispatchCloseGitMenu: () => dispatch(closeGitMenu(false)),
+		dispatchResetBranchQuery: () => dispatch(resetBranchQuery())
 	}
 }
 

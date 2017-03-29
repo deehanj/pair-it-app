@@ -4,6 +4,8 @@ const remote = electron.remote;
 const BrowserWindow = remote.BrowserWindow;
 const shell = electron.shell;
 
+const logo = require('img/pairit.logotitle.svg');
+
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -80,9 +82,7 @@ export class LoginComponent extends React.Component {
       <div className="container-fluid main-container login">
         <div className="row">
           <div className="offset-xs-2 col-xs-12">
-            <img className="img-responsive logo logo-landing" src="images/pairit.logotitle.svg" />
-            {/*<img className="img-responsive logo logo-landing" src="images/pairit.logo.svg" />
-            <img className="img-responsive logo title-landing" src="images/pairit.title.svg" />*/}
+            <img className="img-responsive logo logo-landing" src={logo} />
             <div className="desc">
               <h1>Welcome to Pair.it!</h1>
               Pair program from anywhere with your collaborators.

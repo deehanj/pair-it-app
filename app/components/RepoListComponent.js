@@ -6,7 +6,11 @@ const RepoList = (props) => {
 	const dispatchSelectRepo = props.dispatchSelectRepo
 	const goToRemoteLink = props.goToRemoteLink
 	const readableDate = props.readableDate
+<<<<<<< HEAD
 
+=======
+	
+>>>>>>> 34e1d409d6fde3e12d9bc9e9d8a0fa59a4a0b930
 	return (
 		<div>
 			<div className="col-sm-12 repo-list-container">
