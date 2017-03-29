@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import { closeGitMenu, toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue, statusHandler, commitHandler} from '../actionCreators/GitButtonsActionCreators'
 import GitButtonsComponent from '../components/GitButtonsComponent';
 
+
 const mapStateToProps = (state) => {
 	return {
 		branchList: state.GitButtons.branchList,
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => {
 		branchQuery: state.GitButtons.branchQuery,
 		commitMessage: state.GitButtons.commitMessage,
 		dir: state.fileSystem.dir,
+		repo: state.repo.selectedRepo
 	}
 }
 

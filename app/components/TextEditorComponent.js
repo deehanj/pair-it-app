@@ -130,10 +130,17 @@ export default class TextEditorComponent extends React.Component {
     if (this.props.openFiles.length === 0) {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
-          {this.props.role === 'driver' && <form onSubmit={this.onSave}>
-            <input type="text" name="filename" placeholder="Name your file" />
-            <input type="submit" value="SAVE"/>
-          </form>}
+          {this.props.role === 'driver' &&
+          <div> 
+            <div className="admin-btn-container">
+              <div className="admin-btn-right" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
+            <form onSubmit={this.onSave}>
+              <input id="save-form" type="text" name="filename" placeholder="Name your file" />
+              <input id="save-form" type="submit" value="SAVE"/>
+            </form>
+          </div>
+          </div>
+          }   
           <AceEditor
             mode="javascript"
             theme="monokai"

@@ -213,13 +213,23 @@ body {
 	padding:0px;
 }
 
+#save-form{
+	width: 175px;
+	margin:0;
+	float:right;
+}
+
 .admin-btn-container{
 	float:right;
-
 }
 
 .admin-btn{
 	float:left;
+	font-size: 25px;
+	margin:5px;
+}
+.admin-btn-right{
+	float:right;
 	font-size: 25px;
 	margin:5px;
 }
@@ -437,6 +447,15 @@ footer{
 	border: 3px solid #AAE034;
 	border-radius: 10px;
 	float:left;
+	font-size: 15px;
+	width: 100%;
+}
+
+.git-headline-list{
+	font-weight: bold;
+	padding-top: 20px;
+	float:left;
+	font-size: 15px;
 	width: 100%;
 }
 
@@ -460,8 +479,8 @@ footer{
 	height:100%;
 	width: 240px;
 	text-align: center;
-	margin-bottom: 10px;
-	margin-top:10px;
+	margin-bottom: 5px;
+	margin-top:5px;
 }
 
 .git-input{
@@ -481,4 +500,17 @@ footer{
 	width:70%;
 	margin-top: 60px;
 	margin-left: 15%;
+}
+
+.view-on-github-modal{
+	margin-top:14px;
+	font-size:15px;
+	width: 100%;
+	text-align: center;
+}
+
+.view-on-github-modal:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }
