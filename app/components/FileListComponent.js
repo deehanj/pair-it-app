@@ -79,7 +79,7 @@ export default class Files extends React.Component {
               :
               // makes a new Files component if fileBool is false
               <li id="folder" key={filePath}>
-                <i onClick={() => this.setVisible(filePath)} className="fa fa-folder"/>  {fileName}
+                <div onClick={() => this.setVisible(filePath)}><i className="fa fa-folder"/>  {fileName}  </div>
                 {(this.props.isVisible[filePath] === true) &&
                 <Files
                   subDir={filePath}

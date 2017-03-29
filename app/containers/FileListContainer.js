@@ -24,8 +24,6 @@ const mapStateToProps = state => {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
     activeFile: state.fileSystem.activeFile,
-    // visible: ,
-    level: 0,
     room: state.room.name,
     role: state.repo.role,
     isVisible: state.fileSystem.isVisible
@@ -36,19 +34,15 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchActiveFile : (dir, room, role) => {
       if(role === 'driver'){
-        console.log('reaches the fetch active file dispatch', dir)
-        // if (dir.length > 0) {
-          console.log('and the length was greater than 0', dir)
-          readFile(dir)
-          .then(text => {
-            text = text.toString()
-            const file = {filePath: dir, text}
-            socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
-            dispatch(activeFile(file))
-            dispatch(addToOpenFiles(file))
-          })
-          .catch(error => console.error(error.message))
-        // }
+        readFile(dir)
+        .then(text => {
+          text = text.toString()
+          const file = {filePath: dir, text}
+          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
+          dispatch(activeFile(file))
+          dispatch(addToOpenFiles(file))
+        })
+        .catch(error => console.error(error.message))
       }
     },
     openFileFromDriver : file => {
