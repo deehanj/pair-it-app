@@ -19,9 +19,7 @@ export default class TextEditorComponent extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			code: '',
-			openFiles:[],
-			tabIndex: 0,
+			code: ''
 		}
 
     this.handleSelect = this.handleSelect.bind(this)
@@ -37,7 +35,7 @@ export default class TextEditorComponent extends React.Component {
     socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
-      .then(() => this.setState({tabIndex: payload.index}))
+      .then(() => this.props.dispatchSwitchTab(payload.index))
       .catch(error => console.error(error.message))
     })
 
@@ -48,7 +46,7 @@ export default class TextEditorComponent extends React.Component {
      if (this.props.openFiles.filter(file => file.filePath === payload.fileToClose.filePath).length > 0) {
        Promise.resolve(this.props.dispatchCloseFile(payload.fileToClose))
        .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(payload.fileToActive) )
-       .then(() => this.setState({tabIndex: payload.index}))
+       .then(() => this.props.dispatchSwitchTab(payload.index))
        .catch(error => console.error(error.message))
      }
    })
@@ -75,7 +73,6 @@ export default class TextEditorComponent extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
     	code: nextProps.activeFile.text,
-    	tabIndex: nextProps.openFiles.length - 1
     })
     this.codeIsHappening(nextProps.activeFile.text)
   }
@@ -91,7 +88,7 @@ export default class TextEditorComponent extends React.Component {
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[index]))
-    .then(() => this.setState({tabIndex: index}))
+    .then(() => this.props.dispatchSwitchTab(index))
 	  .catch(error => console.error(error.message))
   }
 
@@ -119,8 +116,7 @@ export default class TextEditorComponent extends React.Component {
   onCloseTab(file){
     this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
-      console.log(index)
-      this.setState({ tabIndex: index })
+      this.props.dispatchSwitchTab(index)
       socket.emit('closed tab', { fileToClose: file, fileToActive: fileToActive, room: this.props.room, index: index})
     })
     .catch(error => console.error(error.message))
@@ -178,7 +174,7 @@ export default class TextEditorComponent extends React.Component {
 
         <Tabs
           onSelect={this.handleSelect}
-          selectedIndex={this.state.tabIndex}>
+          selectedIndex={this.props.selectedTab}>
           <TabList>
             {
               this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) => {

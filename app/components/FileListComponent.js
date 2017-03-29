@@ -21,26 +21,19 @@ export default class Files extends React.Component {
   }
 
   onFileClick(dir, room, role) {
-    console.log('dir: ', dir)
     var i = -1;
     const index = this.props.openFiles.forEach((file, index) => {
-      console.log('inside indexOf filePath: ', file.filePath, file.filePath === dir)
       if (file.filePath === dir) i = index
     })
-    console.log(i)
     if (i === -1) {
-      console.log('case 1')
       this.props.fetchActiveFile(dir, room, role)
+      this.props.switchTab(this.props.openFiles.length)
     }
     else {
-      console.log('case 2')
-      console.log('this.props.activeFile.filePath: ', this.props.activeFile.filePath)
-      console.log('Are they equal?', dir === this.props.activeFile.filePath)
       if (this.props.activeFile.filePath !== dir) {
-        console.log('case 3')
-        console.log('the file to be active: ', this.props.openFiles[i])
         this.props.activeFile(this.props.openFiles[i])
       }
+      this.props.switchTab(i)
     }
   }
 
@@ -51,7 +44,6 @@ export default class Files extends React.Component {
   componentDidMount() {
     socket.on('new file is opened', (file) => {
       if ((this.props.activeFile && this.props.activeFile.filePath !== file.filePath) && this.props.role === 'navigator'){
-        console.log('openFileFromDriver socket is firing')
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });

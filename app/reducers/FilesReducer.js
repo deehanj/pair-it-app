@@ -9,6 +9,7 @@ const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
 const CLOSE_FILE = 'CLOSE_FILE'
 const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
 const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY'
+const SWITCH_TAB = 'SWITCH_TAB'
 const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
     text: ''
   },
   openFiles: [],
-  isVisible: {}
+  isVisible: {},
+  selectedTab: 0
 }
 
 const reducer = (state = initialState, action) => {
@@ -55,6 +57,9 @@ const reducer = (state = initialState, action) => {
     case TOGGLE_VISIBILITY:
       newState.isVisible = Object.assign({}, newState.isVisible)
       newState.isVisible[action.filePath] = !newState.isVisible[action.filePath]
+      break
+    case SWITCH_TAB:
+      newState.selectedTab = action.index
       break
     case CLEAR_FILESYSTEM:
       return initialState
@@ -94,6 +99,10 @@ export const saveNewFile = file => ({
 
 export const toggleVisibility = filePath => ({
   type: TOGGLE_VISIBILITY, filePath
+})
+
+export const switchTab = index => ({
+  type: SWITCH_TAB, index
 })
 
 export const clearFileSystem = () => ({
@@ -137,7 +146,6 @@ export const driverSave = (filePath, code, isNewFile) => (dispatch) => {
 }
 
 export const closeTab = (file, openFiles) => (dispatch) => {
-  console.log(file)
   const oldFileIndex = openFiles.findIndex(openFile => openFile.filePath === file.filePath)
     const length = openFiles.length - 1
     return Promise.resolve(dispatch(closeFile(file)))

@@ -25,7 +25,6 @@ export default class FilesComponent extends React.Component {
 
   selectFile(ev) {
     const fileName = ev.target.files[0].path.split('/').slice(-1)[0]
-    console.log('fileName', fileName, 'repo name', this.props.repoName)
     if (fileName !== this.props.repoName) alert('That file does not match the name of your Github repo. Please double check which file you want to work from.')
     this.setState({ dir: ev.target.files[0].path })
   }

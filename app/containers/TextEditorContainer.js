@@ -4,7 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import { setUser } from '../reducers/user'
-import { updateOpenFiles, closeFile, saveNewFile, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab } from '../reducers/FilesReducer'
+import { updateOpenFiles, closeFile, saveNewFile, switchTab, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab } from '../reducers/FilesReducer'
 import { openGitMenu, closeGitMenu } from '../actionCreators/GitButtonsActionCreators'
 
 import TextEditorComponent from '../components/TextEditorComponent'
@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
 		dir: state.fileSystem.dir,
 		room: state.room.name,
 		role: state.repo.role,
+    selectedTab: state.fileSystem.selectedTab
 	}
 }
 
@@ -31,6 +32,7 @@ const mapDispatchToProps = (dispatch) => {
 		dispatchDriverSave: (filePath, code, isNewFile) => dispatch(driverSave(filePath, code, isNewFile)),
 		dispatchCloseTab: (file, openFiles) => dispatch(closeTab(file, openFiles)),
 		dispatchOpenGitMenu: () => dispatch(openGitMenu(true)),
+    dispatchSwitchTab: (index) => dispatch(switchTab(index))
 	}
 }
 
