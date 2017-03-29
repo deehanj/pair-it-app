@@ -24,8 +24,17 @@ export default class TextEditorComponent extends React.Component {
 			tabIndex: 0,
 		}
 
-		socket.on('receive code', (payload) => this.setState({ code: payload.code }))
-		socket.on('change to new tab', (payload) => {
+    this.handleSelect = this.handleSelect.bind(this)
+    this.codeIsHappening = this.codeIsHappening.bind(this)
+    this.onSave = this.onSave.bind(this)
+    this.onAddNewTab = this.onAddNewTab.bind(this)
+    this.onCloseTab = this.onCloseTab.bind(this)
+  }
+
+  componentDidMount() {
+  	socket.emit('room', {room: this.props.room})
+    socket.on('receive code', (payload) => this.setState({ code: payload.code }))
+    socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
       .then(() => this.setState({tabIndex: payload.index}))
@@ -52,19 +61,14 @@ export default class TextEditorComponent extends React.Component {
         .catch(error => console.error(error.message))
       }
     })
-
-    this.handleSelect = this.handleSelect.bind(this)
-    this.codeIsHappening = this.codeIsHappening.bind(this)
-    this.onSave = this.onSave.bind(this)
-    this.onAddNewTab = this.onAddNewTab.bind(this)
-    this.onCloseTab = this.onCloseTab.bind(this)
-	}
-
-  componentDidMount() {
-  	socket.emit('room', {room: this.props.room})
   }
 
   componentWillUnmount() {
+    socket.removeAllListeners('receive code')
+    socket.removeAllListeners('change to new tab')
+    socket.removeAllListeners('new tab added')
+    socket.removeAllListeners('a tab was closed')
+    socket.removeAllListeners('file was saved')
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
   }
 
@@ -159,7 +163,7 @@ export default class TextEditorComponent extends React.Component {
                 {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
-                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile.filePath) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
                   <div className="admin-btn" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                   <div className="admin-btn" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
                 </div>

@@ -19,6 +19,11 @@ export default class HomePageComponent extends Component {
     super(props)
     this.state = {
       remoteVideoRendered: false,
+      playerInfo:{
+          name: props.myName,
+          _id: props.id,
+          id: socket.id
+        }
     }
     this.setSelfToDriver = this.setSelfToDriver.bind(this)
     this.setPartnerToDriver = this.setPartnerToDriver.bind(this)
@@ -49,6 +54,7 @@ export default class HomePageComponent extends Component {
     socket.removeAllListeners('partner picked self as driver')
     socket.removeAllListeners('partner picked you as driver')
     socket.removeAllListeners('peer connection severed')
+    socket.emit('leaving room', {room: this.props.room, playerInfo: this.state.playerInfo})
   }
 
   componentDidUpdate(){
@@ -61,13 +67,17 @@ export default class HomePageComponent extends Component {
   }
 
   setSelfToDriver(){
-    this.props.setDriverToMyself()
-    socket.emit('driver selected', {room: this.props.room})
+    if (this.props.role === ''){
+      this.props.setDriverToMyself()
+      socket.emit('driver selected', {room: this.props.room})
+    }
   }
 
   setPartnerToDriver(){
-    this.props.setDriverToPartner()
-    socket.emit('navigator selected', {room: this.props.room})
+    if (this.props.role === ''){
+      this.props.setDriverToPartner()
+      socket.emit('navigator selected', {room: this.props.room})
+    }
   }
 
 
@@ -82,6 +92,9 @@ export default class HomePageComponent extends Component {
     this.props.URL.getVideoTracks()[0].stop();
     this.props.URL.getAudioTracks()[0].stop();
     this.props.clearURLs();
+    this.props.clearFileSystem();
+
+
     this.setState({remoteVideoRendered: false});
   }
 

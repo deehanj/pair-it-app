@@ -44,7 +44,7 @@ export default class Files extends React.Component {
 
   componentDidMount() {
     socket.on('new file is opened', (file) => {
-      if (this.props.activeFile.filePath !== file.filePath){
+      if (this.props.activeFile && this.props.activeFile.filePath !== file.filePath){
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
@@ -93,7 +93,7 @@ export default class Files extends React.Component {
                 id="single-file"
                 key={filePath}
                 onClick={() => {
-                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
+                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role);
                 }
                 }><i className="fa fa-file-text-o" aria-hidden="true"/>{fileName}
               </li>
@@ -108,6 +108,7 @@ export default class Files extends React.Component {
                   visible={true}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
+                  role= {this.props.role}
                   room={this.props.room}
                 />}
               </li>
