@@ -19,9 +19,7 @@ export default class TextEditorComponent extends React.Component {
 	constructor(props){
 		super(props)
 		this.state = {
-			code: '',
-			openFiles:[],
-			tabIndex: 0,
+			code: ''
 		}
 
     this.handleSelect = this.handleSelect.bind(this)
@@ -37,7 +35,7 @@ export default class TextEditorComponent extends React.Component {
     socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
-      .then(() => this.setState({tabIndex: payload.index}))
+      .then(() => this.props.dispatchSwitchTab(payload.index))
       .catch(error => console.error(error.message))
     })
 
@@ -48,7 +46,7 @@ export default class TextEditorComponent extends React.Component {
      if (this.props.openFiles.filter(file => file.filePath === payload.fileToClose.filePath).length > 0) {
        Promise.resolve(this.props.dispatchCloseFile(payload.fileToClose))
        .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(payload.fileToActive) )
-       .then(() => this.setState({tabIndex: payload.index}))
+       .then(() => this.props.dispatchSwitchTab(payload.index))
        .catch(error => console.error(error.message))
      }
    })
@@ -75,23 +73,24 @@ export default class TextEditorComponent extends React.Component {
   componentWillReceiveProps(nextProps) {
     this.setState({
     	code: nextProps.activeFile.text,
-    	tabIndex: nextProps.openFiles.length - 1
     })
-    this.codeIsHappening(nextProps.activeFile.text)
+    // if(this.props.openFiles )
+    // this.codeIsHappening(nextProps.activeFile.text)
   }
 
   codeIsHappening(newCode) {
-    this.setState({ code: newCode })
+    this.props.dispatchWholeFile({filePath:this.props.activeFile.filePath, text: newCode})
+    // this.setState({ code: newCode })
     socket.emit('coding event', {code: newCode, room: this.props.room})
   }
 
   handleSelect(index, last) {
     const file = this.props.activeFile
-    file.text = this.state.code
+    // file.text = this.props.activeFile.text
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[index]))
-    .then(() => this.setState({tabIndex: index}))
+    .then(() => this.props.dispatchSwitchTab(index))
 	  .catch(error => console.error(error.message))
   }
 
@@ -105,22 +104,22 @@ export default class TextEditorComponent extends React.Component {
       filePath = `${this.props.dir}/${ev.target.filename.value}`
       isNewFile = true
     }
-    this.props.dispatchDriverSave(filePath, this.state.code, isNewFile)
+    this.props.dispatchDriverSave(filePath, this.props.activeFile.text, isNewFile)
     .then(() => this.props.dispatchSetFileDirAndLoadFiles(this.props.dir))
-    .then(() => socket.emit('save file', { filePath: filePath, text: this.state.code, room: this.props.room }))
+    .then(() => socket.emit('save file', { filePath: filePath, text: this.props.activeFile.text, room: this.props.room }))
     .catch(error => console.error(error.message))
   }
 
   onAddNewTab() {
     Promise.resolve(this.props.dispatchAddToOpenFilesAndSetActive())
+    .then(() => this.props.dispatchSwitchTab(this.props.openFiles.length - 1))
     .then(() => socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room}))
   }
 
   onCloseTab(file){
     this.props.dispatchCloseTab(file, this.props.openFiles)
     .spread((fileToActive, index) => {
-      console.log(index)
-      this.setState({ tabIndex: index })
+      this.props.dispatchSwitchTab(index)
       socket.emit('closed tab', { fileToClose: file, fileToActive: fileToActive, room: this.props.room, index: index})
     })
     .catch(error => console.error(error.message))
@@ -170,7 +169,7 @@ export default class TextEditorComponent extends React.Component {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
               <div>
-                {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
+                {(this.props.role === 'driver' && this.props.activeFile.text.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
                   <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
@@ -188,7 +187,7 @@ export default class TextEditorComponent extends React.Component {
 
         <Tabs
           onSelect={this.handleSelect}
-          selectedIndex={this.state.tabIndex}>
+          selectedIndex={this.props.selectedTab}>
           <TabList>
             {
               this.props.openFiles.length > 0 && this.props.openFiles.map((file, index) => {
@@ -207,7 +206,7 @@ export default class TextEditorComponent extends React.Component {
               theme="monokai"
               onChange={this.codeIsHappening}
               name="text-editor"
-              value={this.state.code}
+              value={this.props.activeFile.text}
               width="100%"
               height="96vh"
               editorProps={{$blockScrolling: true}}
