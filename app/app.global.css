@@ -234,6 +234,11 @@ body {
 	margin:5px;
 }
 
+#save-form{
+	width:200px;
+	float:left;
+}
+
 #file-container{
 	margin-bottom: 15px;
 }
@@ -481,6 +486,11 @@ footer{
 	text-align: center;
 	margin-bottom: 5px;
 	margin-top:5px;
+}
+
+.float-left{
+	float:left;
+	margin-left:15px;
 }
 
 .git-input{
