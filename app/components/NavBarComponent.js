@@ -3,6 +3,7 @@ import {connect} from 'react-redux'
 
 const shell = window.require('electron').shell
 
+const logo = require('img/pairit.logotitle.svg');
 
 const mapStateToProps = (state) => {
 	return {
@@ -19,7 +20,7 @@ class NavComponent extends React.Component {
 	render (){
 		return (
       <nav className="row navigation-bar">
-        <img className="img logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
+        <img className="img logo logo-nav" src={logo} onClick={this.props.dispatchReturnToLogin} />
 
         <div className="signed-in-user" onClick={() => this.goToRemoteLink(this.props.user.html_url)}>
           <img className="login-avatar" src={this.props.user.avatar_url} />
