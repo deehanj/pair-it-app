@@ -399,8 +399,10 @@ footer{
 
 .collab-footer{
 	width: 100%;
-	margin-left: 20px;
-	display:inline;
+	margin-left: 0px;
+  position: absolute;
+	bottom: 0;
+	left: 0;
 }
 
 .close-git{
@@ -468,4 +470,3 @@ footer{
 	width:240px;
 	text-align:center;
 }
-
