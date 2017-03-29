@@ -236,7 +236,7 @@ body {
 }
 
 #file-list-container{
-	max-height: 500px;
+	max-height: 270px;
 	overflow: scroll;
 	size: 15px;
 }
