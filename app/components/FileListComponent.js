@@ -20,7 +20,7 @@ export default class Files extends React.Component {
     super(props)
     this.state = {
       dir: props.subDir,
-      files: [],
+      files: props.files,
       visible: props.visible,
       text: '',
       level: props.level,
@@ -31,17 +31,15 @@ export default class Files extends React.Component {
   }
 
   fetchFiles(dir) {
-    if (dir.length > 0) {
-      getAllFiles(dir + '/')
-      .then(filesArr => {
-        this.setState({ files: filesArr })
-      })
-      .catch(err => console.error(err))
-    }
+    getAllFiles(dir + '/')
+    .then(filesArr => {
+      this.setState({ files: filesArr })
+    })
+    .catch(err => console.error(err))
   }
 
   setVisible(filePath) {
-      this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
+    this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
   }
 
   componentDidMount() {
@@ -50,7 +48,7 @@ export default class Files extends React.Component {
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
-    if (this.props.files.length === 0) {
+    if (this.props.files && this.props.files.length === 0) {
       socket.on('partner selected files', (data) => {
           this.props.loadFiles(data.files)
       })
@@ -63,6 +61,7 @@ export default class Files extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    const theFiles = nextProps.files
     if (this.state.level === 0) {
       const visible = {}
       nextProps.files.forEach(file => {
@@ -71,12 +70,15 @@ export default class Files extends React.Component {
       })
       this.setState({ visible })
     }
-    this.fetchFiles(nextProps.subDir)
-    if (this.props.role === 'driver') socket.emit('send file tree', {files: this.props.files, room: this.props.room})
+    if (this.props.role === 'driver') {
+      this.fetchFiles(nextProps.subDir)
+      setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
+    }
   }
 
   render() {
-    const files = this.props.files || this.state.files
+    console.log('state', this.state)
+    const files = this.props.files
     return (
       <ul id="files">{this.props.dir}
         {
@@ -100,10 +102,10 @@ export default class Files extends React.Component {
               <li id="folder" key={filePath} onClick={() => this.setVisible(filePath)}>
                 <i className="fa fa-folder"/>{fileName}
                 {(this.state.visible[filePath] === true) &&
-
                 <Files
                   subDir={filePath}
-                  visible={false}
+                  files={file.files}
+                  visible={true}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
                   room={this.props.room}
