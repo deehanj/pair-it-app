@@ -9,21 +9,13 @@ const socket = io(serverLocation);
 
 /*
 - This component displays the directory file system.
-- It recursively creates unordered lists of files that only become visible when clicked on.
-- The outermost directory list is updated by the global state redux store.
-- The local state is used to pass props to each level's subdirectory in order to make that
-particular Files component.
+- It recursively creates unordered lists of files that only become visible (or invisible) when clicked on.
+- The file objects are held in global state (state.fileSystem).
 */
 
 export default class Files extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      dir: props.subDir,
-      files: props.files,
-      text: '',
-      activeFile: props.activeFile
-    }
     this.setVisible = this.setVisible.bind(this)
   }
 
@@ -51,8 +43,8 @@ export default class Files extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const theFiles = nextProps.files
-    if (this.props.role === 'driver') {
-      if (this.props.files.length === 0) setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
+    if (this.props.role === 'driver' && this.props.files.length === 0) {
+      setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
     }
   }
 
