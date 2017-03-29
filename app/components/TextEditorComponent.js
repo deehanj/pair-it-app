@@ -98,7 +98,7 @@ export default class TextEditorComponent extends React.Component {
     if (this.props.activeFile.filePath.length > 0) {
       filePath = this.props.activeFile.filePath
     } else {
-      filePath = `${this.props.dir}/${ev.target.filename.value}.js`
+      filePath = `${this.props.dir}/${ev.target.filename.value}`
       isNewFile = true
     }
     this.props.dispatchDriverSave(filePath, this.state.code, isNewFile)
@@ -168,9 +168,9 @@ export default class TextEditorComponent extends React.Component {
                   <input type="text" name="filename" placeholder="Name your file" />
                   <input type="submit" value="SAVE"/>
                 </form>
-                : null  
+                : null
                 }
-             </div> 
+             </div>
 
         <Tabs
           onSelect={this.handleSelect}
@@ -214,4 +214,3 @@ export default class TextEditorComponent extends React.Component {
 		  )}
 	  }
   }
-
