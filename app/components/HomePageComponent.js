@@ -103,6 +103,7 @@ export default class HomePageComponent extends Component {
     this.props.URL.getAudioTracks()[0].stop();
     this.props.clearURLs();
     this.props.clearFileSystem();
+    this.props.clearGit()
 
 
     this.setState({remoteVideoRendered: false});
