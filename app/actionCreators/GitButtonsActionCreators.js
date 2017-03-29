@@ -114,6 +114,11 @@ export const clearError = () => ({
 	errorMessage: null
 })
 
+export const resetBranchQuery = () => ({
+	type: UPDATE_BRANCH_QUERY_STRING,
+	branchQuery: ''
+})
+
 
 
 

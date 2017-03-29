@@ -4,6 +4,8 @@ import chalk from 'chalk';
 import SuccessBoxContainer from '../containers/SuccessBoxContainer'
 import ErrorBoxContainer from '../containers/ErrorBoxContainer'
 
+const shell = window.require('electron').shell
+
 export default class extends React.Component {
 	constructor(props){
 		super(props)
@@ -19,9 +21,14 @@ export default class extends React.Component {
 		this.handleCommit = this.handleCommit.bind(this);
 		this.handleGitPush = this.handleGitPush.bind(this);
 		this.handleGitPull = this.handleGitPull.bind(this);
+		this.goToRemoteLink = this.goToRemoteLink.bind(this);
 
 
 		this.Git = simpleGit();
+	}
+
+	goToRemoteLink(url) {
+		shell.openExternal(url);
 	}
 
 	componentWillReceiveProps(nextProps) {
@@ -87,9 +94,9 @@ export default class extends React.Component {
 					this.props.handleSuccess('Commit Message: ' + this.props.commitMessage);
 					setTimeout(this.handleStatus, 1000);
 				}
+				document.getElementById('commit').value = '';
 			}
 		)
-		document.getElementById('commit').value = null;
 	}
 
 	handleBranchCheckout(e) {
@@ -107,12 +114,12 @@ export default class extends React.Component {
 					if(this.props.branchQuery === 'master'){
 						branchName.style.cssText = "color:blue;"
 					}
+					this.props.dispatchResetBranchQuery()
 					branchInput.value = ''
 				}
 			}
 		)
 		this.getBranchList()
-		this.props.toggleDisplayBranches()
 	}
 
 	handleNewBranchCheckout(e) {
@@ -129,11 +136,11 @@ export default class extends React.Component {
 					this.props.handleSuccess('checked out new branch: ' + this.props.branchQuery)
 						branchName.style.cssText = "color:black;"
 					}
-					branchInput.value = ''
+					this.props.dispatchResetBranchQuery()
+					branchInputNew.value = ''
 				}
 		)
 		this.getBranchList()
-		this.props.toggleDisplayBranches()
 	}
 
 
@@ -174,6 +181,7 @@ export default class extends React.Component {
 			 	<div className="close-git">
                   <i className="fa fa-times" onClick={() => this.props.dispatchCloseGitMenu()}/>
                   <div className="git-logo-modal"><i className="fa fa-git"/></div>
+	                  <div  className="view-on-github-modal" onClick={() => this.goToRemoteLink(this.props.repo.html_url)}><i className="fa fa-github" /> View Repo on GitHub</div>
                 </div>
 
 			{(this.props.successData !==null) ? <SuccessBoxContainer /> : null}
@@ -183,7 +191,7 @@ export default class extends React.Component {
 				{this.props.displayBranch && this.props.branchList.map(el => {
 							return (
 								<ul>
-									<li><i className="fa fa-code-fork"/>{'   '+ el.name + ':  ' + el.label}</li>
+									<li className="git-headline-list"><i className="fa fa-code-fork"/>{'   '+ el.name + ':  ' + el.label}</li>
 								</ul>
 							)
 						// }
@@ -228,8 +236,8 @@ export default class extends React.Component {
 
 				<div className="git-headline">
 				<form id="commit" onSubmit={this.handleCommit}>
-					<input className="git-input" type="text" placeholder="commit message" onChange={this.props.handleCommitMessage}></input>
-					 <button className="git-btn" id="commit" onClick={this.handleCommit}>Commit</button>
+					<input className="git-input" type="text" id="commit" placeholder="commit message" onChange={this.props.handleCommitMessage}></input>
+					 <button className="git-btn" onClick={this.handleCommit}>Commit</button>
 				</form>
 				</div>
 
