@@ -10,7 +10,7 @@ export default class extends React.Component {
 		return (
 			<div className="git-headline-message">
 				{this.props.successMessage}
-				<div className="close-git">
+				<div onClick={() => this.props.dispatchClearStatus()} className="close-git">
                   <i className="fa fa-times"/>
                  </div>
 			</div>

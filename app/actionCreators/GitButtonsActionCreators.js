@@ -104,6 +104,11 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
+export const clearStatus = () => ({
+	type: UPDATE_STATUS,
+	status: null
+})
+
 
 
 

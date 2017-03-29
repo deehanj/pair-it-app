@@ -29,6 +29,7 @@ const reducer = (state = initialState, action) => {
 			case UPDATE_BRANCH_LIST:
 				newState.currentBranch = action.currentBranch
 				newState.branchList = action.branchList
+				break
 			case UPDATE_BRANCH_QUERY_STRING:
 				newState.branchQuery = action.branchQuery
 				break
