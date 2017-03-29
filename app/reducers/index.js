@@ -14,7 +14,7 @@ const rootReducer = combineReducers({
   routing,
   fileSystem: files,
   VideoChat: VideoChatReducer,
-  GitButtons: GitButtonsReducer, 
+  GitButtons: GitButtonsReducer,
   auth,
   user,
   repo,

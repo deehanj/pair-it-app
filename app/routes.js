@@ -13,7 +13,7 @@ import LoginComponent from './components/LoginComponent';
 
 export default (
   <Route path="/" component={AppContainer} >
-    <Route path="/LoginComponent" component={LoginComponent} />
+    <Route path="/login" component={LoginComponent} />
     <Route path="/repos" component={RepoListContainer}/>
     <Route path="/collaborators" component={CollaboratorsContainer}/>
     <Route path="/home" component={HomePageContainer} />

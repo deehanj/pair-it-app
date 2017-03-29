@@ -9,6 +9,7 @@ html{
 
 h1 {
  font-family: "FatFrank", sans-serif;
+ color: #1A1A1A;
 }
 
 h3 {
@@ -90,7 +91,7 @@ h4{
 
 .user-name{
 	float: right;
-	margin-right: 5px;
+	margin-right: 10px;
 	margin-top: 2px;
 	font-style: italic;
 	color: gray;
@@ -166,16 +167,20 @@ body {
 #webchatWindow.set-driver-view{
 	z-index: 1;
 	float:left;
+	width:45%;
+	margin-top: 60px;
 }
 
 #localWebchat.set-driver-view{
 	z-index: 1;
 	float:right;
+	width:45%;
+	margin-top: 60px;
 }
 
 #video-container.video-padding{
-	padding-right:50px;
-	padding-left:50px;
+	padding-right:5%;
+	padding-left:5%;
 }
 
 #video-container.video-text-editor{
@@ -212,15 +217,30 @@ body {
 	padding:0px;
 }
 
+#save-form{
+	width: 175px;
+	margin:0;
+	float:right;
+}
+
 .admin-btn-container{
 	float:right;
-
 }
 
 .admin-btn{
 	float:left;
 	font-size: 25px;
 	margin:5px;
+}
+.admin-btn-right{
+	float:right;
+	font-size: 25px;
+	margin:5px;
+}
+
+#save-form{
+	width:200px;
+	float:left;
 }
 
 #file-container{
@@ -239,6 +259,10 @@ body {
 	max-height: 270px;
 	overflow: scroll;
 	size: 15px;
+}
+
+#currentBranch{
+	margin-bottom: 15px;
 }
 
 ul {
@@ -329,7 +353,10 @@ footer{
 
 .back-arrow{
 	margin: 15px;
-
+	float: left;
+	position:absolute;
+	bottom: 0;
+	left: 0;
 }
 
 .collab-list{
@@ -359,6 +386,7 @@ footer{
 .collab-avatar{
 	height: 50px;
 	float: left;
+	margin-right: 10px;
 }
 
 .collab-name{
@@ -389,7 +417,6 @@ footer{
 	margin-top: 2px
 
 }
-
 
 .dev-buttons{
 	float: right;
@@ -437,7 +464,27 @@ footer{
 	border: 3px solid #AAE034;
 	border-radius: 10px;
 	float:left;
-	width: %;
+	font-size: 15px;
+	width: 100%;
+}
+
+#git-headline-message-error{
+	text-align: center;
+	font-weight: bold;
+	padding-top: 20px;
+	border: 3px solid red;
+	border-radius: 10px;
+	float:left;
+	font-size: 15px;
+	width: 100%;
+}
+
+.git-headline-list{
+	font-weight: bold;
+	padding-top: 20px;
+	float:left;
+	font-size: 15px;
+	width: 100%;
 }
 
 #git-branch-container{
@@ -460,8 +507,13 @@ footer{
 	height:100%;
 	width: 240px;
 	text-align: center;
-	margin-bottom: 10px;
-	margin-top:10px;
+	margin-bottom: 5px;
+	margin-top:5px;
+}
+
+.float-left{
+	float:left;
+	margin-left:15px;
 }
 
 .git-input{
@@ -469,4 +521,29 @@ footer{
 	font-weight: none;
 	width:240px;
 	text-align:center;
+}
+
+.missing-collabs{
+	font-style: italic;
+	color: gray;
+	text-align:center;
+}
+
+.collab-logo{
+	width:70%;
+	margin-top: 60px;
+	margin-left: 15%;
+}
+
+.view-on-github-modal{
+	margin-top:14px;
+	font-size:15px;
+	width: 100%;
+	text-align: center;
+}
+
+.view-on-github-modal:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }

@@ -2,8 +2,8 @@ import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, 
 
 const initialState = {
 	branchList: [],
-	successData: '',
-	errorData: '',
+	successData: null,
+	errorData: null,
 	currentBranch: '',
 	displayBranch: false,
 	branchQuery: '',
