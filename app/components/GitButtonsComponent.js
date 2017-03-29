@@ -12,6 +12,7 @@ export default class extends React.Component {
 			receivedProps:false,
 		}
 		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
+		this.handleNewBranchCheckout = this.handleNewBranchCheckout.bind(this);
 		this.getBranchList = this.getBranchList.bind(this);
 		this.handleGitAdd = this.handleGitAdd.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
@@ -118,7 +119,7 @@ export default class extends React.Component {
 		e.preventDefault();
 		const branchInputNew = document.getElementById('branchInputNew')
 		const branchName = document.getElementById('currentBranch')
-		this.Git.checkoutLocalbranch(
+		this.Git.checkoutLocalBranch(
 			this.props.branchQuery,
 			(error, newBranch) => {
 				if(error){
