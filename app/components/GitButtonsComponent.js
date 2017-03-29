@@ -114,6 +114,7 @@ export default class extends React.Component {
 					if(this.props.branchQuery === 'master'){
 						branchName.style.cssText = "color:blue;"
 					}
+					this.props.dispatchResetBranchQuery()
 					branchInput.value = ''
 				}
 			}
@@ -135,6 +136,7 @@ export default class extends React.Component {
 					this.props.handleSuccess('checked out new branch: ' + this.props.branchQuery)
 						branchName.style.cssText = "color:black;"
 					}
+					this.props.dispatchResetBranchQuery()
 					branchInputNew.value = ''
 				}
 		)
