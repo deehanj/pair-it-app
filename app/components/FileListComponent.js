@@ -21,25 +21,14 @@ export default class Files extends React.Component {
     this.state = {
       dir: props.subDir,
       files: props.files,
-      visible: props.visible,
       text: '',
-      level: props.level,
       activeFile: props.activeFile
     }
-    this.fetchFiles = this.fetchFiles.bind(this)
     this.setVisible = this.setVisible.bind(this)
   }
 
-  fetchFiles(dir) {
-    getAllFiles(dir + '/')
-    .then(filesArr => {
-      this.setState({ files: filesArr })
-    })
-    .catch(err => console.error(err))
-  }
-
   setVisible(filePath) {
-    this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
+    this.props.toggleVisibility(filePath)
   }
 
   componentDidMount() {
@@ -62,22 +51,12 @@ export default class Files extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const theFiles = nextProps.files
-    if (this.state.level === 0) {
-      const visible = {}
-      nextProps.files.forEach(file => {
-        const filePath = file.filePath
-        visible[filePath] = false
-      })
-      this.setState({ visible })
-    }
     if (this.props.role === 'driver') {
-      this.fetchFiles(nextProps.subDir)
-      setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
+      if (this.props.files.length === 0) setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
     }
   }
 
   render() {
-    console.log('state', this.state)
     const files = this.props.files
     return (
       <ul id="files">{this.props.dir}
@@ -95,21 +74,21 @@ export default class Files extends React.Component {
                 onClick={() => {
                   this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role);
                 }
-                }><i className="fa fa-file-text-o" aria-hidden="true"/>{fileName}
+                }><i className="fa fa-file-text-o" aria-hidden="true"/>  {fileName}
               </li>
               :
               // makes a new Files component if fileBool is false
-              <li id="folder" key={filePath} onClick={() => this.setVisible(filePath)}>
-                <i className="fa fa-folder"/>{fileName}
-                {(this.state.visible[filePath] === true) &&
+              <li id="folder" key={filePath}>
+                <i onClick={() => this.setVisible(filePath)} className="fa fa-folder"/>  {fileName}
+                {(this.props.isVisible[filePath] === true) &&
                 <Files
                   subDir={filePath}
                   files={file.files}
-                  visible={true}
-                  level={this.state.level + 1}
-                  fetchActiveFile={this.props.fetchActiveFile}
                   role= {this.props.role}
                   room={this.props.room}
+                  fetchActiveFile={this.props.fetchActiveFile}
+                  isVisible={this.props.isVisible}
+                  toggleVisibility={this.props.toggleVisibility}
                 />}
               </li>
           })

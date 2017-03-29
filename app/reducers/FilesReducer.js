@@ -8,6 +8,7 @@ const OPEN_FILES = 'OPEN_FILES'
 const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
 const CLOSE_FILE = 'CLOSE_FILE'
 const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
+const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY'
 const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     text: ''
   },
   openFiles: [],
+  isVisible: {}
 }
 
 const reducer = (state = initialState, action) => {
@@ -49,6 +51,10 @@ const reducer = (state = initialState, action) => {
         if (file.filePath === '') return action.file
         else return file
       })
+      break
+    case TOGGLE_VISIBILITY:
+      newState.isVisible = Object.assign({}, newState.isVisible)
+      newState.isVisible[action.filePath] = !newState.isVisible[action.filePath]
       break
     case CLEAR_FILESYSTEM:
       return initialState
@@ -84,6 +90,10 @@ export const closeFile = file => ({
 
 export const saveNewFile = file => ({
   type: SAVE_NEW_FILE, file
+})
+
+export const toggleVisibility = filePath => ({
+  type: TOGGLE_VISIBILITY, filePath
 })
 
 export const clearFileSystem = () => ({

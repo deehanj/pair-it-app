@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
-import { activeFile, addToOpenFiles, loadFiles } from '../reducers/FilesReducer'
+import { activeFile, addToOpenFiles, loadFiles, toggleVisibility } from '../reducers/FilesReducer'
 
 import FileListComponent from '../components/FileListComponent'
 
@@ -24,10 +24,11 @@ const mapStateToProps = state => {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
     activeFile: state.fileSystem.activeFile,
-    visible: true,
+    // visible: ,
     level: 0,
     room: state.room.name,
-    role: state.repo.role
+    role: state.repo.role,
+    isVisible: state.fileSystem.isVisible
   }
 }
 
@@ -54,7 +55,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
     },
-    loadFiles: files => dispatch(loadFiles(files))
+    loadFiles: files => dispatch(loadFiles(files)),
+    toggleVisibility: filePath => dispatch(toggleVisibility(filePath))
   }
 }
 
