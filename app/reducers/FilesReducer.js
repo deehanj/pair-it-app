@@ -11,6 +11,7 @@ const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
 const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY'
 const SWITCH_TAB = 'SWITCH_TAB'
 const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
+const WHOLE_FILE = 'WHOLE_FILE'
 
 const initialState = {
   dir: '',
@@ -27,6 +28,14 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
+    case WHOLE_FILE:
+      newState.openFiles = newState.openFiles.map(file => {
+        if(file.filePath === action.file.filePath){
+          file.text = action.file.text
+        }
+        return file;
+      })
+      break
     case SET_FILE_DIR:
       newState.dir = action.dir
       break
@@ -103,6 +112,10 @@ export const toggleVisibility = filePath => ({
 
 export const switchTab = index => ({
   type: SWITCH_TAB, index
+})
+
+export const wholeFile = file => ({
+  type: WHOLE_FILE, file
 })
 
 export const clearFileSystem = () => ({

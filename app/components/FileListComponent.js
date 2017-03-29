@@ -97,6 +97,7 @@ export default class Files extends React.Component {
                   isVisible={this.props.isVisible}
                   toggleVisibility={this.props.toggleVisibility}
                   openFiles={this.props.openFiles}
+                  switchTab= {this.props.switchTab}
                 />}
               </li>
           })

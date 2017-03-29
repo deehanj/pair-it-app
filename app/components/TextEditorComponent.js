@@ -74,10 +74,12 @@ export default class TextEditorComponent extends React.Component {
     this.setState({
     	code: nextProps.activeFile.text,
     })
-    this.codeIsHappening(nextProps.activeFile.text)
+    // if(this.props.openFiles )
+    // this.codeIsHappening(nextProps.activeFile.text)
   }
 
   codeIsHappening(newCode) {
+    this.props.dispatchWholeFile({filePath:this.props.activeFile.filePath, text: newCode})
     this.setState({ code: newCode })
     socket.emit('coding event', {code: newCode, room: this.props.room})
   }
