@@ -94,9 +94,9 @@ export default class extends React.Component {
 					this.props.handleSuccess('Commit Message: ' + this.props.commitMessage);
 					setTimeout(this.handleStatus, 1000);
 				}
+				document.getElementById('commit').value = '';
 			}
 		)
-		document.getElementById('commit').value = '';
 	}
 
 	handleBranchCheckout(e) {
