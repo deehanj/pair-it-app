@@ -6,6 +6,7 @@ import {push} from 'react-router-redux'
 import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'
 import {setAvailable} from '../reducers/user'
 import { closeGitMenu } from '../actionCreators/GitButtonsActionCreators'
+import {clearFileSystem} from '../reducers/FilesReducer'
 
 import HomePageComponent from '../components/HomePageComponent'
 
@@ -20,6 +21,8 @@ const mapStateToProps = (state) => {
     myName: state.user.gitInfo.login,
     repoId: state.repo.selectedRepo.id,
     gitOpen: state.GitButtons.open,
+    id: state.user.gitInfo.id,
+
 	}
 }
 
@@ -47,7 +50,8 @@ const mapDispatchToProps = (dispatch) => {
     removeRole: () => {
       dispatch(clearRole())
     },
-    dispatchCloseGitMenu: () => dispatch(closeGitMenu(false))
+    dispatchCloseGitMenu: () => dispatch(closeGitMenu(false)),
+    clearFileSystem: () => dispatch(clearFileSystem()),
   }
 }
 
