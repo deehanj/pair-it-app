@@ -9,6 +9,7 @@ html{
 
 h1 {
  font-family: "FatFrank", sans-serif;
+ color: #1A1A1A;
 }
 
 h3 {
@@ -389,7 +390,6 @@ footer{
 	margin-top: 2px
 
 }
-
 
 .dev-buttons{
 	float: right;
