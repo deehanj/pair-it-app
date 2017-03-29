@@ -70,7 +70,7 @@ export const statusHandler = (successObject) => {
 
 	if (staged.length == 0){
 		if(yetToBeCommitted.length === 0 ){
-			status = 'nothing to commit, working directory clean'
+			status = 'Nothing to commit, working directory clean'
 		} else {
 			status = notAdded;
 		}
@@ -104,10 +104,20 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
-export const clearStatus = () => ({
-	type: UPDATE_STATUS,
-	status: null
-})
+//UPDATING THIS TO WORK FOR BOTH SUCCESS AND ERROR
+
+// export const clearStatus = () => {
+// 	(dispatch, getState) => {
+// 		if (getState().GitButtons.displayBranch) {
+// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
+// 		} else {
+// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
+// 		}
+// 	}
+// }
+// 	type: UPDATE_STATUS,
+// 	status: null
+// })
 
 
 

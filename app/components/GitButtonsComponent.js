@@ -137,8 +137,6 @@ export default class extends React.Component {
 	}
 
 
-
-
 	handleGitPush() {
 		this.Git.push(
 			'origin',
@@ -225,7 +223,7 @@ export default class extends React.Component {
 				<div className="git-headline">
 				<form id="commit" onSubmit={this.handleCommit}>
 					<input className="git-input" type="text" placeholder="commit message" onChange={this.props.handleCommitMessage}></input>
-					 <button className="git-btn" onClick={this.handleCommit}>Commit</button>
+					 <button className="git-btn" id="commit" onClick={this.handleCommit}>Commit</button>
 				</form>
 				</div>
 

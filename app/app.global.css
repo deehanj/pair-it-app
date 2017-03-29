@@ -158,12 +158,13 @@ body {
 
 #file-selector{
 	margin:5px;
+	margin-top: 10px;
 	float:left;
 	width: 200px;
 }
 
 #file-list-container{
-	max-height: 300px;
+	max-height: 500px;
 	overflow: scroll;
 	size: 15px;
 }

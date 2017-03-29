@@ -1,5 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import { clearStatus } from '../actionCreators/GitButtonsActionCreators'
+
 
 import ErrorBoxComponent from '../components/ErrorBoxComponent'
 
@@ -10,7 +12,10 @@ const mapStateToProps = (state) => {
 } 
 
 const mapDispatchToProps = (dispatch) => {
-	return {}
+	return {
+			dispatchClearStatus: () => dispatch(clearStatus(statusType))
+
+	}
 }
 
 export default connect(mapStateToProps,mapDispatchToProps)(ErrorBoxComponent)
