@@ -110,6 +110,7 @@ export default class TextEditorComponent extends React.Component {
 
   onAddNewTab() {
     Promise.resolve(this.props.dispatchAddToOpenFilesAndSetActive())
+    .then(() => this.props.dispatchSwitchTab(this.props.openFiles.length - 1))
     .then(() => socket.emit('added a tab', {length: this.props.openFiles.length, room: this.props.room}))
   }
 
@@ -156,7 +157,7 @@ export default class TextEditorComponent extends React.Component {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
               <div>
-                {(this.props.role === 'driver' && this.props.activeFile.filePath.length > 0) ?
+                {(this.props.role === 'driver' && this.props.dir.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
                   <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
