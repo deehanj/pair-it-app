@@ -44,7 +44,7 @@ export default class Files extends React.Component {
 
   componentDidMount() {
     socket.on('new file is opened', (file) => {
-      if (this.props.activeFile.filePath !== file.filePath){
+      if (this.props.activeFile && this.props.activeFile.filePath !== file.filePath){
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
@@ -108,6 +108,7 @@ export default class Files extends React.Component {
                   visible={true}
                   level={this.state.level + 1}
                   fetchActiveFile={this.props.fetchActiveFile}
+                  role= {this.props.role}
                   room={this.props.room}
                 />}
               </li>
