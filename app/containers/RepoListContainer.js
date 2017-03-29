@@ -53,7 +53,6 @@ class RepoListContainer extends React.Component {
 		return list.sort( (a, b) => {
 			let date1 = new Date(a.pushed_at)
 			let date2 = new Date(b.pushed_at)
-			console.log('Dates: ', date1, date2);
 		  return date2 - date1;
 		})
 	}
