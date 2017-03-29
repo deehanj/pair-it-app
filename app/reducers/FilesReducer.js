@@ -8,6 +8,7 @@ const OPEN_FILES = 'OPEN_FILES'
 const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
 const CLOSE_FILE = 'CLOSE_FILE'
 const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
+const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
 
 const initialState = {
   dir: '',
@@ -16,7 +17,7 @@ const initialState = {
     filePath: '',
     text: ''
   },
-  openFiles: []
+  openFiles: [],
 }
 
 const reducer = (state = initialState, action) => {
@@ -49,6 +50,8 @@ const reducer = (state = initialState, action) => {
         else return file
       })
       break
+    case CLEAR_FILESYSTEM:
+      return initialState
     default:
       return state
   }
@@ -82,6 +85,11 @@ export const closeFile = file => ({
 export const saveNewFile = file => ({
   type: SAVE_NEW_FILE, file
 })
+
+export const clearFileSystem = () => ({
+  type: CLEAR_FILESYSTEM
+})
+
 
 // THUNKS
 
