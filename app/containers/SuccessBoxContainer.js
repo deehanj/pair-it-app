@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-			dispatchClearStatus: () => dispatch(clearStatus())
+			dispatchClearStatus: () => dispatch(clearStatus(statusType))
 
 	}
 }
