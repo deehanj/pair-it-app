@@ -437,7 +437,7 @@ footer{
 	border: 3px solid #AAE034;
 	border-radius: 10px;
 	float:left;
-	width: %;
+	width: 100%;
 }
 
 #git-branch-container{

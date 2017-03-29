@@ -106,18 +106,18 @@ export const closeGitMenu = (boolean) => ({
 
 //UPDATING THIS TO WORK FOR BOTH SUCCESS AND ERROR
 
-// export const clearStatus = () => {
-// 	(dispatch, getState) => {
-// 		if (getState().GitButtons.displayBranch) {
-// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
-// 		} else {
-// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
-// 		}
-// 	}
-// }
-// 	type: UPDATE_STATUS,
-// 	status: null
-// })
+export const clearStatus = () => {
+
+	(dispatch, getState) => {
+		if (getState().GitButtons.successData){
+			dispatch({type: UPDATE_STATUS, status: null})
+			dispatch({type: SUCCESS_DATA, successMessage: null})	
+		} else if (getState().GitButtons.errorData) {
+			dispatch({type: UPDATE_STATUS, status: null})
+			dispatch({type: ERROR_DATA, errorMessage: null})
+		}
+	}
+}	
 
 
 
