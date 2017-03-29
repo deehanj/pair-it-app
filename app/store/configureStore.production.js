@@ -36,11 +36,11 @@ const router = routerMiddleware(hashHistory);
 // If Redux DevTools Extension is installed use it, otherwise use Redux compose
 /* eslint-disable no-underscore-dangle */
 const composeEnhancers =
-  // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
-  // window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
-  //   // Options: http://extension.remotedev.io/docs/API/Arguments.html
-  //   actionCreators,
-  // }) :
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
+    // Options: http://extension.remotedev.io/docs/API/Arguments.html
+    actionCreators,
+  }) :
   compose;
 /* eslint-enable no-underscore-dangle */
 const enhancer = composeEnhancers(
@@ -50,11 +50,11 @@ const enhancer = composeEnhancers(
 function configureStore(initialState) {
   const store = createStore(rootReducer, initialState, enhancer);
 
-  // if (module.hot) {
-  //   module.hot.accept('../reducers', () =>
-  //     store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
-  //   );
-  // }
+  if (module.hot) {
+    module.hot.accept('../reducers', () =>
+      store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
+    );
+  }
 
   return store;
 }
