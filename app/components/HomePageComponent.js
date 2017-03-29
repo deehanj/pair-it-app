@@ -64,15 +64,19 @@ export default class HomePageComponent extends Component {
   }
 
   setSelfToDriver(){
-    this.props.setDriverToMyself()
-    socket.emit('driver selected', {room: this.props.room})
-    this.updateCSS()
+    if(this.props.role === ''){
+      this.props.setDriverToMyself()
+      socket.emit('driver selected', {room: this.props.room})
+      this.updateCSS()
+    }
   }
 
   setPartnerToDriver(){
-    this.props.setDriverToPartner()
-    socket.emit('navigator selected', {room: this.props.room})
-    this.updateCSS()
+    if(this.props.role === ''){
+      this.props.setDriverToPartner()
+      socket.emit('navigator selected', {room: this.props.room})
+      this.updateCSS()
+    }
   }
 
   updateCSS(){

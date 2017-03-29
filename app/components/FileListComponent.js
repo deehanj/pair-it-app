@@ -93,7 +93,8 @@ export default class Files extends React.Component {
                 id="single-file"
                 key={filePath}
                 onClick={() => {
-                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room)
+                  (this.props.role === 'driver') ?
+                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room) : null;
                 }
                 }><i className="fa fa-file-text-o" aria-hidden="true"/>{fileName}
               </li>
