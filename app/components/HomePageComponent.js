@@ -135,8 +135,8 @@ export default class HomePageComponent extends Component {
         :
       //NAVIGATOR VIEW
             <div>
-              <FileListContainer/>
               <TextEditorContainer />
+              <FileListContainer/>
               <footer>
                <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
               </footer>

@@ -24,6 +24,9 @@ export default class FilesComponent extends React.Component {
   }
 
   selectFile(ev) {
+    const fileName = ev.target.files[0].path.split('/').slice(-1)[0]
+    console.log('fileName', fileName, 'repo name', this.props.repoName)
+    if (fileName !== this.props.repoName) alert('That file does not match the name of your Github repo. Please double check which file you want to work from.')
     this.setState({ dir: ev.target.files[0].path })
   }
 
@@ -32,7 +35,7 @@ export default class FilesComponent extends React.Component {
       <div>
         <div id="file-container" className="col-sm-4">
           <h1>{this.props.repoName}</h1>
-          <h3 id="currentBranch"> 
+          <h3 id="currentBranch">
           {this.props.currentBranch && <i className="fa fa-code-fork"/>}
           {this.props.currentBranch && '  Working on branch: ' + this.props.currentBranch}
           </h3>

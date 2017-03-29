@@ -168,9 +168,9 @@ export default class TextEditorComponent extends React.Component {
                   <input type="text" name="filename" placeholder="Name your file" />
                   <input type="submit" value="SAVE"/>
                 </form>
-                : null  
+                : null
                 }
-             </div> 
+             </div>
 
         <Tabs
           onSelect={this.handleSelect}
