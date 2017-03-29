@@ -80,13 +80,13 @@ export default class TextEditorComponent extends React.Component {
 
   codeIsHappening(newCode) {
     this.props.dispatchWholeFile({filePath:this.props.activeFile.filePath, text: newCode})
-    this.setState({ code: newCode })
+    // this.setState({ code: newCode })
     socket.emit('coding event', {code: newCode, room: this.props.room})
   }
 
   handleSelect(index, last) {
     const file = this.props.activeFile
-    file.text = this.state.code
+    // file.text = this.props.activeFile.text
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[index]))
@@ -104,9 +104,9 @@ export default class TextEditorComponent extends React.Component {
       filePath = `${this.props.dir}/${ev.target.filename.value}`
       isNewFile = true
     }
-    this.props.dispatchDriverSave(filePath, this.state.code, isNewFile)
+    this.props.dispatchDriverSave(filePath, this.props.activeFile.text, isNewFile)
     .then(() => this.props.dispatchSetFileDirAndLoadFiles(this.props.dir))
-    .then(() => socket.emit('save file', { filePath: filePath, text: this.state.code, room: this.props.room }))
+    .then(() => socket.emit('save file', { filePath: filePath, text: this.props.activeFile.text, room: this.props.room }))
     .catch(error => console.error(error.message))
   }
 
@@ -159,7 +159,7 @@ export default class TextEditorComponent extends React.Component {
       return (
         <div id="text-editor" className="col-sm-8 text-editor">
               <div>
-                {(this.props.role === 'driver' && this.props.dir.length > 0) ?
+                {(this.props.role === 'driver' && this.props.activeFile.text.length > 0) ?
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
                   <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
@@ -196,7 +196,7 @@ export default class TextEditorComponent extends React.Component {
               theme="monokai"
               onChange={this.codeIsHappening}
               name="text-editor"
-              value={this.state.code}
+              value={this.props.activeFile.text}
               width="100%"
               height="96vh"
               editorProps={{$blockScrolling: true}}

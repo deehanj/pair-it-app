@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 		dir: state.fileSystem.dir,
 		room: state.room.name,
 		role: state.repo.role,
-    selectedTab: state.fileSystem.selectedTab
+    	selectedTab: state.fileSystem.selectedTab
 	}
 }
 
