@@ -104,20 +104,15 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
-//UPDATING THIS TO WORK FOR BOTH SUCCESS AND ERROR
+export const clearStatus = () => ({
+	type: UPDATE_STATUS,
+	status: null
+})
 
-export const clearStatus = () => {
-
-	(dispatch, getState) => {
-		if (getState().GitButtons.successData){
-			dispatch({type: UPDATE_STATUS, status: null})
-			dispatch({type: SUCCESS_DATA, successMessage: null})	
-		} else if (getState().GitButtons.errorData) {
-			dispatch({type: UPDATE_STATUS, status: null})
-			dispatch({type: ERROR_DATA, errorMessage: null})
-		}
-	}
-}	
+export const clearError = () => ({
+	type: ERROR_DATA,
+	errorMessage: null
+})
 
 
 

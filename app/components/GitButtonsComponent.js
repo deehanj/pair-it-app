@@ -170,8 +170,8 @@ export default class extends React.Component {
                   <div className="git-logo-modal"><i className="fa fa-git"/></div>
                 </div>
 
-			{this.props.successData ? <SuccessBoxContainer /> : null}
-			{this.props.errorData ? <ErrorBoxContainer /> : null}
+			{(this.props.successData !==null) ? <SuccessBoxContainer /> : null}
+			{(this.props.errorData !== null) ? <ErrorBoxContainer /> : null}
             {/***SHOW ALL BRANCHES***/}
 			 	<div id="git-branch-container">
 				{this.props.displayBranch && this.props.branchList.map(el => {
