@@ -257,6 +257,10 @@ body {
 	size: 15px;
 }
 
+#currentBranch{
+	margin-bottom: 15px;
+}
+
 ul {
 	list-style: none;
 }
@@ -450,6 +454,17 @@ footer{
 	font-weight: bold;
 	padding-top: 20px;
 	border: 3px solid #AAE034;
+	border-radius: 10px;
+	float:left;
+	font-size: 15px;
+	width: 100%;
+}
+
+#git-headline-message-error{
+	text-align: center;
+	font-weight: bold;
+	padding-top: 20px;
+	border: 3px solid red;
 	border-radius: 10px;
 	float:left;
 	font-size: 15px;
