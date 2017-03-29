@@ -111,7 +111,7 @@ export default class HomePageComponent extends Component {
 
         <div
           id="video-container"
-          className={this.props.role === '' ? "col-sm-12 video-padding" : "col-sm-4 text-editor"}>
+          className={this.props.role === '' ? " video-padding" : "col-sm-4 text-editor"}>
           <video
             id="webchatWindow"
             className={this.props.role === '' ? "set-driver-view" : "webchatWindow-text-editor"}
@@ -123,9 +123,7 @@ export default class HomePageComponent extends Component {
         </div>
 
         {(this.props.role === '') ?
-        <footer>
             <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-        </footer>
         :
       //DRIVER VIEW
           (this.props.role === 'driver') ?
@@ -149,9 +147,7 @@ export default class HomePageComponent extends Component {
             <div>
               <TextEditorContainer />
               <FileListContainer/>
-              <footer>
-               <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-              </footer>
+              <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
             </div>
       }
 
