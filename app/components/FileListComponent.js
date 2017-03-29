@@ -16,7 +16,32 @@ const socket = io(serverLocation);
 export default class Files extends React.Component {
   constructor(props) {
     super(props)
+    this.onFileClick = this.onFileClick.bind(this)
     this.setVisible = this.setVisible.bind(this)
+  }
+
+  onFileClick(dir, room, role) {
+    console.log('dir: ', dir)
+    var i = -1;
+    const index = this.props.openFiles.forEach((file, index) => {
+      console.log('inside indexOf filePath: ', file.filePath, file.filePath === dir)
+      if (file.filePath === dir) i = index
+    })
+    console.log(i)
+    if (i === -1) {
+      console.log('case 1')
+      this.props.fetchActiveFile(dir, room, role)
+    }
+    else {
+      console.log('case 2')
+      console.log('this.props.activeFile.filePath: ', this.props.activeFile.filePath)
+      console.log('Are they equal?', dir === this.props.activeFile.filePath)
+      if (this.props.activeFile.filePath !== dir) {
+        console.log('case 3')
+        console.log('the file to be active: ', this.props.openFiles[i])
+        this.props.activeFile(this.props.openFiles[i])
+      }
+    }
   }
 
   setVisible(filePath) {
@@ -25,7 +50,8 @@ export default class Files extends React.Component {
 
   componentDidMount() {
     socket.on('new file is opened', (file) => {
-      if (this.props.activeFile && this.props.activeFile.filePath !== file.filePath){
+      if ((this.props.activeFile && this.props.activeFile.filePath !== file.filePath) && this.props.role === 'navigator'){
+        console.log('openFileFromDriver socket is firing')
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
@@ -63,10 +89,7 @@ export default class Files extends React.Component {
               <li
                 id="single-file"
                 key={filePath}
-                onClick={() => {
-                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role);
-                }
-                }><i className="fa fa-file-text-o" aria-hidden="true"/>  {fileName}
+                onClick={() => this.onFileClick(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role)}><i className="fa fa-file-text-o" aria-hidden="true"/>  {fileName}
               </li>
               :
               // makes a new Files component if fileBool is false
@@ -81,6 +104,7 @@ export default class Files extends React.Component {
                   fetchActiveFile={this.props.fetchActiveFile}
                   isVisible={this.props.isVisible}
                   toggleVisibility={this.props.toggleVisibility}
+                  openFiles={this.props.openFiles}
                 />}
               </li>
           })

@@ -26,7 +26,8 @@ const mapStateToProps = state => {
     activeFile: state.fileSystem.activeFile,
     room: state.room.name,
     role: state.repo.role,
-    isVisible: state.fileSystem.isVisible
+    isVisible: state.fileSystem.isVisible,
+    openFiles: state.fileSystem.openFiles
   }
 }
 
@@ -50,7 +51,8 @@ const mapDispatchToProps = dispatch => {
       dispatch(addToOpenFiles(file))
     },
     loadFiles: files => dispatch(loadFiles(files)),
-    toggleVisibility: filePath => dispatch(toggleVisibility(filePath))
+    toggleVisibility: filePath => dispatch(toggleVisibility(filePath)),
+    activeFile: file => dispatch(activeFile(file)),
   }
 }
 
