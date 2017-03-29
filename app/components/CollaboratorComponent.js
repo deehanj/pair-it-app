@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import NavBar from './NavBarComponent'
 import CollaboratorRowComponent from "./CollaboratorRowComponent"
 import { serverLocation } from '../utils/server.settings.js'
 import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
@@ -8,6 +9,8 @@ import {push} from 'react-router-redux'
 import ConfigureSocket from '../utils/ConfiguringSocket'
 import io from 'socket.io-client'
 import {setPairingRoom, setPairingPartner} from '../reducers/repo';
+
+const shell = window.require('electron').shell
 
 const socket = io(serverLocation)
 
@@ -118,37 +121,78 @@ export default class CollaboratorComponent extends React.Component {
 		socket.emit('leaving room', {room: this.props.repo.id, playerInfo: this.state.playerInfo})
 	}
 
+	goToRemoteLink(url) {
+		shell.openExternal(url);
+	}
+
+	readableDate(date) {
+		//"2017-03-16T20:51:55Z"
+		const broken = date.split('T')
+		const day = broken[0].split('-')
+		const dayString = `${day[1]}-${day[2]}-${day[0]}`
+		const time = broken[1].split(':')
+		const timeString = `${time[0]}:${time[1]}`
+
+		return `${dayString} at ${timeString}`
+
+	}
+
 	render (){
 		return (
 			<div>
-				<h1>{this.props.repo.name}</h1>
-				<h1 onClick={this.props.clickToGoHomeNav} >CLICK HERE TO GO HOME AS NAV!!!</h1>
-				<h1 onClick={this.props.clickToGoHomeDriver} >CLICK HERE TO GO HOME AS DRIVER!!!</h1>
-				<h2>Collaborators:</h2>
-				{this.state.collaborators && this.state.collaborators.map(collaborator =>
-						(
-							<CollaboratorRowComponent
-								key={collaborator.name}
-								collaborator={collaborator}
-								repoId={this.props.repo.id}
-								myName={this.props.name}
-								myId={this.props.id}
-								URL={this.props.URL}
-								incomingCall={this.state.incomingCall}
-								UpdateStream={this.props.UpdateStream}
-								UpdateLocalStream={this.props.UpdateLocalStream}
-								sortOutMedia={this.sortOutMedia}
-								setPairingRoomURL={this.props.setPairingRoomURL}
-								clickToGoHome={this.props.clickToGoHome}
-								setPairPartner={this.props.setPairPartner}
-                unavailable={this.props.unavailable}
-							/>
-						)
-					)
-				}
-				<footer>
-		            <div className="footer" onClick={this.backToRepos}><h3><i className="fa fa-arrow-left" />   Return to Repo Page Page</h3></div>
-		        </footer>
+				<NavBar />
+				<div className="col-sm-12 repo-list-container">
+					<h1>Select Collaborator:</h1>
+					<br />
+					<div className="row col-sm-12">
+						<h1 className="repo-name-collab" >{this.props.repo.name}</h1>
+						<h4  className="view-on-github" onClick={() => this.goToRemoteLink(this.props.repo.html_url)}><i className="fa fa-github" /> View on GitHub</h4>
+						<h4 className="date-changed-collab">Last edited on {this.readableDate(this.props.repo.pushed_at)}</h4>
+						<h4 className="repo-owner">Owned by <span
+								className="repo-owner-name"
+								onClick={() => goToRemoteLink(this.props.repo.owner.html_url)
+								}>{this.props.repo.owner.login}</span> <img className="sm-avatar" src={this.props.repo.owner.avatar_url} />
+							</h4>
+							{ this.props.repo.description
+							? <h3 className="repo-description">Description: {this.props.repo.description}</h3>
+							: null}
+					</div>
+					<div className="row col-sm-12 collab-list">
+						<h2 id="available-collabs">Available Collaborators:</h2>
+						<div className="collaborators-array">
+						{this.state.collaborators && this.state.collaborators.map(collaborator =>
+								(
+									<CollaboratorRowComponent
+										key={collaborator.name}
+										collaborator={collaborator}
+										repoId={this.props.repo.id}
+										myName={this.props.name}
+										myId={this.props.id}
+										URL={this.props.URL}
+										incomingCall={this.state.incomingCall}
+										UpdateStream={this.props.UpdateStream}
+										UpdateLocalStream={this.props.UpdateLocalStream}
+										sortOutMedia={this.sortOutMedia}
+										setPairingRoomURL={this.props.setPairingRoomURL}
+										clickToGoHome={this.props.clickToGoHome}
+										setPairPartner={this.props.setPairPartner}
+		                unavailable={this.props.unavailable}
+									/>
+								)
+							)
+						}
+						</div>
+					</div>
+
+
+				</div>
+				<footer className="collab-footer">
+					<div className="back-arrow dev-buttons">
+						<h5 onClick={this.props.clickToGoHomeNav} >Home Nav</h5>
+						<h5 onClick={this.props.clickToGoHomeDriver} >Home Driver</h5>
+					</div>
+          <div onClick={this.backToRepos}><h3 className="back-arrow"><i className="fa fa-arrow-left" />   Return to Repo Page</h3></div>
+        </footer>
 			</div>
 		)
 	}

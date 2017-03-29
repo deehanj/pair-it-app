@@ -30,7 +30,7 @@ h4{
 	float:left;
 	border: solid grey 1px;
 	border-radius: 5px;
-	margin-top: 5px;
+	margin: 5px;
 	width: 100%;
 	padding: 15px;
 	position: relative;
@@ -40,12 +40,32 @@ h4{
 	border: solid #AAE034 1px;
 }
 
-
 .repo-name{
 	margin-top: 0px;
 	margin-right: 10px;
-	width: 100%;
+	margin-bottom: 50px;
+	width: auto;
 	float: left;
+}
+
+.repo-name-collab{
+	margin-top: 0px;
+	margin-right: 10px;
+	margin-bottom: 50px;
+	width: auto;
+	float: left;
+}
+
+.view-on-github{
+	margin-top:14px;
+	width: 200px;
+	float:left;
+}
+
+.view-on-github:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
 }
 
 .repo-name:hover{
@@ -63,11 +83,37 @@ h4{
 	vertical-align: text-bottom;
 }
 
+.login-avatar{
+	height: 50px;
+	float: right;
+}
+
+.user-name{
+	float: right;
+	margin-right: 5px;
+	margin-top: 2px;
+	font-style: italic;
+	color: gray;
+}
+
+.user-name:hover{
+	color: #AAE034;
+	text-decoration: underline;
+	cursor:pointer;
+}
+
 .repo-owner{
 	float: left;
 	position: absolute;
   bottom: 0px;
   right: 10px;
+}
+
+.repo-owner-collab{
+	float: left;
+	position: absolute;
+  bottom: 0px;
+  left: 15px;
 }
 
 .repo-owner{
@@ -80,8 +126,34 @@ h4{
 	cursor:pointer;
 }
 
-.date-changed{
+.repo-description{
+	float: left;
+	position: absolute;
+	bottom: 0px;
+	left: 15px;
+}
 
+.date-changed{
+	position: absolute;
+	bottom: 0px;
+	left: 10px;
+}
+.date-changed-collab{
+	float: right;
+	position: relative;
+	margin-top: 12px;
+}
+
+.signed-in-user{
+	float: right;
+	margin-top: 7px;
+	margin-right: 20px;
+	width: auto;
+	padding: 10px;
+}
+
+.navigation-bar{
+	width: 100%;
 }
 
 body {
@@ -252,6 +324,81 @@ footer{
 .logo-nav{
 	width: 200px;
 	float: left;
+	margin-left: 50px;
+}
+
+.back-arrow{
+	margin: 15px;
+
+}
+
+.collab-list{
+	float: left;
+	margin-top: 25px;
+	/*float: none;
+	width: auto;
+	margin: 0 auto;*/
+}
+
+.collaborators-array{
+	width: 30%;
+	margin: 0 auto;
+}
+
+.collab-row{
+	border-top: 1px solid gray;
+	border-bottom: 1px solid gray;
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+#available-collabs{
+	text-align: center;
+}
+
+.collab-avatar{
+	height: 50px;
+	float: left;
+}
+
+.collab-name{
+	width: 100px;
+	float: left;
+	margin-top: 12px;
+}
+
+.call-button{
+	float: right;
+	color: black;
+	font-size: 50px;
+}
+
+.call-button:hover{
+	color: #AAE034;
+	cursor: pointer;
+}
+
+.answer-button{
+	float: right;
+	background-color: #AAE034;
+	font-size: 30px;
+	color: white;
+	font-family: "FatFrank";
+	border: none;
+	border-radius: 5px;
+	margin-top: 2px
+
+}
+
+
+.dev-buttons{
+	float: right;
+	margin: 0px;
+	margin-right: 15px;
+}
+
+.collab-footer{
+	width: 100%;
 	margin-left: 20px;
 	display:inline;
 }
@@ -279,7 +426,6 @@ footer{
 	text-align: center;
 	font-weight: bold;
 	padding-top: 20px;
-
 }
 
 .git-headline-message{

@@ -1,23 +1,25 @@
 import React from 'react'
 
 const RepoList = (props) => {
-const repos = props.repos
-const name = props.name
-const dispatchSelectRepo = props.dispatchSelectRepo
-const goToRemoteLink = props.goToRemoteLink
-const readableDate = props.readableDate
+	const repos = props.repos
+	const sortedRepos = props.sortedRepos
+	const dispatchSelectRepo = props.dispatchSelectRepo
+	const goToRemoteLink = props.goToRemoteLink
+	const readableDate = props.readableDate
+
+	console.log(sortedRepos);
 
 	return (
 		<div>
 			<div className="col-sm-12 repo-list-container">
 				<h1>Select A Git Repo</h1>
-				<div> {repos && repos.map(repo =>
+				<div> {repos && sortedRepos.map(repo =>
 					(<div className="repo" key={repo.id} >
 							<h1
 								className="repo-name"
 								onClick={() => dispatchSelectRepo(repo.id)
 							} >{repo.name}</h1>
-							<h4 className="repo-owner-name" onClick={() => goToRemoteLink(repo.owner.html_url)
+						<h4  className="view-on-github" onClick={() => goToRemoteLink(repo.html_url)
 							}><i className="fa fa-github" /> View on GitHub</h4>
 							<h4 className="date-changed">Last edited on {readableDate(repo.pushed_at)}</h4>
 							<h4 className="repo-owner">Owned by <span

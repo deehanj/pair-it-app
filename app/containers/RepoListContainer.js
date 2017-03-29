@@ -1,6 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import RepoListComponent from '../components/RepoListComponent'
+import NavBar from '../components/NavBarComponent'
 import {setSelectedRepo} from '../reducers/repo'
 import {push} from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
@@ -32,6 +33,7 @@ const mapDispatchToProps = (dispatch) => {
 class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
+		// this.sortedRepos = this.sortReposByDate(props.repos)
   }
 
   componentDidMount() {
@@ -43,26 +45,27 @@ class RepoListContainer extends React.Component {
 	}
 
 	readableDate(date) {
-		//"2017-03-16T20:51:55Z"
-		const broken = date.split('T')
-		const day = broken[0].split('-')
-		const dayString = `${day[1]}-${day[2]}-${day[0]}`
-		const time = broken[1].split(':')
-		const timeString = `${time[0]}:${time[1]}`
+		const d = new Date(date)
+		return `${d.getMonth()+1}/${d.getDate()}/${d.getFullYear()}, at ${d.getHours()}:${d.getMinutes()}`;
+	}
 
-		return `${dayString} at ${timeString}`
-
+	sortReposByDate(list) {
+		return list.sort( (a, b) => {
+			let date1 = new Date(a.pushed_at)
+			let date2 = new Date(b.pushed_at)
+			console.log('Dates: ', date1, date2);
+		  return date2 - date1;
+		})
 	}
 
 	render (){
 
-		return (
+		let sortedRepos = this.sortReposByDate(this.props.repos)
 
+		return (
 			<div>
-				<nav className="row">
-					<img className="img-responsive logo logo-nav" src="images/pairit.logotitle.svg" onClick={this.props.dispatchReturnToLogin} />
-				</nav>
-				<RepoListComponent repos={this.props.repos} dispatchSelectRepo={this.props.dispatchSelectRepo} goToRemoteLink={this.goToRemoteLink} readableDate={this.readableDate} />
+				<NavBar />
+				<RepoListComponent repos={this.props.repos} dispatchSelectRepo={this.props.dispatchSelectRepo} goToRemoteLink={this.goToRemoteLink} readableDate={this.readableDate} sortedRepos={sortedRepos}  />
 			</div>
 		)
 	}
@@ -71,3 +74,6 @@ class RepoListContainer extends React.Component {
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(RepoListContainer)
+
+
+{/*sortedRepos={this.props.sortedRepos}*/}
