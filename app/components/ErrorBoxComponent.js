@@ -6,10 +6,14 @@ export default class extends React.Component {
 		super(props);
 	}
 
-	render() {
+render() {
 		return (
-			<div>
+			<div className="git-headline-message">
+				<h3>Error!</h3>
 				{this.props.errorMessage}
+				<div onClick={() => this.props.dispatchClearStatus(error)} className="close-git">
+                  <i className="fa fa-times"/>
+                 </div>
 			</div>
 		)
 	}

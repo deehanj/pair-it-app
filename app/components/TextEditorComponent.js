@@ -137,7 +137,7 @@ export default class TextEditorComponent extends React.Component {
             name="text-editor"
             value={this.state.code}
             width="100%"
-            height="100vh"
+            height="96vh"
             editorProps={{$blockScrolling: true}}
             setOptions={{
               enableBasicAutocompletion: true,
@@ -160,7 +160,7 @@ export default class TextEditorComponent extends React.Component {
                 <div className="admin-btn-container">
                   <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
                   <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile.filePath) }><i className="fa fa-times" /></div>
-                  <div className="admin-btn" value="SAVE" height="50px" width="70px" type="div" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
+                  <div className="admin-btn" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                   <div className="admin-btn" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
                 </div>
                 : (this.props.role === 'driver') ?
@@ -181,7 +181,7 @@ export default class TextEditorComponent extends React.Component {
                 const fileNameArr = file.filePath.split('/')
                 const fileName = fileNameArr[fileNameArr.length - 1]
                 return (
-                  <Tab key={fileName}>{fileName}</Tab>
+                  <Tab height="4vh" key={fileName}>{fileName}</Tab>
                 )
               })
             }
@@ -195,7 +195,7 @@ export default class TextEditorComponent extends React.Component {
               name="text-editor"
               value={this.state.code}
               width="100%"
-              height="100vh"
+              height="96vh"
               editorProps={{$blockScrolling: true}}
               setOptions={{
                 enableBasicAutocompletion: true,

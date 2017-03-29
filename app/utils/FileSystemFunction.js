@@ -11,9 +11,18 @@ const getAllFiles = (dir) => {
     const statPromises = allFileNames.map(fileName => {
       return fsp.statAsync(dir + fileName)
       .then(stats => {
-        stats.filePath = dir + fileName + '/'
-        stats.fileBool = stats.isFile()
-        return stats
+        const obj = {}
+        obj.filePath = dir + fileName + '/'
+        obj.fileBool = stats.isFile()
+        if (!stats.isFile() && fileName !== 'node_modules') {
+          obj.files = []
+          obj.visible = false
+          getAllFiles(obj.filePath)
+          .then(fileNames => {
+            obj.files = obj.files.concat(fileNames)
+          })
+        }
+        return obj
       })
     })
     return Promise.all(statPromises)

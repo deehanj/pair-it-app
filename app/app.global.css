@@ -191,7 +191,7 @@ body {
 .localWebchat-text-editor{
 	width:33%;
 	top:5px;
-	right:300px;
+	left:5px;
 	position:absolute;
 	z-index: 2;
 }
@@ -224,19 +224,19 @@ body {
 }
 
 #file-container{
-	margin-bottom: 10px;
-
+	margin-bottom: 15px;
 }
 
 
 #file-selector{
 	margin:5px;
+	margin-top: 10px;
 	float:left;
 	width: 200px;
 }
 
 #file-list-container{
-	max-height: 300px;
+	max-height: 500px;
 	overflow: scroll;
 	size: 15px;
 }
@@ -399,4 +399,73 @@ footer{
 
 .collab-footer{
 	width: 100%;
+	margin-left: 20px;
+	display:inline;
 }
+
+.close-git{
+	float:left;
+	font-size: 25px;
+	margin:5px;
+	width:100%;
+}
+
+.git-logo-modal{
+	text-align: center;
+	width:100%;
+}
+
+.git-button-container{
+	float:left;
+	font-family: "proxima-nova", sans-serif !important;
+	font-size: 20px;
+	width:100%;
+}
+
+.git-headline{
+	text-align: center;
+	font-weight: bold;
+	padding-top: 20px;
+}
+
+.git-headline-message{
+	text-align: center;
+	font-weight: bold;
+	padding-top: 20px;
+	border: 3px solid #AAE034;
+	border-radius: 10px;
+	float:left;
+	width: %;
+}
+
+#git-branch-container{
+	max-height: 200px;
+	overflow: scroll;
+	size: 15px;
+	width:100%;
+}
+
+.checkout-branch{
+	text-align: center;
+	font-weight: bold;
+	padding:10px;
+	width:100%;
+}
+
+.git-btn{
+	background: #AAE034;
+	border-radius: 10px;
+	height:100%;
+	width: 240px;
+	text-align: center;
+	margin-bottom: 10px;
+	margin-top:10px;
+}
+
+.git-input{
+	font-size:15px;
+	font-weight: none;
+	width:240px;
+	text-align:center;
+}
+

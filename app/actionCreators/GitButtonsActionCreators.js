@@ -1,9 +1,16 @@
 import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE, TOGGLE_GIT_MENU} from '../constants/GitButtonsConstants'
 import chalk from 'chalk';
+import store from '../store/configureStore.development'
 
-export const toggleDisplayBranchList = () => ({
-	type: TOGGLE_BRANCH_DISPLAY,
-})
+
+export const toggleDisplayBranchList = (boolean) => 
+	(dispatch, getState) => {
+		if (getState().GitButtons.displayBranch) {
+			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
+		} else {
+			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
+		}
+	}
 
 export const successHandler = (successMessage) => ({
 	type: SUCCESS_DATA,
@@ -63,7 +70,7 @@ export const statusHandler = (successObject) => {
 
 	if (staged.length == 0){
 		if(yetToBeCommitted.length === 0 ){
-			status = 'nothing to commit, working directory clean'
+			status = 'Nothing to commit, working directory clean'
 		} else {
 			status = notAdded;
 		}
@@ -96,6 +103,21 @@ export const closeGitMenu = (boolean) => ({
 	type: TOGGLE_GIT_MENU,
 	boolean
 })
+
+//UPDATING THIS TO WORK FOR BOTH SUCCESS AND ERROR
+
+// export const clearStatus = () => {
+// 	(dispatch, getState) => {
+// 		if (getState().GitButtons.displayBranch) {
+// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
+// 		} else {
+// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
+// 		}
+// 	}
+// }
+// 	type: UPDATE_STATUS,
+// 	status: null
+// })
 
 
 

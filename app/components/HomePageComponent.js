@@ -120,24 +120,25 @@ export default class HomePageComponent extends Component {
             <div>
               <TextEditorContainer gitOpen={this.props.openGitMenu}/>
               <FilesContainer />
-                <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+                <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
               <Drawer 
                 open={this.props.gitOpen}
                 docked={false}
-                width={300}  
+                width={400}  
+                openSecondary={true}
                 >
+                <div>
                 <GitButtonsContainer />
-                <ErrorBoxContainer />
-                <SuccessBoxContainer />
+                </div>
               </Drawer>    
             </div>
         :
       //NAVIGATOR VIEW
             <div>
-              <FileListContainer/>
               <TextEditorContainer />
+              <FileListContainer/>
               <footer>
-               <div className="footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+               <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
               </footer>
             </div>
       }
