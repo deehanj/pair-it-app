@@ -2,7 +2,7 @@ import React from 'react';
 import simpleGit from 'simple-git';
 import chalk from 'chalk';
 import {connect} from 'react-redux';
-import { closeGitMenu, toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue, statusHandler, commitHandler} from '../actionCreators/GitButtonsActionCreators'
+import { resetBranchQuery, closeGitMenu, toggleDisplayBranchList, successHandler, errorHandler, currentBranch, branchList, branchQuery, displayTrue, statusHandler, commitHandler} from '../actionCreators/GitButtonsActionCreators'
 import GitButtonsComponent from '../components/GitButtonsComponent';
 
 
@@ -35,6 +35,7 @@ const mapDispatchToProps = (dispatch) => {
 		handleStatus: (status) => dispatch(statusHandler(status)),
 		handleCommitMessage: (typedCommit) => dispatch(commitHandler(typedCommit.target.value)),
 		dispatchCloseGitMenu: () => dispatch(closeGitMenu(false)),
+		dispatchResetBranchQuery: () => dispatch(resetBranchQuery())
 	}
 }
 
