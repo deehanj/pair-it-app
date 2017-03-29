@@ -2,15 +2,18 @@ import React from 'react'
 
 const RepoList = (props) => {
 	const repos = props.repos
+	const sortedRepos = props.sortedRepos
 	const dispatchSelectRepo = props.dispatchSelectRepo
 	const goToRemoteLink = props.goToRemoteLink
 	const readableDate = props.readableDate
+
+	console.log(sortedRepos);
 
 	return (
 		<div>
 			<div className="col-sm-12 repo-list-container">
 				<h1>Select A Git Repo</h1>
-				<div> {repos && repos.map(repo =>
+				<div> {repos && sortedRepos.map(repo =>
 					(<div className="repo" key={repo.id} >
 							<h1
 								className="repo-name"

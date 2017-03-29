@@ -114,17 +114,16 @@ export default class extends React.Component{
 
     render(){
         return (
-        <div>
-            <div key={this.state.collaborator}>{this.state.collaborator.name}</div>
+          <div className="row collab-row">
+            <img className="collab-avatar" src={this.state.collaborator.avatar_url} />
+            <h3 className="collab-name" key={this.state.collaborator}>{this.state.collaborator.name}</h3>
             {
-              !this.props.unavailable.find(name => name === this.state.collaborator.name) && <button onClick={this.callCollaborator}>Call</button>
+              !this.props.unavailable.find(name => name === this.state.collaborator.name) && <i className="fa fa-phone-square call-button" aria-hidden="true" onClick={this.callCollaborator} />
             }
             {
-              this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button onClick={ this.handleIncomingCall }>Answer, begin pair</button>
+              this.props.incomingCall.find(name => name === this.state.collaborator.name) && <button className="answer-button" onClick={ this.handleIncomingCall }>Answer Call</button>
             }
-        </div>
+          </div>
         )
     }
 }
-
-
