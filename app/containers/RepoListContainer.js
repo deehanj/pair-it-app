@@ -25,7 +25,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(push('/collaborators'))
 		},
 		dispatchReturnToLogin: () => {
-		  dispatch(push('/LoginComponent'))
+		  dispatch(push('/login'))
 		}
 	}
 }
