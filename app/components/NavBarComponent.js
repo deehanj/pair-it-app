@@ -1,6 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
+import { logout } from '../reducers/auth'
+import { removeUser } from '../reducers/user'
+import { clearRepos } from '../reducers/repo'
+import { push } from 'react-router-redux'
+
 const shell = window.require('electron').shell
 
 const logo = require('img/pairit.logotitle.svg');
@@ -8,6 +13,17 @@ const logo = require('img/pairit.logotitle.svg');
 const mapStateToProps = (state) => {
 	return {
 		user: state.user.gitInfo,
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+		logoutUser: () => {
+		  dispatch(logout())
+			dispatch(removeUser())
+			dispatch(clearRepos())
+			dispatch(push('/login'))
+		}
 	}
 }
 
@@ -20,13 +36,21 @@ class NavComponent extends React.Component {
 	render (){
 		return (
       <nav className="row navigation-bar">
-        <img className="img logo logo-nav" src={logo} onClick={this.props.dispatchReturnToLogin} />
+        <img className="img logo logo-nav" src={logo} />
 
-        <div className="signed-in-user" onClick={() => this.goToRemoteLink(this.props.user.html_url)}>
-          <img className="login-avatar" src={this.props.user.avatar_url} />
-          <h5 className="user-name">{this.props.user.login}</h5>
+        <div className="signed-in-user" >
+          <img
+						className="login-avatar"
+						onClick={() => this.goToRemoteLink(this.props.user.html_url)}
+						src={this.props.user.avatar_url} />
+          <h5
+						className="user-name"
+						onClick={() => this.goToRemoteLink(this.props.user.html_url)} >{this.props.user.login}</h5>
           <br />
-          <h5 className="user-name">logout</h5>
+          <h5
+						className="user-name"
+						onClick={() => this.props.logoutUser()}
+						>logout</h5>
 
         </div>
 
@@ -36,4 +60,4 @@ class NavComponent extends React.Component {
 
 }
 
-export default connect(mapStateToProps)(NavComponent)
+export default connect(mapStateToProps, mapDispatchToProps)(NavComponent)

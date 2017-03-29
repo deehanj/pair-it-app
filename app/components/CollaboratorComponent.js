@@ -26,16 +26,18 @@ export default class CollaboratorComponent extends React.Component {
 			playerInfo: {
 				name: props.name,
 				_id: props.id,
-				id: socket.id
-	    	},
+				id: socket.id,
+				avatar_url: props.avatar_url
+			},
 			MediaStreamURL: this.props.URL
 		}
 
-		const playerInfo = {
-      name: props.name,
-      _id: props.id,
-			id: socket.id
-    };
+		// const playerInfo = {
+    //   name: props.name,
+    //   _id: props.id,
+		// 	id: socket.id,
+		// 	avatar_url: props.avatar_url
+    // };
 
 		this.sortOutMedia = this.sortOutMedia.bind(this);
 		this.backToRepos = this.backToRepos.bind(this);
@@ -73,7 +75,7 @@ export default class CollaboratorComponent extends React.Component {
 	  	let removeCollaborator = data.playerInfo
 
 	  	const newCollabArray = this.state.collaborators.filter((collaborator) => {
-	  		collaborator.name != removeCollaborator.name
+				collaborator.name != removeCollaborator.name
 	  	})
 	  		this.setState({collaborators: newCollabArray});
 	  })

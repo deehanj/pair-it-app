@@ -1,11 +1,14 @@
-import store from '../store/configureStore.development'
+// import store from '../store/configureStore.development'
+// import { apiRequestAuth } from '../utils/api-requests';
 
 const SET_REPOS = 'SET_REPOS';
 const SELECT_REPO = 'SELECT_REPO';
+const SET_REPO_COLLABORATORS = 'SET_REPO_COLLABORATORS';
 const SET_PAIRING_ROOM = 'SET_PAIRING_ROOM';
 const SET_PAIRING_PARTNER = 'SET_PAIRING_PARTNER';
 const SET_ROLE = 'SET_ROLE';
 const CLEAR_ROLE = 'CLEAR_ROLE';
+const CLEAR_REPOS = 'CLEAR_REPOS';
 
 //ACTION CREATOR
 export const setRepos = (repoList) => ({
@@ -14,6 +17,10 @@ export const setRepos = (repoList) => ({
 
 export const selectedRepo = (selectedRepo) => ({
 	type: SELECT_REPO, selectedRepo
+})
+
+export const setRepoCollaborators = (repoCollaborators) => ({
+  type: SET_REPO_COLLABORATORS, repoCollaborators
 })
 
 export const setPairingRoom = (url) => ({
@@ -36,13 +43,33 @@ export const clearRole = () => ({
   type: CLEAR_ROLE
 })
 
+export const clearRepos = () => ({
+  type: CLEAR_REPOS
+})
+
 //THUNK
 
 export const setSelectedRepo = (repoId) =>
 	(dispatch, getState) => {
-		const repos = store.getState().repo.repoList
+    const state = getState()
+		const repos = state.repo.repoList
 		const selectedRepoFromList = repos.filter(repo => repo.id === repoId)
 		dispatch(selectedRepo(selectedRepoFromList[0]))
+
+    // const method = 'GET'
+    // const url = selectedRepoFromList[0].collaborators_url.slice(0, -15)
+    // const token = state.auth.token
+    //
+    // if (selectedRepoFromList){
+    //   return apiRequestAuth(url, method, token)
+    //     .then( response => {
+    //             dispatch(setRepoCollaborators(response.data))
+    //           }
+    //           )
+    //     .catch(function (error) {
+    //       console.error('Selected Repo Collaborators Error', error);
+    //     });
+    // }
 	}
 
 
@@ -50,6 +77,7 @@ export const setSelectedRepo = (repoId) =>
 const initialState = {
   repoList: [],
   selectedRepo: {},
+  repoCollaborators: [],
   url: '',
   collaborator: {},
   role: ''
@@ -66,6 +94,9 @@ export default function reducer( state = initialState, action) {
     case SELECT_REPO:
       newState.selectedRepo = action.selectedRepo
       break
+    case SET_REPO_COLLABORATORS:
+      newState.repoCollaborators = action.repoCollaborators
+      break
     case SET_PAIRING_ROOM:
       newState.url = action.url
       break
@@ -77,6 +108,9 @@ export default function reducer( state = initialState, action) {
       break
     case CLEAR_ROLE:
       newState.role = ''
+      break
+    case CLEAR_REPOS:
+      newState.repoList = []
       break
     default:
       return state
