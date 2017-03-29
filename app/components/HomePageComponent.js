@@ -124,7 +124,7 @@ export default class HomePageComponent extends Component {
 
         {(this.props.role === '') ?
         <footer>
-            <div className="collab-footer" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+            <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
         </footer>
         :
       //DRIVER VIEW

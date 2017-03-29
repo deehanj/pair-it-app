@@ -10,6 +10,8 @@ import ConfigureSocket from '../utils/ConfiguringSocket'
 import io from 'socket.io-client'
 import {setPairingRoom, setPairingPartner} from '../reducers/repo';
 
+const logo = require('img/Pairit.logo.svg')
+
 const shell = window.require('electron').shell
 
 const socket = io(serverLocation)
@@ -160,7 +162,7 @@ export default class CollaboratorComponent extends React.Component {
 					<div className="row col-sm-12 collab-list">
 						<h2 id="available-collabs">Available Collaborators:</h2>
 						<div className="collaborators-array">
-						{this.state.collaborators && this.state.collaborators.map(collaborator =>
+						{this.state.collaborators.length ? this.state.collaborators.map(collaborator =>
 								(
 									<CollaboratorRowComponent
 										key={collaborator.name}
@@ -180,6 +182,11 @@ export default class CollaboratorComponent extends React.Component {
 									/>
 								)
 							)
+							:
+							(<div>
+								<h3 className="missing-collabs" >There are no available collaborators.</h3>
+								<img src={logo} className="collab-logo" />
+							</div>)
 						}
 						</div>
 					</div>

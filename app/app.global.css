@@ -490,6 +490,18 @@ footer{
 	text-align:center;
 }
 
+.missing-collabs{
+	font-style: italic;
+	color: gray;
+	text-align:center;
+}
+
+.collab-logo{
+	width:70%;
+	margin-top: 60px;
+	margin-left: 15%;
+}
+
 .view-on-github-modal{
 	margin-top:14px;
 	font-size:15px;
