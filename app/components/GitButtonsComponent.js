@@ -112,7 +112,6 @@ export default class extends React.Component {
 			}
 		)
 		this.getBranchList()
-		this.props.toggleDisplayBranches()
 	}
 
 	handleNewBranchCheckout(e) {

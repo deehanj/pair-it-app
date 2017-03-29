@@ -213,13 +213,23 @@ body {
 	padding:0px;
 }
 
+#save-form{
+	width: 175px;
+	margin:0;
+	float:right;
+}
+
 .admin-btn-container{
 	float:right;
-
 }
 
 .admin-btn{
 	float:left;
+	font-size: 25px;
+	margin:5px;
+}
+.admin-btn-right{
+	float:right;
 	font-size: 25px;
 	margin:5px;
 }
