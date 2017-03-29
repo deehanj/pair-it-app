@@ -13,23 +13,20 @@ export default class extends React.Component {
 			displayBranchList:false,
 			receivedProps:false,
 		}
-		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
-		this.handleNewBranchCheckout = this.handleNewBranchCheckout.bind(this);
+		this.goToRemoteLink = this.goToRemoteLink.bind(this);
 		this.getBranchList = this.getBranchList.bind(this);
 		this.handleGitAdd = this.handleGitAdd.bind(this);
+		this.handleBranchCheckout = this.handleBranchCheckout.bind(this);
+		this.handleNewBranchCheckout = this.handleNewBranchCheckout.bind(this);
 		this.handleStatus = this.handleStatus.bind(this);
 		this.handleCommit = this.handleCommit.bind(this);
 		this.handleGitPush = this.handleGitPush.bind(this);
 		this.handleGitPull = this.handleGitPull.bind(this);
-		this.goToRemoteLink = this.goToRemoteLink.bind(this);
 
 
 		this.Git = simpleGit();
 	}
 
-	goToRemoteLink(url) {
-		shell.openExternal(url);
-	}
 
 	componentWillReceiveProps(nextProps) {
 
@@ -40,6 +37,10 @@ export default class extends React.Component {
 		}
 	}
 
+	goToRemoteLink(url) {
+		shell.openExternal(url);
+	}
+	
 	getBranchList() {
 		this.Git.branchLocal(
 			(error, branchSummary) => {
@@ -93,8 +94,9 @@ export default class extends React.Component {
 				} else {
 					this.props.handleSuccess('Commit Message: ' + this.props.commitMessage);
 					setTimeout(this.handleStatus, 1000);
+					this.props.handleCommitMessage('');
 				}
-				document.getElementById('commit').value = '';
+				
 			}
 		)
 	}
@@ -206,7 +208,7 @@ export default class extends React.Component {
 			{/***CHECKOUT BRANCH ***/}
 				<div >
 					<form className="git-headline" onSubmit={this.handleBranchCheckout} >
-						<input type="text" className="git-input" placeholder="branch name"id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
+						<input type="text" className="git-input" placeholder="branch name" id="branchInput" onChange={this.props.handleBranchChangeQuery}></input>
 						<button className="git-btn" onClick={this.handleBranchCheckout}>Change Branch</button>
 					</form>
 				</div>
