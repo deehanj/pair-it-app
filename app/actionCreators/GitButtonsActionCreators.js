@@ -104,26 +104,10 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
-<<<<<<< HEAD
 export const clearGit = () => ({
 	type: CLEAR_GIT
 })
 
-//UPDATING THIS TO WORK FOR BOTH SUCCESS AND ERROR
-
-// export const clearStatus = () => {
-// 	(dispatch, getState) => {
-// 		if (getState().GitButtons.displayBranch) {
-// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: false})	
-// 		} else {
-// 			return dispatch({ type: TOGGLE_BRANCH_DISPLAY, toggle: true})
-// 		}
-// 	}
-// }
-// 	type: UPDATE_STATUS,
-// 	status: null
-// })
-=======
 export const clearStatus = () => ({
 	type: UPDATE_STATUS,
 	status: null
@@ -138,21 +122,22 @@ export const resetBranchQuery = () => ({
 	type: UPDATE_BRANCH_QUERY_STRING,
 	branchQuery: ''
 })
->>>>>>> 34e1d409d6fde3e12d9bc9e9d8a0fa59a4a0b930
 
+export const clearGit = () => ({
+	type: CLEAR_GIT
+})
 
+export const clearStatus = () => ({
+	type: UPDATE_STATUS,
+	status: null
+})
 
+export const clearError = () => ({
+	type: ERROR_DATA,
+	errorMessage: null
+})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+export const resetBranchQuery = () => ({
+	type: UPDATE_BRANCH_QUERY_STRING,
+	branchQuery: ''
+})
