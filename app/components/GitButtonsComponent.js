@@ -142,11 +142,17 @@ export default class extends React.Component {
 			'origin',
 			this.props.currentBranch,
 			(error, success) =>{
-				this.props.handleError(error);
-				this.props.handleSuccess(success);
+				if (error){
+					this.props.handleError(error)
+					console.error(error)
+				} else {
+					this.props.handleSuccess('Push Successful!');
+					setTimeout(this.handleStatus, 1000);
+				}
 			} )
-		this.handleStatus();
-	}
+		}
+
+	
 
 	handleGitPull() {
 		this.Git.pull(
