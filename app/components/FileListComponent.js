@@ -37,7 +37,6 @@ export default class Files extends React.Component {
         }
         this.props.switchTab(i)
       }
-    }
   }
 
   setVisible(filePath) {
@@ -48,7 +47,7 @@ export default class Files extends React.Component {
     socket.on('new file is opened', (payload) => {
       if ((this.props.activeFile && this.props.activeFile.filePath !== payload.filePath) && this.props.role === 'navigator'){
         this.props.openFileFromDriver({ filePath: payload.filePath, text: payload.text })
-        this.props.switchTab(this.props.openFiles.length)
+        this.props.switchTab(this.props.openFiles.length - 1)
       }
     });
     if (this.props.files && this.props.files.length === 0) {
