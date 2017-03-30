@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {push} from 'react-router-redux'
 import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'
 import {setAvailable} from '../reducers/user'
-import { closeGitMenu } from '../actionCreators/GitButtonsActionCreators'
+import { closeGitMenu, clearGit } from '../actionCreators/GitButtonsActionCreators'
 import {clearFileSystem} from '../reducers/FilesReducer'
 
 import HomePageComponent from '../components/HomePageComponent'
