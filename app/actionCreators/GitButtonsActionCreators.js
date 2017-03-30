@@ -104,7 +104,6 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
-
 export const clearGit = () => ({
 	type: CLEAR_GIT
 })
@@ -123,21 +122,3 @@ export const resetBranchQuery = () => ({
 	type: UPDATE_BRANCH_QUERY_STRING,
 	branchQuery: ''
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
