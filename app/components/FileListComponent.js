@@ -29,12 +29,14 @@ export default class Files extends React.Component {
       if (i === -1) {
         this.props.fetchActiveFile(dir, room, role)
         this.props.switchTab(this.props.openFiles.length)
+        socket.emit('tab changed', {file: this.props.activeFile, index: this.props.openFiles.length - 1, room: this.props.room})
       }
       else {
         if (this.props.activeFile.filePath !== dir) {
           this.props.activeFile(this.props.openFiles[i])
         }
         this.props.switchTab(i)
+        socket.emit('tab changed', {file: this.props.activeFile, index: i, room: this.props.room})
       }
     }
   }
