@@ -37,7 +37,6 @@ export default class Files extends React.Component {
         }
         this.props.switchTab(i)
       }
-    }
   }
 
   setVisible(filePath) {
