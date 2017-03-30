@@ -122,22 +122,3 @@ export const resetBranchQuery = () => ({
 	type: UPDATE_BRANCH_QUERY_STRING,
 	branchQuery: ''
 })
-
-export const clearGit = () => ({
-	type: CLEAR_GIT
-})
-
-export const clearStatus = () => ({
-	type: UPDATE_STATUS,
-	status: null
-})
-
-export const clearError = () => ({
-	type: ERROR_DATA,
-	errorMessage: null
-})
-
-export const resetBranchQuery = () => ({
-	type: UPDATE_BRANCH_QUERY_STRING,
-	branchQuery: ''
-})

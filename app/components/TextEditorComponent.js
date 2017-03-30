@@ -31,7 +31,7 @@ export default class TextEditorComponent extends React.Component {
 
   componentDidMount() {
   	socket.emit('room', {room: this.props.room})
-    socket.on('receive code', (payload) => this.setState({ code: payload.code }))
+    socket.on('receive code', (payload) => this.props.dispatchActiveFile({filePath: this.props.activeFile.filePath, text: payload.code}))
     socket.on('change to new tab', (payload) => {
       Promise.resolve(this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[payload.index]))
       .then(() => this.props.dispatchUpdateOpenFiles(payload.file))
