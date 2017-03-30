@@ -26,7 +26,7 @@ export default class Files extends React.Component {
       if (file.filePath === dir) i = index
     })
     if (i === -1) {
-      this.props.fetchActiveFile(dir, room, role, this.props.selectedIndex + 1)
+      this.props.fetchActiveFile(dir, room, role, this.props.selectedIndex)
       this.props.switchTab(this.props.openFiles.length)
     }
     else {
@@ -43,8 +43,8 @@ export default class Files extends React.Component {
 
   componentDidMount() {
     socket.on('new file is opened', (payload) => {
-      if ((this.props.activeFile && this.props.activeFile.filePath !== file.filePath) && this.props.role === 'navigator'){
-        this.props.openFileFromDriver({ filePath: payload.filePath, text: payload.text }, index)
+      if ((this.props.activeFile && this.props.activeFile.filePath !== payload.filePath) && this.props.role === 'navigator'){
+        this.props.openFileFromDriver({ filePath: payload.filePath, text: payload.text }, payload.index)
       }
     });
     if (this.props.files && this.props.files.length === 0) {
