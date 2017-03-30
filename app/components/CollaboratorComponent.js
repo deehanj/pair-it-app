@@ -196,13 +196,14 @@ export default class CollaboratorComponent extends React.Component {
 
 				</div>
 				<footer className="collab-footer">
-					<div className="back-arrow dev-buttons">
-						<h5 onClick={this.props.clickToGoHomeNav} >Home Nav</h5>
-						<h5 onClick={this.props.clickToGoHomeDriver} >Home Driver</h5>
-					</div>
           <div onClick={this.backToRepos}><h3 className="back-arrow"><i className="fa fa-arrow-left" />   Return to Repo Page</h3></div>
         </footer>
 			</div>
 		)
 	}
 }
+
+{/*<div className="back-arrow dev-buttons">
+	<h5 onClick={this.props.clickToGoHomeNav} >Home Nav</h5>
+	<h5 onClick={this.props.clickToGoHomeDriver} >Home Driver</h5>
+</div>*/}
