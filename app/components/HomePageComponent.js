@@ -67,14 +67,14 @@ export default class HomePageComponent extends Component {
   }
 
   setSelfToDriver(){
-    if (this.props.role === ''){
+    if (this.props.role === '' && document.getElementById("webchatWindow").src.length > 1){
       this.props.setDriverToMyself()
       socket.emit('driver selected', {room: this.props.room})
     }
   }
 
   setPartnerToDriver(){
-    if (this.props.role === ''){
+    if (this.props.role === '' && document.getElementById("webchatWindow").src.length > 1 ){
       this.props.setDriverToPartner()
       socket.emit('navigator selected', {room: this.props.room})
     }

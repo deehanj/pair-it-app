@@ -34,8 +34,9 @@ export default class Files extends React.Component {
     else {
       if (this.props.activeFile.filePath !== dir) {
         this.props.dispatchActiveFile(this.props.openFiles[i])
+        }
+        this.props.switchTab(i)
       }
-      this.props.switchTab(i)
     }
   }
 
