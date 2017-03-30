@@ -211,6 +211,8 @@ body {
 
 #text-editor{
 	float:right;
+	/*display: inline-flex;*/
+	height: 100%;
 }
 
 .text-editor{
@@ -225,18 +227,20 @@ body {
 
 .admin-btn-container{
 	float:right;
+	height:30px;
 }
 
 .admin-btn{
 	float:left;
-	font-size: 25px;
+	font-size: 20px;
 	margin:5px;
 }
 .admin-btn-right{
 	float:right;
-	font-size: 25px;
-	margin:5px;
+	font-size: 20px;
+	margin:0px;
 }
+
 
 #save-form{
 	width:200px;
@@ -256,9 +260,16 @@ body {
 }
 
 #file-list-container{
-	max-height: 270px;
+	/*max-height: 270px;*/
 	overflow: scroll;
 	size: 15px;
+	height: 42vh;
+}
+#file-list-container-driver{
+	/*max-height: 270px;*/
+	overflow: scroll;
+	size: 15px;
+	height: 34vh;
 }
 
 #currentBranch{
@@ -299,9 +310,9 @@ li{
 
 }*/
 
-.fa.fa-git{
+/*.fa.fa-git{
 	font-size:30px;
-}
+}*/
 
 footer{
 	bottom: 0;
@@ -547,3 +558,11 @@ footer{
 	text-decoration: underline;
 	cursor:pointer;
 }
+
+.ReactTabs__TabList{
+	margin: 0 !important;
+}
+
+/*.react-tabs{
+	margin-bottom: 0 !important;
+}*/
