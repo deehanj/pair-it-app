@@ -27,32 +27,34 @@ const mapStateToProps = state => {
     room: state.room.name,
     role: state.repo.role,
     isVisible: state.fileSystem.isVisible,
-    openFiles: state.fileSystem.openFiles
+    openFiles: state.fileSystem.openFiles,
+    selectedTab: state.fileSystem.selectedTab
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchActiveFile : (dir, room, role) => {
+    fetchActiveFile : (dir, room, role, index) => {
       if(role === 'driver'){
         readFile(dir)
         .then(text => {
           text = text.toString()
           const file = {filePath: dir, text}
-          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
+          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room, index })
           dispatch(activeFile(file))
           dispatch(addToOpenFiles(file))
         })
         .catch(error => console.error(error.message))
       }
     },
-    openFileFromDriver : file => {
+    openFileFromDriver : (file, index) => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
+      dispatch(switchTab(index))
     },
     loadFiles: files => dispatch(loadFiles(files)),
     toggleVisibility: filePath => dispatch(toggleVisibility(filePath)),
-    activeFile: file => dispatch(activeFile(file)),
+    dispatchActiveFile: file => dispatch(activeFile(file)),
     switchTab: index => dispatch(switchTab(index))
   }
 }
