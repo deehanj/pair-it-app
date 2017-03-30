@@ -71,9 +71,9 @@ export default class TextEditorComponent extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-    	code: nextProps.activeFile.text,
-    })
+    // this.setState({
+    // 	code: nextProps.activeFile.text,
+    // })
     // if(this.props.openFiles )
     // this.codeIsHappening(nextProps.activeFile.text)
   }
@@ -131,7 +131,7 @@ export default class TextEditorComponent extends React.Component {
         <div id="text-editor" className="col-sm-8 text-editor">
           {this.props.role === 'driver' &&
 
-          <div> 
+          <div>
             <div className="admin-btn-container">
 
               <div className="float-left" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
@@ -142,7 +142,7 @@ export default class TextEditorComponent extends React.Component {
 
           </div>
           </div>
-          }   
+          }
           <AceEditor
             mode="javascript"
             theme="monokai"

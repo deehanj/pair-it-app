@@ -21,18 +21,19 @@ export default class Files extends React.Component {
   }
 
   onFileClick(dir, room, role) {
-    if (this.props.role === 'driver') {
-      var i = -1;
-      const index = this.props.openFiles.forEach((file, index) => {
-        if (file.filePath === dir) i = index
-      })
-      if (i === -1) {
-        this.props.fetchActiveFile(dir, room, role)
-        this.props.switchTab(this.props.openFiles.length)
-      }
-      else {
-        if (this.props.activeFile.filePath !== dir) {
-          this.props.activeFile(this.props.openFiles[i])
+    var i = -1;
+    const index = this.props.openFiles.forEach((file, index) => {
+      if (file.filePath === dir) i = index
+    })
+    if (i === -1) {
+      console.log('this.props.selectedIndex', this.props.selectedTab)
+      // const theIndex = (this.props.selectedTab === 0) ? 0 : this.props.selectedTab === 1 ? 1 : this.props.selectedTab + 1
+      this.props.fetchActiveFile(dir, room, role)
+      this.props.switchTab(this.props.openFiles.length)
+    }
+    else {
+      if (this.props.activeFile.filePath !== dir) {
+        this.props.dispatchActiveFile(this.props.openFiles[i])
         }
         this.props.switchTab(i)
       }
@@ -44,9 +45,10 @@ export default class Files extends React.Component {
   }
 
   componentDidMount() {
-    socket.on('new file is opened', (file) => {
-      if ((this.props.activeFile && this.props.activeFile.filePath !== file.filePath) && this.props.role === 'navigator'){
-        this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
+    socket.on('new file is opened', (payload) => {
+      if ((this.props.activeFile && this.props.activeFile.filePath !== payload.filePath) && this.props.role === 'navigator'){
+        this.props.openFileFromDriver({ filePath: payload.filePath, text: payload.text })
+        this.props.switchTab(this.props.openFiles.length)
       }
     });
     if (this.props.files && this.props.files.length === 0) {
@@ -95,11 +97,13 @@ export default class Files extends React.Component {
                   files={file.files}
                   role= {this.props.role}
                   room={this.props.room}
+                  openFiles={this.props.openFiles}
+                  activeFile={this.props.activeFile}
                   fetchActiveFile={this.props.fetchActiveFile}
                   isVisible={this.props.isVisible}
                   toggleVisibility={this.props.toggleVisibility}
-                  openFiles={this.props.openFiles}
                   switchTab= {this.props.switchTab}
+                  dispatchActiveFile={this.props.dispatchActiveFile}
                 />}
               </li>
           })

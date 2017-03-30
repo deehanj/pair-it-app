@@ -27,7 +27,8 @@ const mapStateToProps = state => {
     room: state.room.name,
     role: state.repo.role,
     isVisible: state.fileSystem.isVisible,
-    openFiles: state.fileSystem.openFiles
+    openFiles: state.fileSystem.openFiles,
+    selectedTab: state.fileSystem.selectedTab
   }
 }
 
@@ -46,13 +47,13 @@ const mapDispatchToProps = dispatch => {
         .catch(error => console.error(error.message))
       }
     },
-    openFileFromDriver : file => {
+    openFileFromDriver : (file) => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
     },
     loadFiles: files => dispatch(loadFiles(files)),
     toggleVisibility: filePath => dispatch(toggleVisibility(filePath)),
-    activeFile: file => dispatch(activeFile(file)),
+    dispatchActiveFile: file => dispatch(activeFile(file)),
     switchTab: index => dispatch(switchTab(index))
   }
 }
