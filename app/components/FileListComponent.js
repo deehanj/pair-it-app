@@ -21,19 +21,21 @@ export default class Files extends React.Component {
   }
 
   onFileClick(dir, room, role) {
-    var i = -1;
-    const index = this.props.openFiles.forEach((file, index) => {
-      if (file.filePath === dir) i = index
-    })
-    if (i === -1) {
-      this.props.fetchActiveFile(dir, room, role)
-      this.props.switchTab(this.props.openFiles.length)
-    }
-    else {
-      if (this.props.activeFile.filePath !== dir) {
-        this.props.activeFile(this.props.openFiles[i])
+    if (this.props.role === 'driver') {
+      var i = -1;
+      const index = this.props.openFiles.forEach((file, index) => {
+        if (file.filePath === dir) i = index
+      })
+      if (i === -1) {
+        this.props.fetchActiveFile(dir, room, role)
+        this.props.switchTab(this.props.openFiles.length)
       }
-      this.props.switchTab(i)
+      else {
+        if (this.props.activeFile.filePath !== dir) {
+          this.props.activeFile(this.props.openFiles[i])
+        }
+        this.props.switchTab(i)
+      }
     }
   }
 
