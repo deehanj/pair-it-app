@@ -1,4 +1,4 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE, TOGGLE_GIT_MENU} from '../constants/GitButtonsConstants'
+import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING, DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE, TOGGLE_GIT_MENU, CLEAR_GIT} from '../constants/GitButtonsConstants'
 import chalk from 'chalk';
 import store from '../store/configureStore.development'
 
@@ -104,6 +104,10 @@ export const closeGitMenu = (boolean) => ({
 	boolean
 })
 
+export const clearGit = () => ({
+	type: CLEAR_GIT
+})
+
 export const clearStatus = () => ({
 	type: UPDATE_STATUS,
 	status: null
@@ -118,20 +122,3 @@ export const resetBranchQuery = () => ({
 	type: UPDATE_BRANCH_QUERY_STRING,
 	branchQuery: ''
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -52,6 +52,7 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatchCloseGitMenu: () => dispatch(closeGitMenu(false)),
     clearFileSystem: () => dispatch(clearFileSystem()),
+    clearGit: () => dispatch(clearGit()),
   }
 }
 

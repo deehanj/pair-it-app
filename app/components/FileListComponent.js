@@ -9,42 +9,41 @@ const socket = io(serverLocation);
 
 /*
 - This component displays the directory file system.
-- It recursively creates unordered lists of files that only become visible when clicked on.
-- The outermost directory list is updated by the global state redux store.
-- The local state is used to pass props to each level's subdirectory in order to make that
-particular Files component.
+- It recursively creates unordered lists of files that only become visible (or invisible) when clicked on.
+- The file objects are held in global state (state.fileSystem).
 */
 
 export default class Files extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {
-      dir: props.subDir,
-      files: props.files,
-      visible: props.visible,
-      text: '',
-      level: props.level,
-      activeFile: props.activeFile
-    }
-    this.fetchFiles = this.fetchFiles.bind(this)
+    this.onFileClick = this.onFileClick.bind(this)
     this.setVisible = this.setVisible.bind(this)
   }
 
-  fetchFiles(dir) {
-    getAllFiles(dir + '/')
-    .then(filesArr => {
-      this.setState({ files: filesArr })
+  onFileClick(dir, room, role) {
+    var i = -1;
+    const index = this.props.openFiles.forEach((file, index) => {
+      if (file.filePath === dir) i = index
     })
-    .catch(err => console.error(err))
+    if (i === -1) {
+      this.props.fetchActiveFile(dir, room, role)
+      this.props.switchTab(this.props.openFiles.length)
+    }
+    else {
+      if (this.props.activeFile.filePath !== dir) {
+        this.props.activeFile(this.props.openFiles[i])
+      }
+      this.props.switchTab(i)
+    }
   }
 
   setVisible(filePath) {
-    this.setState({ visible: Object.assign({}, this.state.visible, { [filePath]: true })})
+    this.props.toggleVisibility(filePath)
   }
 
   componentDidMount() {
     socket.on('new file is opened', (file) => {
-      if (this.props.activeFile && this.props.activeFile.filePath !== file.filePath){
+      if ((this.props.activeFile && this.props.activeFile.filePath !== file.filePath) && this.props.role === 'navigator'){
         this.props.openFileFromDriver({ filePath: file.filePath, text: file.text })
       }
     });
@@ -62,22 +61,12 @@ export default class Files extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     const theFiles = nextProps.files
-    if (this.state.level === 0) {
-      const visible = {}
-      nextProps.files.forEach(file => {
-        const filePath = file.filePath
-        visible[filePath] = false
-      })
-      this.setState({ visible })
-    }
-    if (this.props.role === 'driver') {
-      this.fetchFiles(nextProps.subDir)
+    if (this.props.role === 'driver' && this.props.files.length === 0) {
       setTimeout(() => socket.emit('send file tree', {files: theFiles, room: this.props.room}), 3000)
     }
   }
 
   render() {
-    console.log('state', this.state)
     const files = this.props.files
     return (
       <ul id="files">{this.props.dir}
@@ -92,24 +81,23 @@ export default class Files extends React.Component {
               <li
                 id="single-file"
                 key={filePath}
-                onClick={() => {
-                  this.props.fetchActiveFile(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role);
-                }
-                }><i className="fa fa-file-text-o" aria-hidden="true"/>{fileName}
+                onClick={() => this.onFileClick(filePath.slice(0, filePath.length - 1), this.props.room, this.props.role)}><i className="fa fa-file-text-o" aria-hidden="true"/>  {fileName}
               </li>
               :
               // makes a new Files component if fileBool is false
-              <li id="folder" key={filePath} onClick={() => this.setVisible(filePath)}>
-                <i className="fa fa-folder"/>{fileName}
-                {(this.state.visible[filePath] === true) &&
+              <li id="folder" key={filePath}>
+                <div onClick={() => this.setVisible(filePath)}><i className="fa fa-folder"/>  {fileName}  </div>
+                {(this.props.isVisible[filePath] === true) &&
                 <Files
                   subDir={filePath}
                   files={file.files}
-                  visible={true}
-                  level={this.state.level + 1}
-                  fetchActiveFile={this.props.fetchActiveFile}
                   role= {this.props.role}
                   room={this.props.room}
+                  fetchActiveFile={this.props.fetchActiveFile}
+                  isVisible={this.props.isVisible}
+                  toggleVisibility={this.props.toggleVisibility}
+                  openFiles={this.props.openFiles}
+                  switchTab= {this.props.switchTab}
                 />}
               </li>
           })

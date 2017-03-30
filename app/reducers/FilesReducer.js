@@ -8,7 +8,10 @@ const OPEN_FILES = 'OPEN_FILES'
 const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
 const CLOSE_FILE = 'CLOSE_FILE'
 const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
+const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY'
+const SWITCH_TAB = 'SWITCH_TAB'
 const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
+const WHOLE_FILE = 'WHOLE_FILE'
 
 const initialState = {
   dir: '',
@@ -18,11 +21,21 @@ const initialState = {
     text: ''
   },
   openFiles: [],
+  isVisible: {},
+  selectedTab: 0
 }
 
 const reducer = (state = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
+    case WHOLE_FILE:
+      newState.openFiles = newState.openFiles.map(file => {
+        if(file.filePath === action.file.filePath){
+          file.text = action.file.text
+        }
+        return file;
+      })
+      break
     case SET_FILE_DIR:
       newState.dir = action.dir
       break
@@ -49,6 +62,13 @@ const reducer = (state = initialState, action) => {
         if (file.filePath === '') return action.file
         else return file
       })
+      break
+    case TOGGLE_VISIBILITY:
+      newState.isVisible = Object.assign({}, newState.isVisible)
+      newState.isVisible[action.filePath] = !newState.isVisible[action.filePath]
+      break
+    case SWITCH_TAB:
+      newState.selectedTab = action.index
       break
     case CLEAR_FILESYSTEM:
       return initialState
@@ -84,6 +104,18 @@ export const closeFile = file => ({
 
 export const saveNewFile = file => ({
   type: SAVE_NEW_FILE, file
+})
+
+export const toggleVisibility = filePath => ({
+  type: TOGGLE_VISIBILITY, filePath
+})
+
+export const switchTab = index => ({
+  type: SWITCH_TAB, index
+})
+
+export const wholeFile = file => ({
+  type: WHOLE_FILE, file
 })
 
 export const clearFileSystem = () => ({
@@ -127,7 +159,6 @@ export const driverSave = (filePath, code, isNewFile) => (dispatch) => {
 }
 
 export const closeTab = (file, openFiles) => (dispatch) => {
-  console.log(file)
   const oldFileIndex = openFiles.findIndex(openFile => openFile.filePath === file.filePath)
     const length = openFiles.length - 1
     return Promise.resolve(dispatch(closeFile(file)))

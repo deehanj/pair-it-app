@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
-import { activeFile, addToOpenFiles, loadFiles } from '../reducers/FilesReducer'
+import { activeFile, addToOpenFiles, loadFiles, toggleVisibility, switchTab } from '../reducers/FilesReducer'
 
 import FileListComponent from '../components/FileListComponent'
 
@@ -24,10 +24,10 @@ const mapStateToProps = state => {
     subDir: state.fileSystem.dir,
     files: state.fileSystem.files,
     activeFile: state.fileSystem.activeFile,
-    visible: true,
-    level: 0,
     room: state.room.name,
-    role: state.repo.role
+    role: state.repo.role,
+    isVisible: state.fileSystem.isVisible,
+    openFiles: state.fileSystem.openFiles
   }
 }
 
@@ -35,26 +35,25 @@ const mapDispatchToProps = dispatch => {
   return {
     fetchActiveFile : (dir, room, role) => {
       if(role === 'driver'){
-        console.log('reaches the fetch active file dispatch', dir)
-        // if (dir.length > 0) {
-          console.log('and the length was greater than 0', dir)
-          readFile(dir)
-          .then(text => {
-            text = text.toString()
-            const file = {filePath: dir, text}
-            socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
-            dispatch(activeFile(file))
-            dispatch(addToOpenFiles(file))
-          })
-          .catch(error => console.error(error.message))
-        // }
+        readFile(dir)
+        .then(text => {
+          text = text.toString()
+          const file = {filePath: dir, text}
+          socket.emit('opened file', { filePath: file.filePath, text: file.text, room: room })
+          dispatch(activeFile(file))
+          dispatch(addToOpenFiles(file))
+        })
+        .catch(error => console.error(error.message))
       }
     },
     openFileFromDriver : file => {
       dispatch(activeFile(file))
       dispatch(addToOpenFiles(file))
     },
-    loadFiles: files => dispatch(loadFiles(files))
+    loadFiles: files => dispatch(loadFiles(files)),
+    toggleVisibility: filePath => dispatch(toggleVisibility(filePath)),
+    activeFile: file => dispatch(activeFile(file)),
+    switchTab: index => dispatch(switchTab(index))
   }
 }
 
