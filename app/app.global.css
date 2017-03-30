@@ -269,7 +269,7 @@ body {
 	/*max-height: 270px;*/
 	overflow: scroll;
 	size: 15px;
-	height: 30vh;
+	height: 33vh;
 }
 
 #currentBranch{
@@ -310,9 +310,9 @@ li{
 
 }*/
 
-/*.fa.fa-git{
-	font-size:30px;
-}*/
+.fa.fa-git{
+	font-size:20px;
+}
 
 footer{
 	bottom: 0;
