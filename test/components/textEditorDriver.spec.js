@@ -25,8 +25,9 @@ const TextEditorDriver = mount(<TextEditorComponent {...propsDriver} />);
     TextEditorDriver,
     propsDriver,
     Tab: TextEditorDriver.find('Tab'),
-    saveBtn: TextEditorDriver.find('[className="save-btn"]'),
-    close: TextEditorDriver.find('[className="close-btn"]')
+    save: TextEditorDriver.find('[className="admin-btn save"]'),
+    add: TextEditorDriver.find('[className="admin-btn add-tab"]'),
+    close: TextEditorDriver.find('[className="admin-btn close-tab"]')
   };
 };
 
@@ -34,8 +35,8 @@ const TextEditorDriver = mount(<TextEditorComponent {...propsDriver} />);
 
     describe('The features it renders', () => {
     	it('should render a button on active Tab to save file', () => {
-      		const {saveBtn} = setup();
-      		expect(saveBtn.length).toEqual(1);
+      		const {save} = setup();
+      		expect(save.length).toEqual(1);
       	});
       it('should render same number of Tabs as open files', () => {
           const {Tab} = setup();
@@ -45,22 +46,13 @@ const TextEditorDriver = mount(<TextEditorComponent {...propsDriver} />);
         const {close} = setup();
         expect(close.length).toEqual(1);
         });
+      it('should render a button on Tab Panel to add a new file', () => {
+        const {add} = setup();
+        expect(add.length).toEqual(1);
+        });
 
-    // describe('The close active file button', () => {
-    //   it('should call onClose function', () => {
-    //     const {close, propsDriver} = setup();
-    //     close.at(0).simulate('click');
-    //     expect(propsDriver.onCloseTab.called).toBe(true);
-    //   });
-    // })
 
-    // describe('Clicking unactive tab', () => {
-    //   it('should should call handleSelect', () => {
-    //     const {Tab, propsDriver} = setup();
-    //     Tab.at(1).simulate('click');
-    //     expect(propsDriver.handleSelect.called).toBe(true);
-    //   })
-    // })
+   
   });
 
 

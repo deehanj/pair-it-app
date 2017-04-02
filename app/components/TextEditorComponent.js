@@ -164,9 +164,9 @@ export default class TextEditorComponent extends React.Component {
               <div>
                 {(this.props.role === 'driver' && this.props.activeFile.text.length > 0) ?
                 <div className="admin-btn-container">
-                  <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
-                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
-                  <div className="admin-btn" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
+                  <div className="admin-btn add-tab" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
+                  <div className="admin-btn close-tab" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn save" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                   <div className="admin-btn" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
                 </div>
                 : (this.props.role === 'driver') ?
