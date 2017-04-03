@@ -40,7 +40,10 @@ export default class TextEditorComponent extends React.Component {
     })
 
     socket.on('new tab added', payload => {
-      if (payload.length > this.props.openFiles.length) this.props.dispatchAddToOpenFilesAndSetActive()
+      if (payload.length > this.props.openFiles.length) {
+        this.props.dispatchAddToOpenFilesAndSetActive()
+        this.props.dispatchSwitchTab(this.props.openFiles.length - 1)
+      }
     })
     socket.on('a tab was closed', payload => {
      if (this.props.openFiles.filter(file => file.filePath === payload.fileToClose.filePath).length > 0) {
@@ -51,7 +54,7 @@ export default class TextEditorComponent extends React.Component {
      }
    })
     socket.on('file was saved', (payload) => {
-      if (this.props.activeFile.text !== payload.text) {
+      if (this.props.activeFile.filePath !== payload.filePath) {
         const file = { filePath: payload.filePath, text: payload.text }
         Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
         .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(file))
@@ -70,23 +73,13 @@ export default class TextEditorComponent extends React.Component {
     socket.emit('leave room', {message: 'leaving text-editor' + this.props.room})
   }
 
-  componentWillReceiveProps(nextProps) {
-    // this.setState({
-    // 	code: nextProps.activeFile.text,
-    // })
-    // if(this.props.openFiles )
-    // this.codeIsHappening(nextProps.activeFile.text)
-  }
-
   codeIsHappening(newCode) {
     this.props.dispatchWholeFile({filePath:this.props.activeFile.filePath, text: newCode})
-    // this.setState({ code: newCode })
     socket.emit('coding event', {code: newCode, room: this.props.room})
   }
 
   handleSelect(index, last) {
     const file = this.props.activeFile
-    // file.text = this.props.activeFile.text
     socket.emit('tab changed', {file: file, index: index, room: this.props.room})
     Promise.resolve(this.props.dispatchUpdateOpenFiles(file))
     .then(() => this.props.dispatchSetActiveFileAndReturnFileAndIndex(this.props.openFiles[index]))
@@ -171,9 +164,9 @@ export default class TextEditorComponent extends React.Component {
               <div>
                 {(this.props.role === 'driver' && this.props.activeFile.text.length > 0) ?
                 <div className="admin-btn-container">
-                  <div className="admin-btn" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
-                  <div className="admin-btn" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
-                  <div className="admin-btn" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
+                  <div className="admin-btn add-tab" onClick={this.onAddNewTab}><i className="fa fa-plus-square-o"/></div>
+                  <div className="admin-btn close-tab" onClick={() => this.onCloseTab(this.props.activeFile, this.props.openFiles) }><i className="fa fa-times" /></div>
+                  <div className="admin-btn save" onClick={this.onSave}><i className="fa fa-floppy-o"/></div>
                   <div className="admin-btn" onClick={() => this.props.dispatchOpenGitMenu()}><i className="fa fa-git"/></div>
                 </div>
                 : (this.props.role === 'driver') ?

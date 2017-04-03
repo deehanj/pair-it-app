@@ -145,11 +145,17 @@ export default class HomePageComponent extends Component {
             </div>
         :
       //NAVIGATOR VIEW
-            <div>
-              <TextEditorContainer />
-              <FileListContainer/>
-              <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
-            </div>
+      <div>
+        <TextEditorContainer />
+        <div id="file-container" className="col-sm-4">
+          <h1>{this.props.repoName}</h1>
+          <div id="file-list-container" >
+            <FileListContainer />
+          </div>
+        </div>
+          <div className="back-arrow" onClick={this.returnToCollaborators}><h3><i className="fa fa-arrow-left" />   Return to Collaborators Page</h3></div>
+
+      </div>
       }
 
 

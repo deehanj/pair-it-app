@@ -32,7 +32,7 @@ export default class FilesComponent extends React.Component {
   render() {
     return (
       <div>
-        <div id="file-container" className="col-sm-4">
+        <div id="file-container-driver" className="col-sm-4">
           <h1>{this.props.repoName}</h1>
           <h3 id="currentBranch">
           {this.props.currentBranch && <i className="fa fa-code-fork"/>}
@@ -41,7 +41,7 @@ export default class FilesComponent extends React.Component {
           <input id="file-selector" type="file" ref="local" onChange={this.selectFile} />
           <button onClick={this.onSubmit}>Pair It!</button>
         </div>
-        <div id="file-list-container" className="col-sm-4">
+        <div id="file-list-container-driver" className="col-sm-4">
         <FileListContainer />
         </div>
       </div>

@@ -21,21 +21,24 @@ export default class Files extends React.Component {
   }
 
   onFileClick(dir, room, role) {
-    var i = -1;
-    const index = this.props.openFiles.forEach((file, index) => {
-      if (file.filePath === dir) i = index
-    })
-    if (i === -1) {
-      this.props.fetchActiveFile(dir, room, role)
-      this.props.switchTab(this.props.openFiles.length)
-    }
-    else {
-      if (this.props.activeFile.filePath !== dir) {
-        this.props.dispatchActiveFile(this.props.openFiles[i])
-        }
-        this.props.switchTab(i)
+    if (role === 'driver') {
+      var i = -1;
+      const index = this.props.openFiles.forEach((file, index) => {
+        if (file.filePath === dir) i = index
+      })
+      if (i === -1) {
+        console.log('this.props.selectedIndex', this.props.selectedTab)
+        this.props.fetchActiveFile(dir, room, role)
+        this.props.switchTab(this.props.openFiles.length)
       }
-  }
+      else {
+        if (this.props.activeFile.filePath !== dir) {
+          this.props.dispatchActiveFile(this.props.openFiles[i])
+          }
+          this.props.switchTab(i)
+        }
+      }
+    }
 
   setVisible(filePath) {
     this.props.toggleVisibility(filePath)
@@ -101,6 +104,7 @@ export default class Files extends React.Component {
                   toggleVisibility={this.props.toggleVisibility}
                   switchTab= {this.props.switchTab}
                   dispatchActiveFile={this.props.dispatchActiveFile}
+                  openFileFromDriver={this.props.openFileFromDriver}
                 />}
               </li>
           })
