@@ -26,8 +26,6 @@ export default class Files extends React.Component {
       if (file.filePath === dir) i = index
     })
     if (i === -1) {
-      console.log('this.props.selectedIndex', this.props.selectedTab)
-      // const theIndex = (this.props.selectedTab === 0) ? 0 : this.props.selectedTab === 1 ? 1 : this.props.selectedTab + 1
       this.props.fetchActiveFile(dir, room, role)
       this.props.switchTab(this.props.openFiles.length)
     }

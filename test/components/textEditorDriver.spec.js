@@ -65,4 +65,3 @@ const TextEditorDriver = mount(<TextEditorComponent {...propsDriver} />);
 
 
   });
-  
