@@ -1,5 +1,4 @@
-
-const UPDATE_SOCKET_ROOM = 'UPDATE_SOCKET_ROOM'
+import { UPDATE_SOCKET_ROOM } from '../constants/RoomConstants'
 
 const initialState = {
 	name: '',

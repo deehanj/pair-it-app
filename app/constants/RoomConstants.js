@@ -1,0 +1,1 @@
+export const UPDATE_SOCKET_ROOM = 'UPDATE_SOCKET_ROOM'
