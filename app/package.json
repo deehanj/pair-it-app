@@ -1,13 +1,13 @@
 {
-  "name": "electron-react-boilerplate",
-  "productName": "electron-react-boilerplate",
+  "name": "Pair.It",
+  "productName": "Pair.It",
   "version": "1.0.0",
-  "description": "Electron application boilerplate based on React, React Router, Webpack, React Hot Loader for rapid application development",
+  "description": "A GitHub-enabled remote pair programming application.",
   "main": "./main.js",
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Deehan, J.; Dillon, C.; O'Toole, T.; Peritz, M.",
+    "email": "otooleterrence@gmail.com",
+    "url": "https://github.com/jjdeehan/pair-it-app"
   },
   "license": "MIT",
   "dependencies": {
