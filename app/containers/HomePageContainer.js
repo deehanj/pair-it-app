@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { setRoleToDriver, setRoleToNavigator, clearRole } from '../reducers/repo';
+import { setRoleToDriver, setRoleToNavigator, clearRole } from '../actionCreators/RepoActionCreators';
 import {connect} from 'react-redux';
 import {push} from 'react-router-redux'
 import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'

@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 import { logout } from '../reducers/auth'
 import { removeUser } from '../reducers/user'
-import { clearRepos } from '../reducers/repo'
+import { clearRepos } from '../actionCreators/RepoActionCreators'
 import { push } from 'react-router-redux'
 
 const shell = window.require('electron').shell

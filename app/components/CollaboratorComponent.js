@@ -1,14 +1,14 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 
 import NavBar from './NavBarComponent'
 import CollaboratorRowComponent from "./CollaboratorRowComponent"
 import { serverLocation } from '../utils/server.settings.js'
-import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
-import {push} from 'react-router-redux'
+import { UpdateURL, UpdateLocalURL, UpdateRemoteURL } from '../actionCreators/VideoChatActionCreators'
+import { push } from 'react-router-redux'
 import ConfigureSocket from '../utils/ConfiguringSocket'
 import io from 'socket.io-client'
-import {setPairingRoom, setPairingPartner} from '../reducers/repo';
+import { setPairingRoom, setPairingPartner } from '../actionCreators/RepoActionCreators';
 
 const logo = require('img/Pairit.logo.svg')
 
@@ -31,13 +31,6 @@ export default class CollaboratorComponent extends React.Component {
 			},
 			MediaStreamURL: this.props.URL
 		}
-
-		// const playerInfo = {
-    //   name: props.name,
-    //   _id: props.id,
-		// 	id: socket.id,
-		// 	avatar_url: props.avatar_url
-    // };
 
 		this.sortOutMedia = this.sortOutMedia.bind(this);
 		this.backToRepos = this.backToRepos.bind(this);
