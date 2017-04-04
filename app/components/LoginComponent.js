@@ -9,7 +9,7 @@ const logo = require('img/pairit.logotitle.svg');
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { loginUser } from '../reducers/auth';
+import { loginUser } from '../reducers/AuthReducer';
 import options from '../utils/github.settings';
 
 export class LoginComponent extends React.Component {

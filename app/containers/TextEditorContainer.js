@@ -3,7 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import { setUser } from '../reducers/user'
+import { setUser } from '../actionCreators/UserActionCreators'
 import { updateOpenFiles, closeFile, saveNewFile, switchTab, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab, wholeFile, activeFile} from '../actionCreators/FileSystemActionCreators'
 import { openGitMenu, closeGitMenu } from '../actionCreators/GitButtonsActionCreators'
 

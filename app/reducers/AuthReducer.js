@@ -1,7 +1,6 @@
-// import { LOGIN, LOGOUT } from '../actions';
-import { apiRequest, apiRequestAuth } from '../utils/api-requests';
-import { fetchUsername } from '../reducers/user';
-import options from '../utils/github.settings';
+import { apiRequest, apiRequestAuth } from '../utils/api-requests'
+import { fetchUsername } from '../actionCreators/UserActionCreators'
+import options from '../utils/github.settings'
 
 export function makeAsyncActionSet(actionName) {
   return {
@@ -11,10 +10,8 @@ export function makeAsyncActionSet(actionName) {
   };
 }
 
-
 export const LOGIN = makeAsyncActionSet('LOGIN');
 export const LOGOUT = 'LOGOUT';
-
 
 const initialState = {
   response: {},
@@ -23,8 +20,7 @@ const initialState = {
   failed: false
 };
 
-
-export default function reducer(state = initialState, action) {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN.REQUEST:
       return {
@@ -59,7 +55,7 @@ export default function reducer(state = initialState, action) {
 }
 
 
-export function loginUser(code) {
+export const loginUser = (code) => {
   return (dispatch, getState) => {
 
     const url = 'https://github.com/login/oauth/access_token';
@@ -73,13 +69,11 @@ export function loginUser(code) {
     dispatch({type: LOGIN.REQUEST});
 
     return apiRequest(url, method, data)
-      .then(function (response) {
+      .then((response) => {
         return dispatch({type: LOGIN.SUCCESS, payload: response.data});
       })
-      .then(() => {
-        fetchUsername()();
-      })
-      .catch(function (error) {
+      .then(fetchUsername())
+      .catch((error) => {
         console.error(error);
         dispatch({type: LOGIN.FAILURE, payload: error.response.data});
       });
@@ -87,6 +81,9 @@ export function loginUser(code) {
   };
 }
 
-export function logout() {
+export const logout = () => {
   return { type: LOGOUT };
 }
+
+export default reducer
+
