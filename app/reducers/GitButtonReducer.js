@@ -1,4 +1,4 @@
-import {TOGGLE_BRANCH_DISPLAY, SUCCESS_DATA, ERROR_DATA, UPDATE_CURRENT_BRANCH, UPDATE_BRANCH_LIST, UPDATE_BRANCH_QUERY_STRING , DISPLAY_BRANCH_LIST, UPDATE_STATUS, UPDATE_COMMIT_MESSAGE, TOGGLE_GIT_MENU, CLEAR_GIT} from '../constants/GitButtonsConstants'
+import * as constants from '../constants/GitButtonsConstants'
 
 const initialState = {
 	branchList: [],
@@ -14,38 +14,38 @@ const initialState = {
 const reducer = (state = initialState, action) => {
 	const newState = Object.assign({}, state)
 		switch (action.type) {
-			case TOGGLE_BRANCH_DISPLAY:
+			case constants.TOGGLE_BRANCH_DISPLAY:
 				newState.displayBranch = action.toggle
 				break
-			case SUCCESS_DATA:
+			case constants.SUCCESS_DATA:
 				newState.successData = action.successMessage
 				break
-			case ERROR_DATA:
+			case constants.ERROR_DATA:
 				newState.errorData =  action.errorMessage
 				break
-			case UPDATE_CURRENT_BRANCH:
+			case constants.UPDATE_CURRENT_BRANCH:
 				newState.currentBranch = action.currentBranch
 				break
-			case UPDATE_BRANCH_LIST:
+			case constants.UPDATE_BRANCH_LIST:
 				newState.currentBranch = action.currentBranch
 				newState.branchList = action.branchList
 				break
-			case UPDATE_BRANCH_QUERY_STRING:
+			case constants.UPDATE_BRANCH_QUERY_STRING:
 				newState.branchQuery = action.branchQuery
 				break
-			case DISPLAY_BRANCH_LIST:
+			case constants.DISPLAY_BRANCH_LIST:
 				newState.displayBranch = true
 				break
-			case UPDATE_STATUS:
+			case constants.UPDATE_STATUS:
 				newState.successData = action.status
 				break
-			case UPDATE_COMMIT_MESSAGE:
+			case constants.UPDATE_COMMIT_MESSAGE:
 				newState.commitMessage = action.commitMessage
 				break
-			case TOGGLE_GIT_MENU:
+			case constants.TOGGLE_GIT_MENU:
 				newState.open = action.boolean
 				break
-			case CLEAR_GIT:
+			case constants.CLEAR_GIT:
 				return initialState
 			default:
 				return state
