@@ -2,7 +2,7 @@
 
 import { apiRequest, apiRequestAuth } from '../utils/api-requests';
 import store from '../store/configureStore.development'
-import {setRepos} from './repo'
+import { setRepos } from '../actionCreators/RepoActionCreators'
 
 const SET_USER = 'SET_USER';
 const SET_UNAVAILABLE = 'SET_UNAVAILABLE'

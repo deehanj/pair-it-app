@@ -1,9 +1,9 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import RepoListComponent from '../components/RepoListComponent'
 import NavBar from '../components/NavBarComponent'
-import {setSelectedRepo} from '../reducers/repo'
-import {push} from 'react-router-redux'
+import { setSelectedRepo } from '../actionCreators/RepoActionCreators'
+import { push } from 'react-router-redux'
 import { serverLocation } from '../utils/server.settings.js'
 import io from 'socket.io-client'
 
@@ -33,7 +33,6 @@ const mapDispatchToProps = (dispatch) => {
 class RepoListContainer extends React.Component {
 	constructor(props){
 		super(props)
-		// this.sortedRepos = this.sortReposByDate(props.repos)
   }
 
   componentDidMount() {

@@ -1,11 +1,11 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
 import CollaboratorComponent from '../components/CollaboratorComponent'
-import {UpdateURL, UpdateLocalURL, UpdateRemoteURL} from '../actionCreators/VideoChatActionCreators'
-import {push} from 'react-router-redux'
-import {setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner} from '../reducers/repo';
-import {setUnavailable, setAvailable} from '../reducers/user'
-import {setSocketRoom }from '../actionCreators/RoomActionCreators'
+import { UpdateURL, UpdateLocalURL, UpdateRemoteURL } from '../actionCreators/VideoChatActionCreators'
+import { push } from 'react-router-redux'
+import { setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner } from '../actionCreators/RepoActionCreators';
+import { setUnavailable, setAvailable } from '../reducers/user'
+import { setSocketRoom } from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
 	return {
