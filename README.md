@@ -5,6 +5,9 @@ This repository only has our front-end, client-facing desktop app. The server re
 
 To run the code locally follow the next steps.
 
+### Authors:
+ [James Deehan](https://github.com/jjdeehan), [Christine Dillon](https://github.com/cdillon85), [Terry O'Toole](https://github.com/otooleterrence), [Mike Peritz](https://github.com/mperitz)
+
 ## Getting started:
 
 1. clone
@@ -13,10 +16,12 @@ To run the code locally follow the next steps.
 
 ## Running The Development Environment:
 
+You'll need to run the electron hot server in development mode.
+
 In separate windows:
 
 1. ```npm run hot-server```
-  - runs a webpack that should reload in real time
+  - runs a webpack that reloads in real time
 2. ```npm run start-hot```
   - opens up a new app window after a second
 
