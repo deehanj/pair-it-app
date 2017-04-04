@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import FilesComponent from '../components/FilesComponent'
-import { setFileDirAndLoadFiles } from '../reducers/FilesReducer'
+import { setFileDirAndLoadFiles } from '../actionCreators/FileSystemActionCreators'
 
 const mapStateToProps = state => ({
   dir: state.fileSystem.dir,
