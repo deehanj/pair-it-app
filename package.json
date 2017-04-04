@@ -75,27 +75,30 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chentsulin/electron-react-boilerplate.git"
+    "url": "git+https://github.com/jjdeehan/pair-it-app"
   },
   "author": {
-    "name": "C. T. Lin",
-    "email": "chentsulin@gmail.com",
-    "url": "https://github.com/chentsulin"
+    "name": "Deehan, J.; Dillon, C.; O'Toole, T.; Peritz, M.",
+    "email": "otooleterrence@gmail.com",
+    "url": "https://github.com/jjdeehan/pair-it-app"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/chentsulin/electron-react-boilerplate/issues"
+    "url": "https://github.com/jjdeehan/pair-it-app/issues"
   },
   "keywords": [
     "electron",
     "boilerplate",
     "react",
-    "react-router",
-    "flux",
+    "react-router"
     "webpack",
-    "react-hot"
+    "react-hot",
+    "web-rtc",
+    "react-redux",
+    "ace",
+    "socket.io"
   ],
-  "homepage": "https://github.com/chentsulin/electron-react-boilerplate#readme",
+  "homepage": "http://pair-it.herohuapp.com",
   "jest": {
     "moduleNameMapper": {
       "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mocks/fileMock.js",
