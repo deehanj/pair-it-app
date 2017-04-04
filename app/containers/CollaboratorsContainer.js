@@ -4,7 +4,7 @@ import CollaboratorComponent from '../components/CollaboratorComponent'
 import { UpdateURL, UpdateLocalURL, UpdateRemoteURL } from '../actionCreators/VideoChatActionCreators'
 import { push } from 'react-router-redux'
 import { setRoleToDriver, setRoleToNavigator, setPairingRoom, setPairingPartner } from '../actionCreators/RepoActionCreators';
-import { setUnavailable, setAvailable } from '../reducers/user'
+import { setUnavailable, setAvailable } from '../actionCreators/UserActionCreators'
 import { setSocketRoom } from '../actionCreators/RoomActionCreators'
 
 const mapStateToProps = (state) => {
@@ -14,13 +14,13 @@ const mapStateToProps = (state) => {
 		URL: state.VideoChat.URL,
 		id: state.user.gitInfo.id,
 		avatar_url: state.user.gitInfo.avatar_url,
-    unavailable: state.user.unavailable
+    	unavailable: state.user.unavailable
 	}
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 	return {
-    clickToGoHome: () => dispatch(push('/home')),
+    	clickToGoHome: () => dispatch(push('/home')),
 		clickToGoHomeNav: () => {
 			dispatch(setRoleToNavigator())
 			dispatch(push('/home'))
@@ -36,8 +36,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 		setPairPartner: (collaborator) => dispatch(setPairingPartner(collaborator)),
 		updateSocketRoom: (room) => dispatch(setSocketRoom(room)),
 		returnToRepos: () => dispatch(push('/repos')),
-    setUnavailable: (name) => dispatch(setUnavailable(name)),
-    makeAvailable: (name) => dispatch(setAvailable(name))
+    	setUnavailable: (name) => dispatch(setUnavailable(name)),
+    	makeAvailable: (name) => dispatch(setAvailable(name))
 	}
 }
 

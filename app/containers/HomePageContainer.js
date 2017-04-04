@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 import { setRoleToDriver, setRoleToNavigator, clearRole } from '../actionCreators/RepoActionCreators';
-import {connect} from 'react-redux';
-import {push} from 'react-router-redux'
-import {clearAllURLs} from '../actionCreators/VideoChatActionCreators'
-import {setAvailable} from '../reducers/user'
+import { connect } from 'react-redux';
+import { push } from 'react-router-redux'
+import { clearAllURLs } from '../actionCreators/VideoChatActionCreators'
+import { setAvailable } from '../actionCreators/UserActionCreators'
 import { closeGitMenu, clearGit } from '../actionCreators/GitButtonsActionCreators'
-import {clearFileSystem} from '../actionCreators/FileSystemActionCreators'
+import { clearFileSystem } from '../actionCreators/FileSystemActionCreators'
 
 import HomePageComponent from '../components/HomePageComponent'
 

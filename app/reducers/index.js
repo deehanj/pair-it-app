@@ -2,12 +2,12 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
 import files from './FilesReducer'
-import auth from './auth'
+import AuthReducer from './AuthReducer'
 import VideoChatReducer from './VideoChatReducer';
 import GitButtonsReducer from './GitButtonReducer'
-import user from './user'
-import repo from './repo'
-import room from './room'
+import UserReducer from './userReducer'
+import RepoReducer from './repoReducer'
+import RoomReducer from './roomReducer'
 
 
 const rootReducer = combineReducers({
@@ -15,10 +15,10 @@ const rootReducer = combineReducers({
   fileSystem: files,
   VideoChat: VideoChatReducer,
   GitButtons: GitButtonsReducer,
-  auth,
-  user,
-  repo,
-  room
+  auth: AuthReducer,
+  user: UserReducer,
+  repo: RepoReducer,
+  room: RoomReducer,
 });
 
 export default rootReducer;

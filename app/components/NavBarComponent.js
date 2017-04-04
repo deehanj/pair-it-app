@@ -1,8 +1,8 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import { logout } from '../reducers/auth'
-import { removeUser } from '../reducers/user'
+import { logout } from '../reducers/AuthReducer'
+import { removeUser } from '../actionCreators/UserActionCreators'
 import { clearRepos } from '../actionCreators/RepoActionCreators'
 import { push } from 'react-router-redux'
 
