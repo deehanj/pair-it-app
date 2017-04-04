@@ -1,17 +1,6 @@
 import { getAllFiles, readFile, writeFile } from '../utils/FileSystemFunction'
+import * as constants from '../constants/FileSystemConstants'
 import Promise from 'bluebird'
-
-const SET_FILE_DIR = 'SET_FILE_DIR'
-const LOAD_FILES = 'LOAD_FILES'
-const FILE_ACTIVE = 'FILE_ACTIVE'
-const OPEN_FILES = 'OPEN_FILES'
-const UPDATE_OPEN_FILES = 'UPDATE_OPEN_FILES'
-const CLOSE_FILE = 'CLOSE_FILE'
-const SAVE_NEW_FILE = 'SAVE_NEW_FILE'
-const TOGGLE_VISIBILITY = 'TOGGLE_VISIBILITY'
-const SWITCH_TAB = 'SWITCH_TAB'
-const CLEAR_FILESYSTEM = 'CLEAR_FILESYSTEM'
-const WHOLE_FILE = 'WHOLE_FILE'
 
 const initialState = {
   dir: '',
@@ -28,7 +17,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   const newState = Object.assign({}, state)
   switch (action.type) {
-    case WHOLE_FILE:
+    case constants.WHOLE_FILE:
       newState.openFiles = newState.openFiles.map(file => {
         if(file.filePath === action.file.filePath){
           file.text = action.file.text
@@ -36,147 +25,46 @@ const reducer = (state = initialState, action) => {
         return file;
       })
       break
-    case SET_FILE_DIR:
+    case constants.SET_FILE_DIR:
       newState.dir = action.dir
       break
-    case LOAD_FILES:
+    case constants.LOAD_FILES:
       newState.files = action.files
       break
-    case FILE_ACTIVE:
+    case constants.FILE_ACTIVE:
       newState.activeFile = action.file
       break
-    case OPEN_FILES:
+    case constants.OPEN_FILES:
       newState.openFiles = newState.openFiles.concat([action.file])
       break
-    case CLOSE_FILE:
+    case constants.CLOSE_FILE:
       newState.openFiles = newState.openFiles.filter(file => file.filePath !== action.file.filePath)
       break
-    case UPDATE_OPEN_FILES:
+    case constants.UPDATE_OPEN_FILES:
       newState.openFiles = newState.openFiles.map(file => {
         if (file.filePath === action.file.filePath) return action.file
         else return file
       })
       break
-    case SAVE_NEW_FILE:
+    case constants.SAVE_NEW_FILE:
       newState.openFiles = newState.openFiles.map(file => {
         if (file.filePath === '') return action.file
         else return file
       })
       break
-    case TOGGLE_VISIBILITY:
+    case constants.TOGGLE_VISIBILITY:
       newState.isVisible = Object.assign({}, newState.isVisible)
       newState.isVisible[action.filePath] = !newState.isVisible[action.filePath]
       break
-    case SWITCH_TAB:
+    case constants.SWITCH_TAB:
       newState.selectedTab = action.index
       break
-    case CLEAR_FILESYSTEM:
+    case constants.CLEAR_FILESYSTEM:
       return initialState
     default:
       return state
   }
   return newState
-}
-
-export const setFileDir = dir => ({
-  type: SET_FILE_DIR, dir
-})
-
-export const loadFiles = files => ({
-  type: LOAD_FILES, files
-})
-
-export const activeFile = file => ({
-  type: FILE_ACTIVE, file
-})
-
-export const addToOpenFiles = file => ({
-  type: OPEN_FILES, file
-})
-
-export const updateOpenFiles = file => ({
-  type: UPDATE_OPEN_FILES, file
-})
-
-export const closeFile = file => ({
-  type: CLOSE_FILE, file
-})
-
-export const saveNewFile = file => ({
-  type: SAVE_NEW_FILE, file
-})
-
-export const toggleVisibility = filePath => ({
-  type: TOGGLE_VISIBILITY, filePath
-})
-
-export const switchTab = index => ({
-  type: SWITCH_TAB, index
-})
-
-export const wholeFile = file => ({
-  type: WHOLE_FILE, file
-})
-
-export const clearFileSystem = () => ({
-  type: CLEAR_FILESYSTEM
-})
-
-
-// THUNKS
-
-export const setActiveFileAndReturnFileAndIndex = (file, index) => (dispatch) => {
-  dispatch(activeFile(file))
-  if (arguments.length > 1) return [file, index]
-}
-
-export const addToOpenFilesAndSetActive = () => (dispatch) => {
-  dispatch(addToOpenFiles({ filePath: '', text: '' }))
-  dispatch(activeFile({ filePath: '', text: '' }))
-}
-
-export const setFileDirAndLoadFiles = (dir) => (dispatch) => {
-  if (dir.length > 0) {
-    getAllFiles(dir + '/')
-    .then(result => {
-      dispatch(setFileDir(dir))
-      dispatch(loadFiles(result))
-    })
-    .catch(error => console.error(error.message))
-  }
-
-}
-
-export const driverSave = (filePath, code, isNewFile) => (dispatch) => {
-  return writeFile(filePath, code)
-    .then(() => {
-      const file = { filePath, text: code }
-      if (isNewFile) dispatch(saveNewFile(file))
-      dispatch(updateOpenFiles(file))
-      return file
-    })
-    .then(file => dispatch(setActiveFileAndReturnFileAndIndex(file)))
-}
-
-export const closeTab = (file, openFiles) => (dispatch) => {
-  const oldFileIndex = openFiles.findIndex(openFile => openFile.filePath === file.filePath)
-    const length = openFiles.length - 1
-    return Promise.resolve(dispatch(closeFile(file)))
-    .then(() => {
-      let fileToActive;
-      let index;
-      if (length === 0) {
-        fileToActive = { filePath: '', text: '' }
-        index = 0
-      } else if (oldFileIndex === length) {
-        fileToActive = openFiles[length - 1]
-        index = length - 1
-      }else if (oldFileIndex !== length) {
-        fileToActive = openFiles[oldFileIndex + 1]
-        index = oldFileIndex
-      }
-      return dispatch(setActiveFileAndReturnFileAndIndex(fileToActive, index))
-    })
 }
 
 export default reducer

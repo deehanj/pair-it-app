@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import {connect} from 'react-redux'
 import { getAllFiles, readFile } from '../utils/FileSystemFunction'
-import { activeFile, addToOpenFiles, loadFiles, toggleVisibility, switchTab } from '../reducers/FilesReducer'
+import { activeFile, addToOpenFiles, loadFiles, toggleVisibility, switchTab } from '../actionCreators/FileSystemActionCreators'
 
 import FileListComponent from '../components/FileListComponent'
 

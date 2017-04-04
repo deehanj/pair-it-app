@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 
 import { spy } from 'sinon';
-import * as actions from '../../app/reducers/FilesReducer';
+import * as actions from '../../app/actionCreators/FileSystemActionCreators';
 
 const file = { filePath: './app/index.js', text: 'console.log("Hello world!")' }
 const singleFileArr = [file]

@@ -1,1 +1,1 @@
-export const serverLocation = 'http://pair-server.herokuapp.com';
+export const serverLocation = 'http://pair-it.herokuapp.com';

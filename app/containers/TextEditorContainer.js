@@ -4,7 +4,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 
 import { setUser } from '../reducers/user'
-import { updateOpenFiles, closeFile, saveNewFile, switchTab, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab, wholeFile, activeFile} from '../reducers/FilesReducer'
+import { updateOpenFiles, closeFile, saveNewFile, switchTab, setActiveFileAndReturnFileAndIndex, addToOpenFilesAndSetActive, setFileDirAndLoadFiles, driverSave, closeTab, wholeFile, activeFile} from '../actionCreators/FileSystemActionCreators'
 import { openGitMenu, closeGitMenu } from '../actionCreators/GitButtonsActionCreators'
 
 import TextEditorComponent from '../components/TextEditorComponent'
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 		dir: state.fileSystem.dir,
 		room: state.room.name,
 		role: state.repo.role,
-    	selectedTab: state.fileSystem.selectedTab
+    selectedTab: state.fileSystem.selectedTab
 	}
 }
 

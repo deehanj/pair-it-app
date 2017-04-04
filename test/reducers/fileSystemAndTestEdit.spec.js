@@ -1,5 +1,5 @@
 import reducer from '../../app/reducers/FilesReducer';
-import * as actions from '../../app/reducers/FilesReducer';
+import * as actions from '../../app/actionCreators/FileSystemActionCreators';
 
 const initialState = {
   dir: '',
